@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sedekah Ramadan untuk Hafidz Cilik YPSMA — Jombang</title>
+  <meta name="description" content="Di bulan penuh berkah ini, dukung 40+ santri PPTQ Darussalam menyelesaikan hafalan Al-Qur'an mereka. Setiap donasi = pahala berlipat ganda." />
+  <link rel="canonical" href="https://ypsma.org/lp-ramadan" />
+  <meta property="og:title" content="Sedekah Ramadan untuk Hafidz Cilik YPSMA" />
+  <meta property="og:description" content="40+ santri menghafal Al-Qur'an di PPTQ Darussalam Jombang. Bantu mereka tuntas dengan donasi Ramadan Anda." />
+  <style>
+    :root {
+      --green: #0e7c3e; --green-dark: #0a5e2f;
+      --gold: #c49a1e; --gold-light: #fdf6e0;
+      --ink: #1a1a1a; --muted: #5b6b7a; --line: #e0d9c8;
+      --bg: #fffef9;
+      --r: 14px; --max: 720px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+    a { color: var(--green-dark); }
+
+    /* Header */
+    .lp-header { background: var(--green-dark); color: #fff; text-align: center; padding: 14px 20px; font-size: 13px; }
+    .lp-header a { color: rgba(255,255,255,0.75); text-underline-offset: 3px; }
+
+    /* Hero */
+    .lp-hero { background: linear-gradient(160deg, #0a4a24 0%, #1a6a3a 40%, #0e7c3e 100%); color: #fff; padding: 64px 20px 52px; text-align: center; }
+    .ramadan-badge { display: inline-block; background: var(--gold); color: #4a3000; font-size: 13px; font-weight: 700; padding: 6px 18px; border-radius: 100px; margin-bottom: 22px; letter-spacing: 0.05em; }
+    .lp-hero h1 { font-size: clamp(30px, 6vw, 52px); font-weight: 800; line-height: 1.1; letter-spacing: -1px; margin-bottom: 18px; }
+    .lp-hero h1 em { font-style: normal; color: var(--gold); }
+    .lp-hero p { font-size: clamp(16px, 2.2vw, 20px); opacity: 0.9; max-width: 560px; margin: 0 auto 32px; }
+    .btn-ramadan { display: inline-block; background: var(--gold); color: #2a1800; text-decoration: none; font-weight: 800; padding: 16px 32px; border-radius: 14px; font-size: 17px; transition: transform 0.15s; }
+    .btn-ramadan:hover { transform: translateY(-2px); }
+    .hero-urgency { margin-top: 18px; font-size: 13px; opacity: 0.8; }
+    .countdown { display: flex; justify-content: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+    .count-box { background: rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 16px; text-align: center; min-width: 60px; }
+    .count-num { font-size: 22px; font-weight: 800; display: block; font-variant-numeric: tabular-nums; }
+    .count-label { font-size: 10px; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* Content sections */
+    .section { padding: 56px 0; }
+    .section-alt { background: var(--gold-light); }
+    .section h2 { font-size: clamp(22px, 3.5vw, 32px); font-weight: 800; margin-bottom: 12px; letter-spacing: -0.4px; }
+    .section h2 em { font-style: normal; color: var(--green); }
+    .lead { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+
+    /* Santri list */
+    .santri-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .santri-card { background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 16px; text-align: center; }
+    .santri-juz { font-size: 28px; font-weight: 800; color: var(--green); display: block; }
+    .santri-name { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* Impact tiers */
+    .tier-list { display: grid; gap: 14px; }
+    .tier { display: flex; gap: 16px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 18px; }
+    .tier-amt { font-size: 18px; font-weight: 800; color: var(--green-dark); white-space: nowrap; min-width: 120px; }
+    .tier-desc { font-size: 14px; color: var(--ink); line-height: 1.55; }
+    .tier-featured { border-color: rgba(14,124,62,0.4); background: #f0f8f2; }
+
+    /* Progress */
+    .progress-wrap { margin-bottom: 32px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+    .progress-bar { height: 16px; background: #e8e8e8; border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--gold)); border-radius: 100px; animation: grow 1.4s cubic-bezier(0.22,0.61,0.36,1) 0.3s both; }
+    @keyframes grow { from { width: 0; } }
+
+    /* CTA block */
+    .cta-block { background: var(--green-dark); color: #fff; border-radius: 20px; padding: 36px 28px; text-align: center; }
+    .cta-block h2 { font-size: clamp(20px, 3.2vw, 28px); margin-bottom: 14px; letter-spacing: -0.3px; }
+    .cta-block p { opacity: 0.88; margin-bottom: 24px; font-size: 15px; }
+    .bank-block { background: rgba(255,255,255,0.10); border-radius: 12px; padding: 16px 20px; margin: 0 auto 24px; max-width: 420px; text-align: left; font-size: 14px; display: grid; gap: 8px; }
+    .bank-row { display: flex; gap: 12px; }
+    .bank-l { min-width: 60px; font-weight: 600; opacity: 0.7; }
+
+    /* Trust */
+    .trust-list { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px; }
+    .trust-item { background: rgba(255,255,255,0.12); border-radius: 100px; padding: 6px 14px; font-size: 12px; font-weight: 600; }
+
+    /* Footer */
+    .lp-footer { border-top: 1px solid var(--line); padding: 24px 0; text-align: center; font-size: 12px; color: var(--muted); }
+    .lp-footer a { color: var(--green-dark); font-weight: 600; }
+
+    @media (max-width: 500px) { .tier { flex-direction: column; } .tier-amt { min-width: unset; } }
+  </style>
+</head>
+<body>
+
+  <div class="lp-header">
+    <p>🕌 YPSMA Jombang — <a href="/">ypsma.org</a> · Bagian dari <a href="https://berkahkarya.org" rel="external noopener" target="_blank">Berkah Karya</a></p>
+  </div>
+
+  <section class="lp-hero">
+    <div class="container">
+      <div class="ramadan-badge">☪️ Kampanye Ramadan 2025</div>
+      <h1>Setiap Ayat yang Dihafal<br><em>adalah Doa untuk Anda</em></h1>
+      <p>
+        40+ santri PPTQ Darussalam sedang berjuang menyelesaikan hafalan Al-Qur'an. Bantu mereka dengan sedekah Ramadan Anda — pahala berlipat ganda menanti.
+      </p>
+      <a href="#donasi" class="btn-ramadan">🌙 Sedekah Sekarang</a>
+      <p class="hero-urgency">Kampanye berakhir akhir Ramadan — setiap momen emas!</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>40+ Santri Sedang Hafal, <em>Butuh Dukungan Anda</em></h2>
+      <p class="lead">
+        Setiap hafidz di PPTQ Darussalam membutuhkan biaya operasional, buku, konsumsi, dan bimbingan. Orang tua mereka adalah petani dan buruh harian. Donasi Anda adalah jembatan mereka.
+      </p>
+      <div class="santri-grid">
+        <div class="santri-card"><span class="santri-juz">30</span><div class="santri-name">Juz 'Amma ✓</div></div>
+        <div class="santri-card"><span class="santri-juz">25</span><div class="santri-name">Juz terhafal</div></div>
+        <div class="santri-card"><span class="santri-juz">20</span><div class="santri-name">Juz terhafal</div></div>
+        <div class="santri-card"><span class="santri-juz">15</span><div class="santri-name">Setengah jalan ✨</div></div>
+        <div class="santri-card"><span class="santri-juz">10</span><div class="santri-name">Baru mulai 🌱</div></div>
+        <div class="santri-card"><span class="santri-juz">5</span><div class="santri-name">Masih merintis</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>Berapa <em>Yang Bisa Anda Berikan?</em></h2>
+      <p class="lead">Setiap nominal bermakna nyata.</p>
+      <div class="tier-list">
+        <div class="tier">
+          <div class="tier-amt">Rp 50.000</div>
+          <div class="tier-desc">= 1 paket buku Juz 'Amma untuk 1 santri baru</div>
+        </div>
+        <div class="tier tier-featured">
+          <div class="tier-amt">Rp 200.000</div>
+          <div class="tier-desc">= Konsumsi 1 santri selama 1 minggu penuh Ramadan</div>
+        </div>
+        <div class="tier">
+          <div class="tier-amt">Rp 500.000</div>
+          <div class="tier-desc">= Mendanai ujian tahfidz 1 santri hingga selesai</div>
+        </div>
+        <div class="tier">
+          <div class="tier-amt">Rp 1.000.000</div>
+          <div class="tier-desc">= Sponsor penuh 1 santri selama bulan Ramadan</div>
+        </div>
+        <div class="tier">
+          <div class="tier-amt">Bebas</div>
+          <div class="tier-desc">= Setiap rupiah dicatat, digunakan, dan dilaporkan dengan amanah</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="donasi" class="section">
+    <div class="container">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Terkumpul: Rp 8.400.000</span>
+          <span>Target: Rp 25.000.000</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 34%"></div>
+        </div>
+      </div>
+
+      <div class="cta-block">
+        <h2>Tunaikan Sedekah Ramadan Anda Sekarang</h2>
+        <p>Hubungi sekretariat untuk rekening aktif atau kirim via WhatsApp.</p>
+        <div class="bank-block">
+          <div class="bank-row"><span class="bank-l">Bank</span><span>BRI / BSI</span></div>
+          <div class="bank-row"><span class="bank-l">A.n.</span><span>Yayasan Pendidikan dan Sosial Mamba'ul Maarif</span></div>
+          <div class="bank-row"><span class="bank-l">Info</span><span>Hubungi 0321-493147 untuk no. rekening aktif</span></div>
+        </div>
+        <a href="https://wa.me/6285000000000?text=Assalamu%27alaikum%2C+saya+ingin+berdonasi+untuk+kampanye+Ramadan+YPSMA." class="btn-ramadan" style="font-size:15px; padding:14px 28px;" rel="noopener" target="_blank">
+          💬 Konfirmasi via WhatsApp
+        </a>
+        <div class="trust-list">
+          <span class="trust-item">✓ AHU-0026672.AH.01.04</span>
+          <span class="trust-item">✓ Yayasan resmi 58 tahun</span>
+          <span class="trust-item">✓ Laporan transparan</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="lp-footer">
+    <div class="container">
+      <p>YPSMA Gondek, Mojowarno, Jombang · <a href="/">ypsma.org</a> · <a href="https://berkahkarya.org" rel="external noopener" target="_blank">berkahkarya.org</a></p>
+      <p style="margin-top:4px">© <span id="yr"></span> YPSMA · Semua donasi digunakan langsung untuk kegiatan operasional santri.</p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

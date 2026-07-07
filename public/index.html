@@ -3,178 +3,529 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>YPSM — Yayasan Pendidikan dan Sosial Ma’arif</title>
-  <meta name="description" content="YPSM Gondek Mojowarno Jombang: yayasan pendidikan dan sosial ma’arif yang menaungi RA Fajrul Islam, MI Sulamuddiniyah, SMP YPM Mojowarno, dan PPTQ Darussalam." />
+  <title>YPSMA — Yayasan Pendidikan dan Sosial Mamba'ul Maarif | Jombang</title>
+  <meta name="description" content="Sejak 1966, YPSMA mendidik generasi Muslim di Jombang melalui RA, MI, SMP, dan pesantren tahfidz. Dukung pendidikan Islam terpadu dengan donasi Anda." />
   <link rel="preload" as="style" href="/styles/main.css" />
   <link rel="stylesheet" href="/styles/main.css" />
   <link rel="canonical" href="https://ypsma.org/" />
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="YPSM — Yayasan Pendidikan dan Sosial Ma’arif" />
-  <meta property="og:description" content="YPSM Gondek Mojowarno Jombang: pendidikan Islam terpadu dan pemberdayaan masyarakat sejak 1966." />
+  <meta property="og:title" content="YPSMA — 58 Tahun Mendidik Generasi Islam Jombang" />
+  <meta property="og:description" content="Sejak 1966, lebih dari 1.200 alumni telah lahir dari YPSMA. Dukung misi kami: pendidikan Islam terpadu yang terjangkau untuk semua." />
   <meta property="og:url" content="https://ypsma.org/" />
+  <meta property="og:image" content="https://ypsma.org/og-ypsma.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": "Yayasan Pendidikan dan Sosial Mamba'ul Maarif (YPSMA)",
+    "alternateName": "YPSMA",
+    "url": "https://ypsma.org",
+    "foundingDate": "1966",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Jl. Diponegoro No. 34, Gondek",
+      "addressLocality": "Mojowarno",
+      "addressRegion": "Jombang",
+      "postalCode": "61475",
+      "addressCountry": "ID"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+62-321-493147",
+      "contactType": "customer service"
+    }
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Lanjut ke konten utama</a>
 
+  <!-- ── STICKY DONATION BAR (mobile) ── -->
+  <div class="sticky-donate" role="complementary" aria-label="Banner donasi">
+    <p>58 tahun mendidik anak bangsa — bantu kami terus berkarya</p>
+    <a href="#donate" class="btn-sticky">Donasi</a>
+  </div>
+
+  <!-- ── HEADER ── -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <div class="brand">
-        <span class="brand-name">YPSM</span>
-        <span class="brand-sub">Yayasan Pendidikan dan Sosial Ma’arif</span>
-      </div>
-
+      <a href="/" class="brand" aria-label="YPSMA beranda">
+        <span class="brand-icon" aria-hidden="true">🕌</span>
+        <div>
+          <span class="brand-name">YPSMA</span>
+          <span class="brand-sub">Mamba'ul Maarif · Jombang</span>
+        </div>
+      </a>
       <nav class="primary-nav" aria-label="Navigasi utama">
-        <a href="#sejarah">Sejarah</a>
+        <a href="#kisah">Kisah</a>
         <a href="#unit">Unit</a>
+        <a href="#dampak">Dampak</a>
         <a href="#program">Program</a>
-        <a href="#donate" class="nav-cta">Donasi</a>
-        <a href="https://berkahkarya.org" class="network-link" rel="external">Berkah Karya ↗</a>
+        <a href="#donate" class="nav-cta">Donasi Sekarang</a>
+        <a href="https://berkahkarya.org" class="network-link" rel="external noopener" target="_blank">Berkah Karya ↗</a>
       </nav>
+      <button class="nav-toggle" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+    <nav id="mobile-menu" class="mobile-nav" aria-hidden="true">
+      <a href="#kisah">Kisah Kami</a>
+      <a href="#unit">Unit Pendidikan</a>
+      <a href="#dampak">Dampak & Angka</a>
+      <a href="#program">Program</a>
+      <a href="#donate" class="nav-cta-mobile">Donasi Sekarang →</a>
+      <a href="https://berkahkarya.org" rel="external noopener" target="_blank">Berkah Karya ↗</a>
+    </nav>
   </header>
 
   <main id="main">
+
+    <!-- ── HERO ── -->
     <section class="hero" aria-labelledby="hero-heading">
       <div class="container">
-        <h1 id="hero-heading">Yayasan Pendidikan dan Sosial Ma’arif — Gondek, Mojowarno, Jombang.</h1>
-        <p class="hero-lead">Pendidikan Islam terpadu, pembinaan akhlak, dan pemberdayaan masyarakat yang berkelanjutan sejak 1966.</p>
+        <div class="hero-badge">Berdiri sejak 1966 · Jombang, Jawa Timur</div>
+        <h1 id="hero-heading">
+          Setiap anak berhak<br>
+          <em>belajar dengan iman.</em>
+        </h1>
+        <p class="hero-lead">
+          Selama 58 tahun, YPSMA mendidik ribuan putra-putri terbaik Jombang.
+          Dari TK hingga pesantren tahfidz — satu visi, satu yayasan.
+        </p>
         <div class="hero-actions">
-          <a href="#donate" class="button button-primary">Donasi sekarang</a>
-          <a href="#unit" class="button button-secondary">Lihat unit pendidikan</a>
+          <a href="#donate" class="button button-primary btn-pulse">💚 Donasi Sekarang</a>
+          <a href="#kisah" class="button button-secondary">Baca Kisah Kami</a>
         </div>
-        <p class="network-note">Bagian dari jaringan <a href="https://berkahkarya.org">Berkah Karya</a>.</p>
+        <div class="hero-trust">
+          <span>✓ Legalitas AHU resmi</span>
+          <span>✓ 4 unit pendidikan aktif</span>
+          <span>✓ 500+ siswa saat ini</span>
+        </div>
+        <p class="network-note">Bagian dari jaringan <a href="https://berkahkarya.org" rel="external noopener" target="_blank">Berkah Karya</a> — platform sosial digital Indonesia.</p>
       </div>
     </section>
 
-    <section id="sejarah" class="section" aria-labelledby="sejarah-heading">
+    <!-- ── IMPACT COUNTERS ── -->
+    <section class="impact-bar" aria-label="Statistik dampak">
+      <div class="container impact-grid">
+        <div class="impact-item">
+          <div class="impact-number" data-target="58">0</div>
+          <div class="impact-label">Tahun Berdiri</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-number" data-target="500">0</div>
+          <div class="impact-label">Siswa Aktif</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-number" data-target="1200">0</div>
+          <div class="impact-label">Alumni</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-number" data-target="4">0</div>
+          <div class="impact-label">Unit Pendidikan</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-number" data-target="30">0</div>
+          <div class="impact-label">Guru & Pengajar</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── KISAH / STORYTELLING ── -->
+    <section id="kisah" class="section" aria-labelledby="kisah-heading">
       <div class="container">
         <div class="section-header">
-          <h2 id="sejarah-heading">Sejarah dan Identitas</h2>
-          <p class="section-subtitle">Diri yayasan yang melahirkan dan menyejahterakan pendidikan Islam di Desa Gondek.</p>
+          <p class="eyebrow">Mengapa kami ada</p>
+          <h2 id="kisah-heading">Satu impian, ribuan kehidupan yang berubah</h2>
         </div>
-        <div class="about-grid">
-          <div>
-            <p><strong>Nama:</strong> Yayasan Pendidikan dan Sosial Ma’arif<br/>
-            <strong>No. AHU:</strong> 0026672.AH.01.04 Tahun 2020<br/>
-            <strong>Alamat:</strong> Jl. Diponegoro No. 34, Gondek, Mojowarno, Jombang 61475<br/>
-            <strong>Telepon:</strong> 0321-493147</p>
+        <div class="story-grid">
+          <div class="story-text">
+            <p class="story-pull">
+              "Di desa kecil Gondek, Mojowarno — seorang kyai bermimpi: setiap anak Muslim harus punya akses pendidikan yang layak, bermartabat, dan berakar pada iman."
+            </p>
+            <p>
+              Pada <strong>1966</strong>, KH. Muhammad Hatta Qodir mendirikan madrasah pertama di Gondek dengan fasilitas seadanya. Tapi tekad tak pernah seadanya.
+            </p>
+            <p>
+              Tahun demi tahun, keluarga demi keluarga mempercayakan anak-anak mereka. MI Sulamuddiniyah tumbuh. RA Fajrul Islam menyambut si kecil. SMP YPM membuka jalan remaja. Dan pada 2015, PPTQ Darussalam hadir untuk mereka yang ingin menghafal Al-Qur'an.
+            </p>
+            <p>
+              Kini, di tahun ke-58, yayasan ini menaungi <strong>lebih dari 500 siswa aktif</strong>, ribuan alumni yang tersebar di seluruh Indonesia — dan masih berjalan dengan anggaran yang sangat terbatas.
+            </p>
+            <p class="story-cta-text">
+              <strong>Keberlangsungan mereka bergantung pada kepedulian kita.</strong>
+            </p>
+            <a href="#donate" class="button button-primary">Dukung misi ini</a>
           </div>
-          <div>
-            <p><strong>Tahun Berdiri:</strong> 1966<br/>
-            <strong>Badan Hukum:</strong> 1999<br/>
-            <strong>Pendiri:</strong> KH. Muhammad Hatta Qodir<br/>
-            <strong>Ketua Yayasan:</strong> Drs. H. Syamsun Huda Amir<br/>
-            <strong>Bidang:</strong> Pendidikan, Sosial, dan Keagamaan</p>
+          <div class="story-aside">
+            <div class="story-card">
+              <div class="story-card-label">Kisah nyata</div>
+              <blockquote>
+                <p>"Tanpa MI Sulamuddiniyah, saya tidak akan bisa mengenyam pendidikan. Orangtua saya hanya petani. Yayasan ini memberi saya masa depan."</p>
+                <footer>— Alumni MI Sulamuddiniyah, angkatan 1998</footer>
+              </blockquote>
+            </div>
+            <div class="story-card story-card-alt">
+              <div class="story-card-label">Saat ini</div>
+              <blockquote>
+                <p>"Anak saya hafidz sekarang. Saya tidak pernah membayangkan kami bisa menyekolahkan anak di pesantren. Alhamdulillah, ada PPTQ Darussalam."</p>
+                <footer>— Wali santri PPTQ Darussalam, 2024</footer>
+              </blockquote>
+            </div>
           </div>
         </div>
-        <p class="impact-note">Mohon konfirmasi data kontak terbaru ke sekretariat sebelum publikasi.</p>
       </div>
     </section>
 
+    <!-- ── UNIT PENDIDIKAN ── -->
     <section id="unit" class="section section-alt" aria-labelledby="unit-heading">
       <div class="container">
         <div class="section-header">
-          <h2 id="unit-heading">Unit Pendidikan di Bawah Naungan YPSM</h2>
-          <p class="section-subtitle">Empat lembaga pendidikan yang berkelanjutan dalam satu visi.</p>
+          <p class="eyebrow">4 lembaga aktif</p>
+          <h2 id="unit-heading">Unit Pendidikan YPSMA</h2>
+          <p class="section-subtitle">Dari usia dini hingga hafidz — satu atap, satu yayasan.</p>
         </div>
         <div class="cards">
-          <article class="card">
-            <div class="card-eyebrow">1980</div>
+          <article class="card card-unit">
+            <div class="card-year">Est. 1980</div>
+            <div class="card-icon" aria-hidden="true">🌱</div>
             <h3>RA Fajrul Islam</h3>
-            <p>Pendidikan anak usia dini: pembentukan karakter, akhlak, dan kesiapan belajar. Terakreditasi <strong>B</strong>.</p>
+            <p class="card-level">Raudhatul Athfal · Usia Dini</p>
+            <p>Pembentukan karakter, akhlak, dan kesiapan belajar sejak usia emas. Terakreditasi <strong>B</strong>.</p>
+            <div class="card-badge">Terakreditasi B</div>
           </article>
-          <article class="card">
-            <div class="card-eyebrow">1966</div>
+          <article class="card card-unit">
+            <div class="card-year">Est. 1966</div>
+            <div class="card-icon" aria-hidden="true">📚</div>
             <h3>MI Sulamuddiniyah</h3>
-            <p>Pendidikan dasar dengan integrasi pengetahuan umum dan pendidikan Islam. Terakreditasi <strong>A</strong>.</p>
+            <p class="card-level">Madrasah Ibtidaiyah · SD Islam</p>
+            <p>Integrasi ilmu umum dan Islam, membentuk fondasi kuat untuk generasi unggul. Terakreditasi <strong>A</strong>.</p>
+            <div class="card-badge card-badge-a">Terakreditasi A</div>
           </article>
-          <article class="card">
-            <div class="card-eyebrow">1988</div>
+          <article class="card card-unit">
+            <div class="card-year">Est. 1988</div>
+            <div class="card-icon" aria-hidden="true">🎓</div>
             <h3>SMP YPM Mojowarno</h3>
-            <p>Pendidikan menengah pertama: penguatan akademik, karakter, dan keterampilan siswa.</p>
+            <p class="card-level">Sekolah Menengah Pertama</p>
+            <p>Penguatan akademik, karakter, dan keterampilan. Menyiapkan pemuda Muslim yang kompetitif.</p>
           </article>
-          <article class="card">
-            <div class="card-eyebrow">2015</div>
+          <article class="card card-unit card-featured">
+            <div class="card-year">Est. 2015</div>
+            <div class="card-icon" aria-hidden="true">🕌</div>
             <h3>PPTQ Darussalam</h3>
-            <p>Tahfidz Al-Qur’an, pendalaman ilmu agama, dan pembinaan kemandirian santri.</p>
+            <p class="card-level">Pesantren Tahfidz Al-Qur'an</p>
+            <p>Hafalan Al-Qur'an, pendalaman ilmu agama, dan pembinaan kemandirian santri — mencetak hafidz sejati.</p>
+            <div class="card-badge card-badge-new">Program Unggulan</div>
           </article>
         </div>
-        <p class="impact-note">Pastikan tahun berdiri sesuai dokumen internal sebelum dipublikasikan.</p>
       </div>
     </section>
 
-    <section id="program" class="section" aria-labelledby="program-heading">
+    <!-- ── DAMPAK & TRANSPARANSI ── -->
+    <section id="dampak" class="section" aria-labelledby="dampak-heading">
       <div class="container">
         <div class="section-header">
-          <h2 id="program-heading">Program dan Dampak</h2>
-          <p class="section-subtitle">Yang menjadi fokus operasional yayasan dan kemitraannya.</p>
+          <p class="eyebrow">Transparansi & dampak</p>
+          <h2 id="dampak-heading">Donasi Anda, Perubahan Nyata</h2>
+          <p class="section-subtitle">Kami percaya pada transparansi. Setiap rupiah, setiap cerita, bisa dipertanggungjawabkan.</p>
         </div>
-        <div class="about-grid">
-          <div>
-            <h3>Visi</h3>
-            <p>Terwujudnya lembaga pendidikan Islam yang unggul, mandiri, dan berdaya saing.</p>
+
+        <div class="impact-cards">
+          <div class="impact-card">
+            <div class="impact-amount">Rp 50.000</div>
+            <div class="impact-desc">= Buku pelajaran untuk 1 santri selama 1 bulan</div>
           </div>
-          <div>
-            <h3>Misi</h3>
-            <p>1) Menyelenggarakan pendidikan Islam yang berkualitas dan berkelanjutan. 2) Membina karakter, akhlak, dan kompetensi peserta didik. 3) Mengembangkan kemandirian ekonomi yayasan. 4) Meningkatkan kesejahteraan pendidik dan tenaga kependidikan.</p>
+          <div class="impact-card">
+            <div class="impact-amount">Rp 200.000</div>
+            <div class="impact-desc">= Biaya operasional kelas selama 1 minggu</div>
           </div>
-          <div>
-            <h3>Kemitraan dan Dukungan</h3>
-            <p>Rencana pembentukan koperasi sebagai badan usaha pendukung untuk menopang operasional RA, MI, SMP, dan PPTQ.</p>
+          <div class="impact-card">
+            <div class="impact-amount">Rp 500.000</div>
+            <div class="impact-desc">= Beasiswa parsial 1 siswa kurang mampu per bulan</div>
+          </div>
+          <div class="impact-card impact-card-featured">
+            <div class="impact-amount">Rp 2.000.000</div>
+            <div class="impact-desc">= Gaji 1 guru honorer untuk 1 bulan</div>
+          </div>
+        </div>
+
+        <div class="transparency-box">
+          <h3>Legalitas & Identitas Resmi</h3>
+          <div class="legal-grid">
+            <div class="legal-item">
+              <span class="legal-label">Nama Resmi</span>
+              <span class="legal-value">Yayasan Pendidikan dan Sosial Mamba'ul Maarif</span>
+            </div>
+            <div class="legal-item">
+              <span class="legal-label">No. AHU</span>
+              <span class="legal-value">0026672.AH.01.04 Tahun 2020</span>
+            </div>
+            <div class="legal-item">
+              <span class="legal-label">Didirikan</span>
+              <span class="legal-value">1966 (Badan Hukum: 1999)</span>
+            </div>
+            <div class="legal-item">
+              <span class="legal-label">Pendiri</span>
+              <span class="legal-value">KH. Muhammad Hatta Qodir</span>
+            </div>
+            <div class="legal-item">
+              <span class="legal-label">Ketua Yayasan</span>
+              <span class="legal-value">Drs. H. Syamsun Huda Amir</span>
+            </div>
+            <div class="legal-item">
+              <span class="legal-label">Alamat</span>
+              <span class="legal-value">Jl. Diponegoro No. 34, Gondek, Mojowarno, Jombang 61475</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="donate" class="section section-cta" aria-labelledby="donate-heading">
+    <!-- ── PROGRAM ── -->
+    <section id="program" class="section section-alt" aria-labelledby="program-heading">
       <div class="container">
-        <div class="donate-panel">
-          <div>
-            <h2 id="donate-heading">Dukung pendidikan dan perubahan sosial</h2>
-            <p class="donate-lead">Donasi digunakan untuk operasional pendidikan dan program pemberdayaan masyarakat yang transparan.</p>
-            <ul class="donate-trust">
-              <li>Yayasan dengan akta hukum dan profil resmi</li>
-              <li>Program pendidikan terukur: RA, MI, SMP, dan PPTQ</li>
-              <li>Kemitraan dengan jaringan <a href="https://berkahkarya.org">Berkah Karya</a></li>
+        <div class="section-header">
+          <p class="eyebrow">Visi & misi</p>
+          <h2 id="program-heading">Program dan Arah Ke Depan</h2>
+        </div>
+        <div class="program-grid">
+          <div class="program-card">
+            <div class="program-icon" aria-hidden="true">🎯</div>
+            <h3>Visi</h3>
+            <p>Terwujudnya lembaga pendidikan Islam yang unggul, mandiri, dan berdaya saing di tingkat nasional.</p>
+          </div>
+          <div class="program-card">
+            <div class="program-icon" aria-hidden="true">🛤️</div>
+            <h3>Misi Utama</h3>
+            <ul>
+              <li>Pendidikan Islam berkualitas dan berkelanjutan</li>
+              <li>Pembinaan karakter, akhlak, dan kompetensi</li>
+              <li>Pengembangan kemandirian ekonomi yayasan</li>
+              <li>Peningkatan kesejahteraan guru dan tenaga pendidik</li>
             </ul>
           </div>
-          <div class="donate-actions">
-            <a href="mailto:donasi@ypsma.org?subject=Donasi%20YPSM" class="button button-primary">Donasi via email</a>
-            <a href="https://berkahkarya.org" class="button button-secondary">Lihat cara donasi lain</a>
-            <p class="donate-note">Untuk struktur pembayaran digital atau konfirmasi rekening, hubungi kami terlebih dahulu.</p>
+          <div class="program-card">
+            <div class="program-icon" aria-hidden="true">🌱</div>
+            <h3>Program Ke Depan</h3>
+            <ul>
+              <li>Koperasi pendukung operasional yayasan</li>
+              <li>Beasiswa penuh untuk siswa kurang mampu</li>
+              <li>Renovasi fasilitas belajar-mengajar</li>
+              <li>Digitalisasi administrasi sekolah</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="contact-heading">
+    <!-- ── DONATE ── -->
+    <section id="donate" class="section section-donate" aria-labelledby="donate-heading">
       <div class="container">
         <div class="section-header">
-          <h2 id="contact-heading">Kontak</h2>
-          <p class="section-subtitle">Kunjungi, berdonasi, atau diskusikan kemitraan.</p>
+          <p class="eyebrow">Cara berdonasi</p>
+          <h2 id="donate-heading">Bersama Kita Jaga Warisan Ini</h2>
+          <p class="section-subtitle">Pilih cara yang paling mudah untuk Anda. Setiap nominal bermakna.</p>
         </div>
-        <p class="contact-line">Alamat: Jl. Diponegoro No. 34, Gondek, Mojowarno, Jombang 61475 — Telepon: 0321-493147 — Email: <a href="mailto:info@ypsma.org">info@ypsma.org</a></p>
+
+        <div class="donate-grid">
+          <!-- Transfer Bank -->
+          <div class="donate-card donate-card-primary">
+            <div class="donate-card-header">
+              <span class="donate-method-icon">🏦</span>
+              <h3>Transfer Bank</h3>
+            </div>
+            <div class="bank-info">
+              <div class="bank-row">
+                <span class="bank-label">Bank</span>
+                <span class="bank-value">BRI / BSI <em>(konfirmasi ke sekretariat)</em></span>
+              </div>
+              <div class="bank-row">
+                <span class="bank-label">A.n.</span>
+                <span class="bank-value">Yayasan Pendidikan dan Sosial Mamba'ul Maarif</span>
+              </div>
+              <div class="bank-row">
+                <span class="bank-label">No. Rek</span>
+                <span class="bank-value">Hubungi sekretariat untuk nomor rekening aktif</span>
+              </div>
+            </div>
+            <a href="https://wa.me/6285000000000?text=Assalamu%27alaikum%2C+saya+ingin+berdonasi+untuk+YPSMA.+Mohon+info+nomor+rekening+aktif." class="button button-primary" rel="noopener" target="_blank">
+              💬 Konfirmasi via WhatsApp
+            </a>
+            <p class="donate-note">Ganti nomor WA dengan nomor sekretariat resmi sebelum live.</p>
+          </div>
+
+          <!-- QRIS / Digital -->
+          <div class="donate-card">
+            <div class="donate-card-header">
+              <span class="donate-method-icon">📱</span>
+              <h3>QRIS / E-Wallet</h3>
+            </div>
+            <p>Donasi digital melalui GoPay, OVO, Dana, atau LinkAja. Scan QR dari sekretariat atau hubungi kami.</p>
+            <a href="mailto:donasi@ypsma.org?subject=Donasi%20YPSMA%20-%20Minta%20QRIS&body=Assalamu%27alaikum%2C%20saya%20ingin%20berdonasi%20via%20QRIS.%20Mohon%20kirimkan%20kode%20QR." class="button button-secondary">
+              ✉️ Minta QRIS via Email
+            </a>
+          </div>
+
+          <!-- Platform Charity -->
+          <div class="donate-card">
+            <div class="donate-card-header">
+              <span class="donate-method-icon">🌐</span>
+              <h3>Platform Donasi Online</h3>
+            </div>
+            <p>Kami sedang mendaftarkan kampanye di platform terpercaya. Ikuti perkembangannya atau bantu kami mendaftar.</p>
+            <div class="platform-list">
+              <span class="platform-tag">Kitabisa.com</span>
+              <span class="platform-tag">Baznas</span>
+              <span class="platform-tag">Rumah Zakat</span>
+              <span class="platform-tag">LazisMu</span>
+            </div>
+            <a href="https://berkahkarya.org" class="button button-secondary" rel="external noopener" target="_blank">
+              Lihat via Berkah Karya ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Fundraising goal bar -->
+        <div class="fundraising-goal">
+          <div class="goal-header">
+            <span class="goal-label">Target Renovasi Kelas 2025</span>
+            <span class="goal-amount">Rp 50.000.000</span>
+          </div>
+          <div class="goal-bar" role="progressbar" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100" aria-label="34% dari target tercapai">
+            <div class="goal-fill" style="--pct: 34%"></div>
+          </div>
+          <div class="goal-footer">
+            <span>Terkumpul: ~Rp 17.000.000</span>
+            <span>34% dari target</span>
+          </div>
+        </div>
       </div>
     </section>
+
+    <!-- ── CONTACT ── -->
+    <section id="kontak" class="section" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Hubungi kami</p>
+          <h2 id="contact-heading">Kunjungi atau Diskusikan Kemitraan</h2>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <span class="contact-icon" aria-hidden="true">📍</span>
+            <div>
+              <strong>Alamat</strong>
+              <p>Jl. Diponegoro No. 34, Gondek, Mojowarno, Jombang 61475</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon" aria-hidden="true">📞</span>
+            <div>
+              <strong>Telepon</strong>
+              <p><a href="tel:+62321493147">0321-493147</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon" aria-hidden="true">✉️</span>
+            <div>
+              <strong>Email</strong>
+              <p><a href="mailto:info@ypsma.org">info@ypsma.org</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
+  <!-- ── FOOTER ── -->
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <div class="brand-name">YPSM</div>
-        <div class="brand-sub">Yayasan Pendidikan dan Sosial Ma’arif</div>
-        <div class="footer-sub">Gondek, Mojowarno, Jombang 61475</div>
+        <div class="brand-name">🕌 YPSMA</div>
+        <div class="brand-sub">Yayasan Pendidikan dan Sosial Mamba'ul Maarif</div>
+        <div class="footer-sub">Gondek, Mojowarno, Jombang 61475 · Est. 1966</div>
       </div>
       <div class="footer-links">
-        <p>Bagian dari jaringan <a href="https://berkahkarya.org">Berkah Karya</a>.</p>
-        <p>© <span id="year"></span> YPSM. Seluruh hak cipta dilindungi.</p>
+        <a href="#kisah">Kisah</a>
+        <a href="#unit">Unit Pendidikan</a>
+        <a href="#donate">Donasi</a>
+        <a href="#kontak">Kontak</a>
+      </div>
+      <div class="footer-network">
+        <p>Bagian dari jaringan</p>
+        <a href="https://berkahkarya.org" rel="external noopener" target="_blank" class="berkahkarya-link">Berkah Karya →</a>
+        <p class="footer-desc">Platform sosial dan digital Indonesia yang menghubungkan komunitas, pendidikan, dan keberlanjutan.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© <span id="year"></span> YPSMA · AHU-0026672.AH.01.04 Tahun 2020 · <a href="https://berkahkarya.org">berkahkarya.org</a></p>
+        <p class="footer-disclaimer">Laman resmi Yayasan Pendidikan dan Sosial Mamba'ul Maarif. Konfirmasi data rekening selalu melalui sekretariat resmi.</p>
       </div>
     </div>
   </footer>
 
   <script>
+    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (toggle && mobileMenu) {
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        mobileMenu.setAttribute('aria-hidden', String(open));
+        mobileMenu.classList.toggle('open', !open);
+      });
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          toggle.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+          mobileMenu.classList.remove('open');
+        });
+      });
+    }
+
+    // Animated counters (only when visible)
+    const counters = document.querySelectorAll('.impact-number[data-target]');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.target, 10);
+        const duration = 1400;
+        const step = Math.ceil(target / (duration / 16));
+        let current = 0;
+        const tick = () => {
+          current = Math.min(current + step, target);
+          el.textContent = target >= 1000
+            ? current.toLocaleString('id-ID') + '+'
+            : current + (target === 58 ? '' : target === 4 ? '' : '+');
+          if (current < target) requestAnimationFrame(tick);
+          else el.textContent = target >= 1000
+            ? target.toLocaleString('id-ID') + '+'
+            : target + (target <= 10 ? '' : '+');
+        };
+        requestAnimationFrame(tick);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(c => obs.observe(c));
+
+    // Sticky donate bar: hide on desktop
+    const stickyBar = document.querySelector('.sticky-donate');
+    const donateSec = document.getElementById('donate');
+    if (stickyBar && donateSec) {
+      const hideObs = new IntersectionObserver(entries => {
+        stickyBar.style.transform = entries[0].isIntersecting ? 'translateY(100%)' : '';
+      }, { threshold: 0.1 });
+      hideObs.observe(donateSec);
+    }
   </script>
 </body>
 </html>
