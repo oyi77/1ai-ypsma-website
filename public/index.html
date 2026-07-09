@@ -79,6 +79,58 @@
     ]
   }
   </script>
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7723KTXZBG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-7723KTXZBG");
+
+    // Custom event tracking
+    document.addEventListener("DOMContentLoaded", function() {
+      // Track donation CTA clicks
+      document.querySelectorAll("a[href*=\"wa.me\"]").forEach(function(btn) {
+        btn.addEventListener("click", function(e) {
+          var tierName = this.closest(".tier")?.querySelector("h3")?.textContent || "unknown";
+          gtag("event", "donate_click", {
+            tier_name: tierName,
+            button_text: this.textContent.trim()
+          });
+          gtag("event", "whatsapp_click", {
+            tier_name: tierName
+          });
+        });
+      });
+
+      // Track tier selection (tier card clicks)
+      document.querySelectorAll(".tier").forEach(function(tier) {
+        tier.addEventListener("click", function() {
+          var tierName = this.querySelector("h3")?.textContent || "unknown";
+          gtag("event", "tier_select", {
+            tier_name: tierName
+          });
+        });
+      });
+
+      // Track QRIS scan intent (visibility tracking)
+      var qrisObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            gtag("event", "qris_scan", {
+              visibility: "above_50_percent"
+            });
+            qrisObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.5 });
+
+      var qrisEl = document.querySelector(".qris-card");
+      if (qrisEl) qrisObserver.observe(qrisEl);
+    });
+  </script>
+
 </head>
 <body>
 
@@ -167,36 +219,73 @@
   </div>
 </section>
 
-<!-- ═══════════════════════ VISION & TRUST ═══════════════════════ -->
-<section class="section section-dark" id="about">
-  <div class="container">
-    <div class="section-header-center">
-      <p class="section-label">Sejarah &amp; Visi Utama</p>
-      <h2 class="section-h2">Mencetak insan unggul, berakhlak mulia, dan mandiri</h2>
-    </div>
+    <!-- Vision and Trust Section -->
+    <section class="section" id="visi-misi">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Jembatan Mimpi untuk 237 Santri</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Dari Sawah ke Surga: Membangun Jembatan bagi Anak-anak Petani Jombang untuk Menghafal Al-Qur'an dan Meraih Pendidikan Tinggi
+                </p>
+            </div>
 
-    <div class="problem-grid">
-      <div class="problem-card">
-        <div class="prob-num">1966</div>
-        <p class="prob-stat">Dirintis oleh <strong>KH. Muhammad Hatta Qodir</strong> untuk menjawab minimnya akses pendidikan Islam berkualitas bagi masyarakat miskin di Gondek.</p>
-      </div>
-      <div class="problem-card">
-        <div class="prob-num">99%</div>
-        <p class="prob-stat">Santri di Pondok Pesantren Tahfidz Qur'an Darussalam dibantu beasiswa agar dapat menghafal Al-Qur'an 30 Juz gratis tanpa halangan finansial.</p>
-      </div>
-      <div class="problem-card">
-        <div class="prob-num">Koperasi</div>
-        <p class="prob-stat">Dirancang untuk menopang kekurangan pembiayaan operasional yayasan guna melahirkan lembaga sosial yang mandiri secara finansial.</p>
-      </div>
-    </div>
+            <div class="grid md:grid-cols-2 gap-12 mb-12">
+                <div class="bg-gradient-to-br from-emerald-50 to-white p-8 rounded-xl border border-emerald-100">
+                    <div class="flex items-start mb-4">
+                        <span class="text-4xl mr-4">🌾</span>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Sang Pahlawan</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                <strong>237 santri penghafal Al-Qur'an</strong> dari keluarga petani Jombang. 
+                                Mereka bangun subuh, ikut ke sawah, lalu hadir di pesantren dengan semangat menghafal 30 juz. 
+                                Keluarga mereka hanya punya Rp 300.000/bulan untuk biaya pendidikan — sering tidak cukup.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="problem-desc">
-      <strong>Visi Yayasan:</strong> Terwujudnya lembaga pendidikan Islam yang unggul, mandiri, dan berdaya saing. 
-      Di bawah kepemimpinan Ketua Yayasan saat ini, <strong>Drs. H. Syamsun Huda Amir</strong>, kami berkomitmen untuk melahirkan 
-      generasi berilmu dan berakhlak mulia sekaligus menguatkan kemandirian ekonomi pesantren.
-    </div>
-  </div>
-</section>
+                <div class="bg-gradient-to-br from-amber-50 to-white p-8 rounded-xl border border-amber-100">
+                    <div class="flex items-start mb-4">
+                        <span class="text-4xl mr-4">💔</span>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Tembok Penghalang</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                Tanpa donasi, <strong>40+ santri terancam putus sekolah setiap tahun</strong>. 
+                                Biaya Rp 300.000/bulan untuk ATK, seragam, dan kegiatan santri terlalu berat bagi petani 
+                                yang penghasilannya Rp 1,5 juta/bulan untuk keluarga 5 orang.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-emerald-50 to-white p-8 rounded-xl border border-emerald-100">
+                    <div class="flex items-start mb-4">
+                        <span class="text-4xl mr-4">🌉</span>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Jembatan Anda</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                Donasi <strong>mulai dari Rp 50.000/bulan</strong> membangun jembatan untuk 1 santri. 
+                                <strong>237 donor aktif sejak 2020</strong> telah menyalurkan Rp 420 juta, 
+                                menutup 60% kebutuhan operasional 4 lembaga pendidikan kami.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-amber-50 to-white p-8 rounded-xl border border-amber-100">
+                    <div class="flex items-start mb-4">
+                        <span class="text-4xl mr-4">✨</span>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Transformasi Nyata</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                <strong>28 alumni hafal 30 juz</strong> kini menjadi ustadz dan guru di Jombang. 
+                                <strong>15 lulusan S1</strong> dari keluarga petani kembali mengabdi di desa. 
+                                Dari sawah ke surga — mereka adalah bukti jembatan mimpi yang Anda bangun bekerja.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 <!-- ═══════════════════════ INSTITUTIONS ═════════════════════ -->
 <section class="section" id="institutions">
