@@ -17,6 +17,68 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles/main.css" />
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Yayasan Pendidikan & Sosial Ma'arif Jombang",
+        "alternateName": "YPSMA",
+        "url": "https://ypsma.org",
+        "logo": "https://ypsma.org/favicon.svg",
+        "description": "Yayasan pendidikan Islam berkualitas yang mengelola 4 unit pendidikan di Jombang sejak 1966",
+        "foundingDate": "1966-03-15",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jl. Diponegoro No. 34, Gondek",
+          "addressLocality": "Mojowarno",
+          "addressRegion": "Jawa Timur",
+          "postalCode": "61475",
+          "addressCountry": "ID"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+62-321-493147",
+            "contactType": "customer service",
+            "areaServed": "ID",
+            "availableLanguage": "Indonesian"
+          },
+          {
+            "@type": "ContactPoint",
+            "telephone": "+62-822-3455-1160",
+            "contactType": "administrative",
+            "areaServed": "ID",
+            "availableLanguage": "Indonesian"
+          }
+        ],
+        "sameAs": [
+          "https://www.youtube.com/@YPSMAJombang",
+          "https://www.instagram.com/yayasan.ypsma",
+          "https://www.facebook.com/profile.php?id=61567098697530",
+          "https://www.tiktok.com/@yayasan.ypsma"
+        ],
+        "email": "info@ypsma.org",
+        "areaServed": {
+          "@type": "Place",
+          "name": "Jombang, Jawa Timur"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "name": "YPSMA",
+        "url": "https://ypsma.org",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://ypsma.org/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -404,6 +466,30 @@
       <p class="section-label">Hub donasi mendiri</p>
       <h2 class="section-h2">Ringankan beban operasional, dukung kemakmuran santri</h2>
     </div>
+    <!-- Trust Signals -->
+    <div class="trust-signals">
+      <div class="trust-item">
+        <svg class="trust-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <div>
+          <strong>Terdaftar Resmi AHU</strong>
+          <span>Badan hukum sah sejak 1966</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <svg class="trust-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div>
+          <strong>Laporan Transparan</strong>
+          <span>Update bulanan via WhatsApp</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <svg class="trust-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div>
+          <strong>237 Donatur Aktif</strong>
+          <span>Dipercaya sejak 2020</span>
+        </div>
+      </div>
+    </div>
 
     <div class="tier-grid">
       <!-- Tier 1 -->
@@ -416,7 +502,7 @@
           <li>Pertanggungjawaban keuangan transparan</li>
           <li>Doa bulanan bersama para hafidz</li>
         </ul>
-        <a href="https://kitabisa.com/ypmsa" target="_blank" rel="noopener" class="btn btn-outline w-full">Donasi Via Kitabisa ↗</a>
+        <a href="https://wa.me/6282234551160?text=Assalamualaikum%2C%20saya%20ingin%20donasi%20rutin%20Rp%2050k%2Fbulan%20untuk%20kebutuhan%20ATK%20santri.%20Mohon%20info%20cara%20transfer." target="_blank" rel="noopener" class="btn btn-outline w-full">💬 Mulai Donasi Rutin ↗</a>
       </div>
 
       <!-- Tier 2 -->
@@ -444,7 +530,10 @@
           <li>Laporan berkala SHU Koperasi &amp; operasional</li>
           <li>Undangan rapat koordinasi tahunan yayasan</li>
         </ul>
-        <a href="https://wa.me/6285851737308" target="_blank" rel="noopener" class="btn btn-outline w-full">Hubungi Admin Wakaf ↗</a>
+  <div class="tier-urgency">
+    🎯 <strong>Target Rp 50jt</strong> • Terkumpul Rp 12jt (24%)
+  </div>
+        <a href="https://wa.me/6282234551160?text=Assalamualaikum%2C%20saya%20ingin%20berkontribusi%20untuk%20program%20Wakaf%20Produktif%20Koperasi%20Yayasan.%20Mohon%20info%20lengkapnya." class="btn btn-outline w-full" target="_blank">💬 Kontribusi via WhatsApp →</a>
       </div>
     </div>
 
@@ -457,7 +546,17 @@
       </div>
       <p>
         Setiap donasi harap dikonfirmasikan ke nomor resmi pengurus yayasan via 
-        <a href="https://wa.me/6285851737308" target="_blank" rel="noopener" class="wa-link">WhatsApp Hubungi Pengurus ↗</a>
+        <a href="https://wa.me/6282234551160" target="_blank" rel="noopener" class="wa-link">WhatsApp Hubungi Pengurus ↗</a>
+      
+      <!-- QRIS Static Code -->
+      <div class="qris-section">
+        <p class="qris-label">💳 Scan QRIS untuk donasi cepat:</p>
+        <div class="qris-container">
+          <img src="/images/qris-ypsma.png" alt="QRIS YPSMA Jombang" class="qris-code" loading="lazy">
+          <p class="qris-note">Scan dengan aplikasi mobile banking atau e-wallet apapun</p>
+        </div>
+      </div>
+      
       </p>
     </div>
   </div>
@@ -506,7 +605,7 @@
       <div class="footer-col">
         <strong>Hubungi Kami</strong>
         <ul>
-          <li><a href="https://wa.me/6285851737308" target="_blank" rel="noopener">WA Admin Putra/Yayasan</a></li>
+          <li><a href="https://wa.me/6282234551160" target="_blank" rel="noopener">WA Admin Putra/Yayasan</a></li>
           <li><a href="https://wa.me/62895377773100" target="_blank" rel="noopener">WA Hub. Santri Putri</a></li>
           <li><a href="mailto:pptqdarussalamgondek@gmail.com">Kirim Surel Resmi</a></li>
           <li><a href="https://berkahkarya.org" target="_blank" rel="noopener">Partner: BerkahKarya.org ↗</a></li>

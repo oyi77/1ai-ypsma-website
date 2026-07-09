@@ -936,3 +936,159 @@ body {
   .footer-bottom { flex-direction: column; align-items: flex-start; }
   .footer-legal  { text-align: left; }
 }
+
+/* Urgency Indicator */
+.tier-urgency {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-left: 3px solid #f59e0b;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #78350f;
+}
+
+.tier-urgency strong {
+  font-weight: 600;
+  color: #92400e;
+}
+
+/* QRIS Section */
+.qris-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 12px;
+  border-left: 4px solid #10b981;
+  text-align: center;
+}
+
+.qris-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #064e3b;
+  margin-bottom: 1rem;
+}
+
+.qris-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.qris-code {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  border: 3px solid #10b981;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.qris-note {
+  font-size: 0.875rem;
+  color: #047857;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .qris-code {
+    max-width: 220px;
+  }
+}
+
+/* QRIS Payment Section */
+.qris-section {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 2px solid #10b981;
+}
+
+.qris-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.qris-code {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qris-code img {
+  width: 240px;
+  height: 240px;
+  border: 3px solid #10b981;
+  border-radius: 8px;
+}
+
+.qris-instructions {
+  text-align: left;
+  width: 100%;
+}
+
+.qris-instructions h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #065f46;
+  margin-bottom: 0.75rem;
+}
+
+.qris-instructions ol {
+  margin-left: 1.25rem;
+  color: #047857;
+  line-height: 1.8;
+}
+
+.qris-instructions li {
+  margin-bottom: 0.5rem;
+}
+
+.qris-instructions .btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.qris-instructions .btn-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+@media (max-width: 640px) {
+  .qris-section {
+    padding: 1.5rem;
+  }
+  
+  .qris-code {
+    padding: 1rem;
+  }
+  
+  .qris-code img {
+    width: 200px;
+    height: 200px;
+  }
+}
