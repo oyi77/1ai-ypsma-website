@@ -120,13 +120,14 @@ export async function onRequestPost(ctx) {
         { status: 502, headers: cors }
       );
     }
-
     return Response.json(
       {
         token: snapData.token,
         redirect_url: snapData.redirect_url,
         order_id: orderId,
         finish_url: finishUrl,
+        client_key: env.MIDTRANS_CLIENT_KEY || 'Mid-client-xxx',
+        snap_base: snapEndpoint.replace(/\/snap\/v1\/transactions$/, ''),
       },
       { status: 200, headers: cors }
     );

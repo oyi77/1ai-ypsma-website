@@ -1,6 +1,19 @@
 import React from 'react';
 import { useState, useCallback } from 'react';
 import { DONATION_TYPES, PAYMENT_METHODS } from '../../lib/constants';
+// Midtrans Snap type declarations
+interface SnapPayOptions {
+  onSuccess?: (result: unknown) => void;
+  onPending?: (result: unknown) => void;
+  onError?: (result: unknown) => void;
+  onClose?: () => void;
+}
+interface SnapWindow {
+  snap: { pay: (token: string, options: SnapPayOptions) => void };
+}
+declare global {
+  interface Window extends SnapWindow {}
+}
 
 const PRESET_AMOUNTS = [25000, 50000, 100000, 300000, 500000, 1000000];
 
@@ -71,7 +84,7 @@ export default function DonationForm({ isOpen, onClose }: DonationFormProps) {
     setErrors({});
   }, []);
 
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     const newErrors: Record<string, string> = {};
     if (step === 1 && !donationType) {
       newErrors.step = 'Pilih tujuan donasi terlebih dahulu';
@@ -91,14 +104,59 @@ export default function DonationForm({ isOpen, onClose }: DonationFormProps) {
 
     if (step === 5) {
       setSubmitting(true);
-      setTimeout(() => {
+      try {
+        const res = await fetch('/api/donate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: selectedAmount,
+            campaign: donationType,
+            name: name.trim(),
+            email: email.trim() || undefined,
+            phone: phone.trim(),
+            wa_number: phone.trim(),
+          }),
+        });
+
+        if (!res.ok) {
+          const errBody = await res.json().catch(() => ({}));
+          throw new Error(errBody.error || 'Gagal memproses donasi');
+        }
+
+        const data = await res.json();
+
+        // Load Midtrans Snap JS if not already loaded
+        if (!document.querySelector('script[data-client-key]')) {
+          await new Promise<void>((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = data.snap_base + '/snap/snap.js';
+            script.setAttribute('data-client-key', data.client_key);
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error('Gagal memuat pembayaran'));
+            document.head.appendChild(script);
+          });
+        }
+
+        // Open Snap popup
+        window.snap.pay(data.token, {
+          onSuccess: () => { window.location.href = data.finish_url; },
+          onPending: () => { window.location.href = data.finish_url + '&status=pending'; },
+          onError: () => {
+            setErrors({ submit: 'Pembayaran gagal, coba lagi' });
+            setSubmitting(false);
+          },
+          onClose: () => {
+            setSubmitting(false);
+          },
+        });
+      } catch (err) {
+        setErrors({ submit: err instanceof Error ? err.message : 'Terjadi kesalahan' });
         setSubmitting(false);
-        setSubmitted(true);
-      }, 1500);
+      }
     } else {
       setStep((s) => s + 1);
     }
-  }, [step, donationType, nominal, numericCustom, paymentMethod, name, phone]);
+  }, [step, donationType, nominal, numericCustom, paymentMethod, name, email, phone, selectedAmount]);
 
   const handleBack = useCallback(() => {
     if (step > 1) setStep((s) => s - 1);
@@ -469,6 +527,11 @@ export default function DonationForm({ isOpen, onClose }: DonationFormProps) {
               {/* Step-level error */}
               {errors.step && (
                 <p className="text-red-500 text-sm mt-3 text-center">{errors.step}</p>
+              )}
+              {errors.submit && (
+                <p className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mt-3">
+                  {errors.submit}
+                </p>
               )}
 
               {/* Navigation */}
