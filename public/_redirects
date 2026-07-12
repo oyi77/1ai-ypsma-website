@@ -1,7 +1,7 @@
 # Donation success clean URLs
-/donate               /donate-success.html       301
-/sukses              /donate-success.html       301
-/terima-kasih        /donate-success.html       301
+/donate               /donate-success             301
+/sukses              /donate-success             301
+/terima-kasih        /donate-success             301
 
 # Blog clean URLs
 /blog                /blog/                     301

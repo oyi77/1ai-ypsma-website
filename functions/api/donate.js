@@ -62,7 +62,7 @@ export async function onRequestPost(ctx) {
     );
     const waUrl = `https://wa.me/${waNum}?text=${waText}`;
 
-    const finishUrl = `https://ypsma.org/donate-success.html?order=${encodeURIComponent(orderId)}&campaign=${encodeURIComponent(campaign)}&amount=${amountInt}&wa=${encodeURIComponent(waUrl)}`;
+    const finishUrl = `https://ypsma.org/donate-success?order=${encodeURIComponent(orderId)}&campaign=${encodeURIComponent(campaign)}&amount=${amountInt}&wa=${encodeURIComponent(waUrl)}`;
 
     // Build Snap payload
     const snapPayload = {
