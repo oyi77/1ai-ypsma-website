@@ -1,0 +1,40 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { CAMPAIGNS } from '../../data/campaigns';
+---
+
+<MainLayout title="Program Donasi" description="Program donasi YPSMA — bantu pendidikan dan sosial">
+  <section class="py-16 md:py-20 bg-gradient-to-b from-primary-900 to-primary-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">Program Donasi</h1>
+      <p class="text-lg text-white/80 max-w-2xl mx-auto">
+        Pilih program donasi yang paling sesuai dengan keinginan Anda. Setiap donasi adalah investasi akhirat yang pahalanya terus mengalir.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {CAMPAIGNS.map(c => (
+          <a href={`/program/${c.slug}/`} class="group block bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-strong transition-all duration-200 hover:-translate-y-1 border border-neutral-100">
+            <div class="aspect-[16/9] overflow-hidden">
+              <img src={c.heroImage} alt={c.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div class="p-6">
+              <span class="text-xs font-medium text-secondary-600 bg-secondary-50 px-3 py-1 rounded-full">{c.badge}</span>
+              <h3 class="text-xl font-heading font-bold text-primary-900 mt-3 mb-2 group-hover:text-secondary-600 transition-colors">{c.title}</h3>
+              <p class="text-neutral-600 text-sm leading-relaxed mb-4">{c.description}</p>
+              <div class="flex items-center text-sm font-semibold text-secondary-600 group-hover:gap-2 transition-all">
+                Donasi Sekarang
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</MainLayout>

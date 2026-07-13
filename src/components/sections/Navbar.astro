@@ -8,7 +8,7 @@ import { SITE_NAME, NAV_ITEMS } from '../../lib/constants';
       <!-- Logo -->
       <a href="/" class="flex items-center gap-3 shrink-0">
         <img
-          src="/images/logoypma.png"
+          src="/logo-ypsma.webp"
           alt={SITE_NAME}
           class="h-8 w-auto lg:h-10"
           width="40"
@@ -24,10 +24,7 @@ import { SITE_NAME, NAV_ITEMS } from '../../lib/constants';
             <li>
               <a
                 href={item.href}
-                class="text-neutral-600 hover:text-secondary-500 transition-colors duration-200 font-medium text-sm"
-              >
-                {item.label}
-              </a>
+                class="text-neutral-600 hover:text-secondary-500 transition-colors duration-200 font-medium text-sm" data-i18n={`nav.${item.label.toLowerCase().replace(/[\s/]+/g, '-').replace(/[^a-z0-9-]/g, '')}`}>{item.label}</a>
             </li>
           ))
         }
@@ -37,7 +34,7 @@ import { SITE_NAME, NAV_ITEMS } from '../../lib/constants';
       <a
         id="donate-nav-cta"
         href="/donasi/"
-        class="hidden lg:inline-flex items-center bg-coral-500 hover:bg-coral-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 shadow-soft hover:shadow-medium"
+        class="hidden lg:inline-flex items-center bg-coral-500 hover:bg-coral-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 shadow-soft hover:shadow-medium" data-i18n="nav.donate" data-campaign-label="Donasi Sekarang"
       >
         Donasi Sekarang
       </a>
@@ -75,7 +72,7 @@ import { SITE_NAME, NAV_ITEMS } from '../../lib/constants';
     <!-- Drawer header -->
     <div class="flex items-center justify-between mb-8">
       <div class="flex items-center gap-3">
-        <img src="/images/logoypma.png" alt={SITE_NAME} class="h-8 w-auto" width="40" height="40" />
+        <img src="/logo-ypsma.webp" alt={SITE_NAME} class="h-8 w-auto" width="40" height="40" />
         <span class="text-lg font-bold text-primary-800 font-heading">{SITE_NAME}</span>
       </div>
       <button id="nav-close" class="p-1 text-neutral-400 hover:text-neutral-600 transition-colors" aria-label="Close menu">
@@ -93,7 +90,7 @@ import { SITE_NAME, NAV_ITEMS } from '../../lib/constants';
           <li>
             <a
               href={item.href}
-              class="block px-4 py-3 text-neutral-700 hover:text-secondary-500 hover:bg-neutral-50 rounded-lg transition-all duration-200 font-medium"
+              class="block px-4 py-3 text-neutral-700 hover:text-secondary-500 hover:bg-neutral-50 rounded-lg transition-all duration-200 font-medium" data-i18n={`nav.${item.label.toLowerCase().replace(/[\s/]+/g, '-').replace(/[^a-z0-9-]/g, '')}`}
             >
               {item.label}
             </a>
@@ -105,7 +102,7 @@ import { SITE_NAME, NAV_ITEMS } from '../../lib/constants';
     <!-- Mobile CTA -->
     <a
       href="/donasi/"
-      class="block text-center bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 mt-4"
+      class="block text-center bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 mt-4" data-i18n="nav.donate" data-campaign-label="Donasi Sekarang"
     >
       Donasi Sekarang
     </a>

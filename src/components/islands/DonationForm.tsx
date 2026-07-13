@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { DONATION_TYPES, PAYMENT_METHODS } from '../../lib/constants';
 // Midtrans Snap type declarations
 interface SnapPayOptions {
@@ -33,9 +33,17 @@ export function useDonationForm(initialOpen = false) {
 interface DonationFormProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultCampaign?: string;
+  defaultCampaignLabel?: string;
 }
 
-export default function DonationForm({ isOpen, onClose }: DonationFormProps) {
+export default function DonationForm({ isOpen, onClose, defaultCampaign, defaultCampaignLabel }: DonationFormProps) {
+  useEffect(() => {
+    if (defaultCampaign) {
+      setDonationType(defaultCampaign);
+      setStep(2);
+    }
+  }, [defaultCampaign]);
   const [step, setStep] = useState(1);
   const [donationType, setDonationType] = useState('');
   const [nominal, setNominal] = useState<number | null>(null);
@@ -68,8 +76,12 @@ export default function DonationForm({ isOpen, onClose }: DonationFormProps) {
 
   const handleClose = useCallback(() => {
     resetFormState();
+    if (defaultCampaign) {
+      setDonationType(defaultCampaign);
+      setStep(2);
+    }
     onClose();
-  }, [resetFormState, onClose]);
+  }, [resetFormState, onClose, defaultCampaign]);
 
   const handleCustomNominalChange = useCallback((value: string) => {
     const cleaned = value.replace(/[^0-9]/g, '');
@@ -159,40 +171,64 @@ export default function DonationForm({ isOpen, onClose }: DonationFormProps) {
   }, [step, donationType, nominal, numericCustom, paymentMethod, name, email, phone, selectedAmount]);
 
   const handleBack = useCallback(() => {
+    if (step === 2 && defaultCampaign) {
+      handleClose();
+      return;
+    }
     if (step > 1) setStep((s) => s - 1);
     setErrors({});
-  }, [step]);
+  }, [step, defaultCampaign, handleClose]);
 
   const renderStepIndicator = () => (
     <div className="flex items-center justify-center gap-0 mb-6">
-      {[1, 2, 3, 4, 5].map((s, i) => (
+      {[1, 2, 3, 4, 5].map((s, i) => {
+        const isCompleted = s === 1 && defaultCampaign;
+        return (
         <div key={s} className="flex items-center">
           <div
             className={`
               w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors duration-200
-              ${s === step ? 'bg-primary-900 text-white ring-2 ring-secondary-500 ring-offset-2' : ''}
-              ${s < step ? 'bg-primary-900/80 text-white' : ''}
-              ${s > step ? 'bg-neutral-200 text-neutral-400' : ''}
+              ${s === step && !isCompleted ? 'bg-primary-900 text-white ring-2 ring-secondary-500 ring-offset-2' : ''}
+              ${s < step || isCompleted ? 'bg-primary-900/80 text-white' : ''}
+              ${s > step && !isCompleted ? 'bg-neutral-200 text-neutral-400' : ''}
             `}
           >
-            {s}
+            {isCompleted ? (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            ) : s}
           </div>
           {i < 4 && (
             <div
               className={`
                 w-6 sm:w-10 h-0.5 mx-1 transition-colors duration-200
-                ${s < step ? 'bg-primary-900/60' : 'bg-neutral-200'}
+                ${s < step || (isCompleted && i === 0) ? 'bg-primary-900/60' : 'bg-neutral-200'}
               `}
             />
           )}
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 
   const renderStepContent = () => {
     switch (step) {
       case 1:
+        if (defaultCampaign && defaultCampaignLabel) {
+          return (
+            <div className="space-y-4">
+              <h3 className="text-lg font-heading font-semibold text-primary-900 mb-2">
+                Tujuan Donasi
+              </h3>
+              <div className="p-4 rounded-lg bg-secondary-50/50 border border-secondary-200">
+                <p className="text-neutral-800 font-medium">{defaultCampaignLabel}</p>
+                <p className="text-sm text-neutral-500 mt-1">Donasi akan disalurkan ke kampanye ini.</p>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="space-y-3">
             <h3 className="text-lg font-heading font-semibold text-primary-900 mb-4">

@@ -19,8 +19,8 @@ import {
           class="h-14 mb-4 brightness-0 invert"
           loading="lazy"
         />
-        <h3 class="text-white font-bold text-lg mb-2">{SITE_NAME}</h3>
-        <p class="text-sm leading-relaxed text-white/60">
+        <h3 class="text-white font-bold text-lg mb-2" data-i18n="footer.siteName">{SITE_NAME}</h3>
+        <p class="text-sm leading-relaxed text-white/60" data-i18n="footer.tagline">
           {ORG_NAME} &mdash; mencetak generasi beriman, berilmu, dan berakhlak mulia sejak 1968.
         </p>
 
@@ -78,7 +78,7 @@ import {
 
       <!-- Column 2: Navigasi -->
       <div>
-        <h4 class="text-white font-bold text-lg mb-5">Navigasi</h4>
+        <h4 class="text-white font-bold text-lg mb-5" data-i18n="footer.navigation">Navigasi</h4>
         <ul class="space-y-3">
           {
             NAV_ITEMS.map((item) => (
@@ -97,25 +97,25 @@ import {
 
       <!-- Column 3: Program -->
       <div>
-        <h4 class="text-white font-bold text-lg mb-5">Program</h4>
+        <h4 class="text-white font-bold text-lg mb-5" data-i18n="footer.programs">Program</h4>
         <ul class="space-y-3">
           <li>
-            <a href="/program/ra-perwanida/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm">
+            <a href="/program/ra-perwanida/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm" data-i18n="footer.program.raPerwanida">
               RA Perwanida
             </a>
           </li>
           <li>
-            <a href="/program/mi-miftahul-ulum/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm">
+            <a href="/program/mi-miftahul-ulum/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm" data-i18n="footer.program.miMiftahulUlum">
               MI Miftahul Ulum
             </a>
           </li>
           <li>
-            <a href="/program/smp-plus/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm">
+            <a href="/program/smp-plus/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm" data-i18n="footer.program.smpPlus">
               SMP Plus Ma'arif
             </a>
           </li>
           <li>
-            <a href="/program/pptq/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm">
+            <a href="/program/pptq/" class="text-white/60 hover:text-secondary-400 transition-colors text-sm" data-i18n="footer.program.pptq">
               PPTQ
             </a>
           </li>
@@ -124,7 +124,7 @@ import {
 
       <!-- Column 4: Kontak -->
       <div>
-        <h4 class="text-white font-bold text-lg mb-5">Kontak</h4>
+        <h4 class="text-white font-bold text-lg mb-5" data-i18n="footer.contact">Kontak</h4>
         <ul class="space-y-4 text-sm">
           <li class="flex items-start gap-3">
             <svg class="w-5 h-5 text-secondary-500 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -158,15 +158,15 @@ import {
   <!-- Bottom bar -->
   <div class="border-t border-white/10">
     <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40">
-      <p>&copy; 2026 {SITE_NAME} Jombang. All rights reserved.</p>
+      <p data-i18n="footer.copyright">&copy; 2026 {SITE_NAME} Jombang. All rights reserved.</p>
 
       <div class="flex items-center gap-3">
-        <a href="/kebijakan-privasi/" class="hover:text-secondary-400 transition-colors">Kebijakan Privasi</a>
+        <a href="/kebijakan-privasi/" class="hover:text-secondary-400 transition-colors" data-i18n="footer.privacyPolicy">Kebijakan Privasi</a>
         <span class="text-white/20">|</span>
-        <a href="/syarat-ketentuan/" class="hover:text-secondary-400 transition-colors">Syarat &amp; Ketentuan</a>
+        <a href="/syarat-ketentuan/" class="hover:text-secondary-400 transition-colors" data-i18n="footer.terms">Syarat &amp; Ketentuan</a>
       </div>
 
-      <p class="text-xs">Dibangun dengan cinta untuk para donatur</p>
+      <p class="text-xs" data-i18n="footer.builtWithLove">Dibangun dengan cinta untuk para donatur</p>
     </div>
   </div>
 </footer>

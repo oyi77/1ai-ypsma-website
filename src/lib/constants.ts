@@ -5,8 +5,8 @@ export const SITE_URL = 'https://ypsma.org';
 export const SITE_NAME = 'YPSM';
 export const SITE_TITLE = 'YPSM Jombang — Yayasan Pendidikan & Sosial Ma\'arif';
 export const SITE_DESCRIPTION = 'Yayasan Pendidikan dan Sosial Ma\'arif (YPSM) Jombang — mengelola RA Perwanida, MI Miftahul Ulum, SMP Plus Ma\'arif, dan PPTQ. Berdiri sejak 1968, mencetak 3.000+ alumni.';
-export const SITE_LOGO = '/images/logoypma.png';
-export const SITE_LOGO_FOOTER = '/logo-ypsm.png';
+export const SITE_LOGO = '/logo-ypsma.webp';
+export const SITE_LOGO_FOOTER = '/logo-ypsma.webp';
 
 export const ORG_NAME = 'Yayasan Pendidikan & Sosial Ma\'arif';
 export const ORG_SHORT = 'YPSM Jombang';
@@ -27,6 +27,10 @@ export const NAV_ITEMS = [
     { label: 'MI Miftahul Ulum', href: '/program/mi-miftahul-ulum/' },
     { label: 'SMP Plus Ma\'arif', href: '/program/smp-plus/' },
     { label: 'PPTQ', href: '/program/pptq/' },
+    { label: 'Sedekah Pangan', href: '/program/sedekah-pangan/' },
+    { label: 'Beasiswa Santri', href: '/program/beasiswa-santri/' },
+    { label: 'Patungan Listrik', href: '/program/patungan-listrik/' },
+    { label: 'Bangun Masjid', href: '/program/bangun-masjid/' },
   ]},
   { label: 'Transparansi', href: '/transparansi/' },
   { label: 'Cerita Dampak', href: '/cerita-dampak/' },

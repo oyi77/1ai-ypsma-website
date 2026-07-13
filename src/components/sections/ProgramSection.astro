@@ -7,10 +7,10 @@ import { programs, donationTiers } from '../../data/programs';
   <div class="max-w-6xl mx-auto px-4">
     <!-- Section Heading -->
     <div class="text-center mb-12">
-      <h2 class="section-heading section-heading-center text-3xl md:text-4xl text-primary-900 inline-block">
+      <h2 class="section-heading section-heading-center text-3xl md:text-4xl text-primary-900 inline-block" data-i18n="programs.title">
         Program Pendidikan Kami
       </h2>
-      <p class="text-neutral-600 mt-4 max-w-2xl mx-auto">
+      <p class="text-neutral-600 mt-4 max-w-2xl mx-auto" data-i18n="programs.subtitle">
         Empat lembaga pendidikan di bawah naungan YPSM
       </p>
     </div>
@@ -127,7 +127,7 @@ import { programs, donationTiers } from '../../data/programs';
 
               <!-- CTA -->
               <a
-                href="/donasi/"
+                href={`/donasi/?tipe=${tier.id}`}
                 class="inline-block text-center bg-coral-500 text-white rounded-lg px-6 py-3 font-semibold hover:bg-coral-600 transition-colors"
               >
                 {tier.cta}

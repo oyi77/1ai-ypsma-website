@@ -4,26 +4,46 @@ import DonationForm, { useDonationForm } from './DonationForm';
 export default function StickyDonateButton() {
   const { isOpen, toggle, close } = useDonationForm();
   const [mounted, setMounted] = useState(false);
+  const [campaign, setCampaign] = useState<string | undefined>();
+  const [campaignLabel, setCampaignLabel] = useState<string | undefined>();
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+
+    const handler = (e: CustomEvent) => {
+      if (e.detail?.campaign) {
+        setCampaign(e.detail.campaign);
+        setCampaignLabel(e.detail.campaignLabel);
+        toggle();
+      }
+    };
+    window.addEventListener('campaign:donate', handler as EventListener);
+    return () => window.removeEventListener('campaign:donate', handler as EventListener);
+  }, [toggle]);
+
+  // Reset campaign after form closes
+  useEffect(() => {
+    if (!isOpen) {
+      const t = setTimeout(() => { setCampaign(undefined); setCampaignLabel(undefined); }, 300);
+      return () => clearTimeout(t);
+    }
+  }, [isOpen]);
 
   return (
     <>
-      <DonationForm isOpen={isOpen} onClose={close} />
+      <DonationForm isOpen={isOpen} onClose={close} defaultCampaign={campaign} defaultCampaignLabel={campaignLabel} />
 
       <div
         className={`
-          fixed bottom-6 right-6 z-50 transition-all duration-500
+          fixed bottom-24 right-6 z-40 transition-all duration-500
           ${mounted ? 'animate-fade-in-up opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}
       >
         <div className="relative group">
           {/* Hover tooltip */}
           <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none">
-            <div className="bg-primary-900 text-white text-sm font-medium px-4 py-2 rounded-lg whitespace-nowrap shadow-soft">
-              Donasi
+            <div className="bg-primary-900 text-white text-sm font-medium px-4 py-2 rounded-lg whitespace-nowrap shadow-soft" data-i18n="nav.donate">
+              Donasi Sekarang
             </div>
           </div>
 
