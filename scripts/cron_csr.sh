@@ -2,7 +2,7 @@
 # cron_csr.sh — Weekly CSR pipeline runner
 # Schedule: 0 9 * * 1 /home/openclaw/projects/1ai-ypsma-website/scripts/cron_csr.sh
 #
-# Sources .env for SMTP credentials, runs research→enrich→submit.
+# Sources .env for SMTP credentials, runs research→draft→enrich→outreach.
 # Logs to cron_csr.log in project root.
 
 set -euo pipefail

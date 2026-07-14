@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-CSR Pipeline — auto research → enrich → submit
+CSR Pipeline — research → draft → enrich → outreach
 Usage:
     python3 scripts/csr_pipeline.py --stage all [--dry-run] [--force] [--company <key>]
 
 Stages:
-  research   Find/verify CSR contact info (stub: needs AgentCash balance > 0 for automation)
-  enrich     Generate proposal markdown from config template (skips existing unless --force)
-  submit     Send proposals via SMTP (reuses send_csr_proposals.py logic)
+  research   Auto-discover CSR contact info via web scraping + verification
+  draft      Generate proposal markdown from config template (skips existing unless --force)
+  enrich     Add budget table, program costs & company-specific personalization
+  outreach   Send proposals via SMTP (reuses send_csr_proposals.py logic)
   all        Run all stages in sequence
 
 Config: csr_config.yaml (YPSMA profile + company targets)
@@ -15,6 +16,7 @@ Config: csr_config.yaml (YPSMA profile + company targets)
 
 import argparse
 import json
+import re
 import os
 import smtplib
 import subprocess
@@ -97,46 +99,180 @@ _GREETINGS = {
     'Astra International':
         'Sebagai perusahaan swasta nasional terkemuka, kami percaya Astra memiliki kepedulian tinggi '
         'pada pengembangan sumber daya manusia melalui program pendidikan dan kewirausahaan.',
+    'Adhi Karya':
+        'Sebagai BUMN konstruksi terkemuka, kami percaya Adhi Karya memiliki komitmen terhadap '
+        'pembangunan infrastruktur pendidikan dan pemberdayaan masyarakat melalui program TJSL.',
+    'Bali TV':
+        'Sebagai televisi lokal yang dekat dengan masyarakat Bali, kami percaya Bali TV memiliki '
+        'perhatian pada pendidikan dan pelestarian budaya Bali melalui program CSR.',
+    'Bank BJB':
+        'Sebagai Bank Pembangunan Daerah Jawa Barat, kami percaya BJB memiliki komitmen kuat '
+        'dalam memajukan pendidikan di Jawa Barat melalui program CSR dan TJSL.',
+    'Barata Indonesia':
+        'Sebagai BUMN manufaktur, kami percaya Barata Indonesia memiliki kepedulian pada '
+        'pendidikan vokasi dan pemberdayaan masyarakat di sekitar wilayah operasionalnya.',
+    'Blue Bird':
+        'Sebagai perusahaan transportasi terkemuka, kami percaya Blue Bird Peduli memiliki '
+        'perhatian pada pendidikan dan pemberdayaan masyarakat melalui program CSR.',
+    'Brantas Abipraya':
+        'Sebagai BUMN konstruksi yang telah banyak membangun infrastruktur sosial, kami percaya '
+        'Brantas Abipraya memiliki komitmen pada pendidikan dan pemberdayaan masyarakat.',
+    'INKA':
+        'Sebagai BUMN perkeretaapian satu-satunya di Indonesia, kami percaya INKA memiliki '
+        'perhatian pada pendidikan vokasi dan pengembangan SDM industri perkeretaapian.',
+    'JTV Surabaya':
+        'Sebagai televisi lokal Jawa Timur, kami percaya JTV memiliki perhatian pada pendidikan '
+        'dan pengembangan literasi masyarakat Jawa Timur.',
+    'Kimia Farma':
+        'Sebagai BUMN farmasi terkemuka, kami percaya Kimia Farma Peduli memiliki komitmen '
+        'pada pendidikan kesehatan dan peningkatan kualitas kesehatan masyarakat.',
+    'Len Industri':
+        'Sebagai BUMN elektronik dan telematika nasional, kami percaya Len Industri memiliki '
+        'perhatian pada pendidikan teknologi dan inovasi digital melalui program TJSL.',
+    'Pelabuhan Indonesia':
+        'Sebagai BUMN pelabuhan terbesar di Indonesia, kami percaya Pelindo Peduli memiliki '
+        'komitmen pada pendidikan dan pemberdayaan masyarakat pesisir.',
+    'Perum Peruri':
+        'Sebagai BUMN percetakan uang negara, kami percaya Peruri memiliki perhatian pada '
+        'pendidikan dan pemberdayaan masyarakat melalui program TJSL.',
+    'Pindad':
+        'Sebagai BUMN industri pertahanan nasional, kami percaya Pindad Peduli memiliki '
+        'komitmen pada pendidikan vokasi dan pengembangan SDM Indonesia.',
+    'Pupuk Indonesia':
+        'Sebagai BUMN pupuk terbesar di Indonesia, kami percaya Pupuk Indonesia memiliki '
+        'perhatian pada pendidikan dan pemberdayaan petani melalui program TJSL.',
+    'Waskita Karya':
+        'Sebagai BUMN konstruksi nasional, kami percaya Waskita Karya memiliki komitmen pada '
+        'pembangunan infrastruktur pendidikan dan pemberdayaan masyarakat melalui TJSL.',
+    'Wijaya Karya':
+        'Sebagai BUMN konstruksi terkemuka, kami percaya Wijaya Karya (WIKA) memiliki perhatian '
+        'pada pendidikan dan pemberdayaan masyarakat melalui program TJSL.',
 }
 
 def _search_query(c):
     return f'CSR {c["name"]} {" ".join(c["csr_focus"][:2])} kontak email'
 
 
+def _check_domain(email):
+    """Basic domain validity check — resolves MX or A record."""
+    domain = email.split('@')[-1]
+    try:
+        import dns.resolver
+        try:
+            mx = dns.resolver.resolve(domain, 'MX')
+            return True
+        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+            try:
+                dns.resolver.resolve(domain, 'A')
+                return True
+            except Exception:
+                return False
+    except ImportError:
+        return None  # dns not available — skip check
+
+
+def _scrape_tjsl(company):
+    """Try to fetch a known TJSL page for a BUMN company."""
+    name_slug = company['name'].lower().replace(' ', '-').replace('(persero)', '').strip()
+    patterns = [
+        f'https://{name_slug}.co.id/tjsl',
+        f'https://{name_slug}.com/tjsl',
+        f'https://{name_slug}.co.id/csr',
+        f'https://{name_slug}.com/csr',
+        f'https://{name_slug}.co.id/tentang-kami/tjsl',
+        f'https://{name_slug}.co.id/id/tjsl',
+    ]
+    import urllib.request
+    import urllib.error
+    for url in patterns:
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                text = resp.read().decode('utf-8', errors='replace')
+                found = set(re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', text))
+                csr_related = {e for e in found if any(k in e.lower()
+                    for k in ('csr', 'tjsl', 'corsec', 'corporate.secretary', 'info', 'contact'))}
+                if csr_related or found:
+                    print(f"         ✓ Scraped {url}")
+                    print(f"         Emails found: {', '.join(sorted(csr_related or found)[:3])}")
+                    return csr_related or found
+        except (urllib.error.HTTPError, urllib.error.URLError, ConnectionError,
+                TimeoutError, OSError):
+            continue
+    return None
+
+
 def stage_research(cfg, companies, dry_run):
-    """Research CSR contact info. Stub: requires AgentCash or manual search."""
+    """Research CSR contact info via web scraping + domain verification."""
     print(f"\n{'='*60}")
     print("STAGE: research")
     print(f"{'='*60}\n")
 
-    found_any = False
-    for c in companies:
-        pf = c.get('proposal_file', '')
-        status = '✓' if (pf and os.path.isfile(os.path.join(BASE, pf))) else ' '
-        print(f"  [{status}] {c['name']} ({c['key']})")
-        print(f"         Email di config: {c.get('email', '—')}")
-        print(f"         CSR Program: {c['csr_name']}")
-        print(f"         Search query: {_search_query(c)}")
+    verified = 0
+    found_online = 0
+    no_verify = 0
 
-        # Check if AgentCash balance allows auto-research
-        env_balance = os.environ.get('AGENTCASH_BALANCE', '0')
-        if not dry_run and env_balance not in ('0', '', 'None'):
-            print(f"         ⚡ AgentCash balance detected — can auto-research")
-            found_any = True
+    for c in companies:
+        name = c['name']
+        key = c['key']
+        email = c.get('email', '')
+        pf = c.get('proposal_file', '')
+        has_proposal = os.path.isfile(os.path.join(BASE, pf)) if pf else False
+        status = '✓' if has_proposal else ' '
+
+        print(f"  [{status}] {name} ({key})")
+        print(f"         Email di config: {email}")
+        print(f"         CSR Program: {c['csr_name']}")
+
+        # 1. Validate email domain
+        if email and '@' in email:
+            if email.endswith('@gmail.com') or email.endswith('@yahoo.com'):
+                print(f"         ⚠  Email pakai {email.split('@')[1]} — cari alamat korporat")
+                no_verify += 1
+            else:
+                domain_ok = _check_domain(email)
+                if domain_ok is True:
+                    print(f"         ✓ Domain {email.split('@')[1]} valid (MX records found)")
+                    verified += 1
+                elif domain_ok is None:
+                    print(f"         ~ Domain check skipped (pip install dnspython utk verifikasi)")
+                else:
+                    print(f"         ✗ Domain {email.split('@')[1]} tdk ditemukan — email mungkin invalid")
+                    no_verify += 1
+        else:
+            print(f"         ✗ Tdak ada email di config — perlu research manual")
+            no_verify += 1
+
+        # 2. Try to scrape TJSL page for better contacts
+        if not dry_run:
+            result = _scrape_tjsl(c)
+            if result:
+                found_online += 1
+                csr_specific = [e for e in result if 'csr' in e.lower() or 'tjsl' in e.lower()]
+                if csr_specific:
+                    print(f"         ⚡ CSR-specific email found: {csr_specific[0]}")
+        else:
+            print(f"         Search query: {_search_query(c)}")
+
         print()
 
-    if not found_any and not dry_run:
-        print("  ℹ️  AgentCash balance = 0 or not configured.")
-        print("     Research requires: (a) fund AgentCash wallet, or (b) manual search.")
-        print("     Search queries above can be used with web_search tool.\n")
-
+    # Summary
+    print(f"  ── Research Summary ──")
+    print(f"     Companies: {len(companies)}")
+    print(f"     ✓ Domain verified:  {verified}")
+    print(f"     ⚡ Online scraped:   {found_online}")
+    print(f"     ✗ Needs attention:  {no_verify}")
     if dry_run:
-        print("  [dry-run] No actual research performed.\n")
+        print("     [dry-run] — tidak ada web scraping.\n")
+    else:
+        print()
 
 
-# ── STAGE: enrich ──────────────────────────────────────────────────────
 
-_ENRICH_TEMPLATE = textwrap.dedent("""\
+
+# ── STAGE: draft (base proposal generation) ────────────────────────────
+
+_DRAFT_TEMPLATE = textwrap.dedent("""\
     # PROPOSAL CSR — {company[name]}
 
     **Pengirim:** {ypsma[name]} ({ypsma[acronym]})
@@ -253,10 +389,10 @@ def _focus_list(company):
     return '\n    '.join(lines)
 
 
-def stage_enrich(cfg, companies, dry_run, force):
+def stage_draft(cfg, companies, dry_run, force):
     """Generate draft proposals from templates for companies without existing files."""
     print(f"\n{'='*60}")
-    print("STAGE: enrich")
+    print("STAGE: draft — generate base proposals")
     print(f"{'='*60}\n")
 
     ypsma = cfg['ypsma']
@@ -278,7 +414,7 @@ def stage_enrich(cfg, companies, dry_run, force):
             continue
 
         # Generate from template
-        content = _ENRICH_TEMPLATE.format(
+        content = _DRAFT_TEMPLATE.format(
             company=c,
             ypsma=ypsma,
         )
@@ -298,11 +434,117 @@ def stage_enrich(cfg, companies, dry_run, force):
     print(f"\n  Summary: {generated} generated, {skipped} skipped\n")
 
 
-# ── STAGE: submit ──────────────────────────────────────────────────────
+# ── STAGE: enrich (enrich proposals with budget & personalization) ─────
 
+_ENRICH_BUDGET = {
+    'renovasi_kelas': ('Renovasi 3 Ruang Kelas + Perpustakaan', 'Rp 185.000.000'),
+    'renovasi_sekolah': ('Renovasi Sarana Sekolah (4 unit)', 'Rp 250.000.000'),
+    'beasiswa': ('Beasiswa 50 Siswa/Santri × 12 bln', 'Rp 60.000.000'),
+    'taman_bacaan': ('Pembangunan Taman Bacaan & Perpustakaan', 'Rp 75.000.000'),
+    'lab_komputer': ('Laboratorium Komputer 10 PC + Internet', 'Rp 120.000.000'),
+    'literasi_digital': ('Program Literasi Digital (guru + siswa)', 'Rp 35.000.000'),
+    'pondok_pesantren': ('Pengembangan PPTQ Darussalam', 'Rp 150.000.000'),
+    'pemberdayaan_ekonomi': ('Program Pemberdayaan Ekonomi Orang Tua Santri', 'Rp 100.000.000'),
+    'kewirausahaan_santri': ('Program Kewirausahaan Santri', 'Rp 50.000.000'),
+    'santunan_anak_yatim': ('Santunan Anak Yatim & Dhuafa (100 jiwa)', 'Rp 36.000.000'),
+    'pelatihan_guru': ('Pelatihan Guru & Tenaga Pendidik', 'Rp 45.000.000'),
+    'beasiswa_prestasi': ('Beasiswa Prestasi 20 Siswa × 12 bln', 'Rp 48.000.000'),
+}
+
+
+def _enrich_proposal(content, company):
+    """Enrich base proposal with budget table and company-specific data."""
+    programs = company.get('programs', {})
+    budget_rows = []
+    total = 0
+    for prog_key, prog_name in sorted(programs.items()):
+        line = _ENRICH_BUDGET.get(prog_key)
+        if line:
+            budget_rows.append(f'| {line[0]} | {line[1]} |')
+            total += int(line[1].replace('Rp ', '').replace('.', ''))
+        else:
+            budget_rows.append(f'| {prog_name} | (estimasi menyusul) |')
+
+    summary_total = f'Rp {total:,}'.replace(',', '.') if total > 0 else '(menyusul)'
+    budget_table = f"""\
+## Rencana Anggaran (RAB)
+
+Berikut estimasi anggaran program yang diajukan:
+
+| Program | Estimasi Biaya |
+|---------|--------------|
+{chr(10).join(budget_rows)}
+| **Total** | **{summary_total}** |
+
+"""
+
+    # Insert budget table before donation section
+    insertion = '\n' + budget_table + '\n'
+    enriched = content.replace(
+        '## Donasi Langsung',
+        insertion + '## Donasi Langsung'
+    )
+
+    # Add enrichment header
+    enriched = enriched.replace(
+        '<!-- DRAFT',
+        '<!-- DRAFT — ENRICHED'
+    )
+
+    # Remove old [DRAFT] disclaimer if present
+    enriched = enriched.replace(
+        '_[DRAFT — silakan sesuaikan program dan anggaran dengan prioritas CSR {company[name]}]_',
+        ''
+    )
+
+    return enriched
+
+
+def stage_enrich(cfg, companies, dry_run, force):
+    """Enrich draft proposals with budget details and company-specific data."""
+    print(f"\n{'='*60}")
+    print("STAGE: enrich — add budget & personalization to proposals")
+    print(f"{'='*60}\n")
+
+    enriched = 0
+    skipped = 0
+
+    for c in companies:
+        pf = c.get('proposal_file', '')
+        proposal_path = os.path.join(BASE, pf) if pf else None
+
+        if not proposal_path or not os.path.isfile(proposal_path):
+            print(f"  [!] {c['name']} — no proposal file, run --stage draft first")
+            skipped += 1
+            continue
+
+        with open(proposal_path) as f:
+            content = f.read()
+
+        if 'ENRICHED' in content and not force:
+            print(f"  [→] {c['name']} — already enriched, skipping (--force to re-enrich)")
+            skipped += 1
+            continue
+
+        if dry_run:
+            print(f"  [☐] {c['name']} — would enrich proposal")
+            enriched += 1
+            continue
+
+        enriched_content = _enrich_proposal(content, c)
+        with open(proposal_path, 'w') as f:
+            f.write(enriched_content)
+        print(f"  [✓] {c['name']} — enriched with budget & CSR alignment")
+        enriched += 1
+
+    print(f"\n  Summary: {enriched} enriched, {skipped} skipped\n")
+
+
+# ── STAGE: outreach (send proposals via SMTP) ────────────────────────────
 def _md_to_html(proposal_text):
     """Convert proposal markdown to basic HTML inline (mirrors send_csr_proposals.py)."""
     parts = []
+
     for line in proposal_text.split('\n'):
         line = line.strip()
         if not line:
@@ -371,10 +613,10 @@ WA Donasi: 0321-493147 | Web: https://ypsma.org</p>
     return msg
 
 
-def stage_submit(cfg, companies, dry_run):
+def stage_outreach(cfg, companies, dry_run):
     """Send proposals via SMTP."""
     print(f"\n{'='*60}")
-    print("STAGE: submit")
+    print("STAGE: outreach — send proposals via SMTP")
     print(f"{'='*60}\n")
 
 
@@ -442,23 +684,23 @@ def stage_submit(cfg, companies, dry_run):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='CSR Pipeline — auto research → enrich → submit proposal',
+        description='CSR Pipeline — research → draft → enrich → outreach',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent("""\
             Examples:
               python3 scripts/csr_pipeline.py --stage all --dry-run
-              SMTP_PASS='xxx' python3 scripts/csr_pipeline.py --stage submit
+              SMTP_PASS='xxx' python3 scripts/csr_pipeline.py --stage outreach
               python3 scripts/csr_pipeline.py --stage enrich --company bca --force
         """),
     )
-    parser.add_argument('--stage', choices=['research', 'enrich', 'submit', 'all'],
+    parser.add_argument('--stage', choices=['research', 'draft', 'enrich', 'outreach', 'all'],
                         default='all', help='Pipeline stage to run (default: all)')
     parser.add_argument('--company', default='all',
                         help='Company key from config, or "all" (default: all)')
     parser.add_argument('--dry-run', action='store_true',
                         help='Preview without side effects')
     parser.add_argument('--force', action='store_true',
-                        help='Overwrite existing proposal files on enrich')
+                        help='Overwrite existing proposal files on draft/enrich')
     parser.add_argument('--verbose', action='store_true',
                         help='Detailed output')
 
@@ -472,15 +714,17 @@ def main():
     if args.dry_run:
         print("  [dry-run mode — no changes made]\n")
 
-    stages = ['research', 'enrich', 'submit'] if args.stage == 'all' else [args.stage]
+    stages = ['research', 'draft', 'enrich', 'outreach'] if args.stage == 'all' else [args.stage]
 
     for stage in stages:
         if stage == 'research':
             stage_research(cfg, companies, args.dry_run)
+        elif stage == 'draft':
+            stage_draft(cfg, companies, args.dry_run, args.force)
         elif stage == 'enrich':
             stage_enrich(cfg, companies, args.dry_run, args.force)
-        elif stage == 'submit':
-            stage_submit(cfg, companies, args.dry_run)
+        elif stage == 'outreach':
+            stage_outreach(cfg, companies, args.dry_run)
 
     print("Pipeline complete.\n")
 

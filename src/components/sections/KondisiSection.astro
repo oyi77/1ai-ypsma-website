@@ -1,9 +1,18 @@
 ---
 // Kondisi Santri — Program Donasi Berdasarkan Kebutuhan Nyata
+interface StatBlock {
+  value: string;
+  label: string;
+}
+
 interface KondisiItem {
   icon: string;
   title: string;
-  body: string;
+  subtitle: string;
+  stats: StatBlock[];
+  programLabel: string;
+  target: string;
+  cta: string;
   photo: string;
   alt: string;
   slug: string;
@@ -12,73 +21,129 @@ interface KondisiItem {
 const kondisi: KondisiItem[] = [
   {
     icon: '\uD83C\uDF5A',
-    title: 'Lapar Mengancam Hafalan Mereka',
-    body: '250 santri penghafal Qur\'an butuh makan 3x sehari. Biaya pangan Rp 85jt/bulan — sering kami hutang ke warung saat donasi tak mencukupi.',
-    photo: '/images/home/lapar.webp',
-    alt: 'Santri sedang makan',
+    title: 'Jangan Biarkan Santri Menghafal Dalam Keadaan Lapar',
+    subtitle: 'Penuhi Gizi 250 Santri Penghafal Al-Qur\u2019an',
+    stats: [
+      { value: '250', label: 'Santri Mukim' },
+      { value: 'Rp\xa058,8jt', label: 'Target Bulanan' },
+      { value: '3x\xa0Sehari', label: 'Makan Bergizi' },
+    ],
+    programLabel: 'Program Pangan Santri \u2014 Rutin Bulanan',
+    target: 'Rp\xa050.000.000',
+    cta: 'Beri Makan Santri',
+    photo: '/images/drive-new/makan/bagi-makan-1.webp',
+    alt: 'Santri sedang makan bersama',
     slug: 'sedekah-pangan-santri',
   },
   {
-    icon: '\uD83D\uDCA1',
-    title: 'Listrik Sering Padam Saat Belajar Malam',
-    body: 'Tagihan listrik pondok Rp 12jt/bulan — melonjak 3x lipat. Lampu belajar sering padam, kelas gelap, aktivitas malam terganggu.',
-    photo: '/images/home/listrik.webp',
-    alt: 'Bangunan pondok pesantren',
-    slug: 'patungan-listrik',
-  },
-  {
-    icon: '\uD83C\uDFEB',
-    title: 'Fasilitas Belajar Masih Jauh dari Layak',
-    body: 'Ventilasi kurang, kamar asrama penuh, meja belajar mulai rusak. Tapi semangat santri tidak pernah padam.',
-    photo: '/images/home/fasilitas-2.webp',
-    alt: 'Kondisi fasilitas pondok',
-    slug: 'sarana-prasarana',
-  },
-  {
     icon: '\uD83D\uDCD6',
-    title: 'Sebarkan Al-Qur\'an, Raih Pahala Jariyah',
-    body: '600 mushaf Al-Qur\'an hafalan untuk 600 santri dan siswa. Halaman robek, cover lepas, jilid terlepas. Satu buku dipakai bergantian.',
-    photo: '/images/home/al-quran.webp',
+    title: 'Sebarkan Al-Qur\u2019an, Raih Pahala Jariyah',
+    subtitle: '600 Mushaf untuk 600 Penghafal Al-Qur\u2019an',
+    stats: [
+      { value: '600', label: 'Mushaf Dibutuhkan' },
+      { value: 'Rp\xa0100rb', label: 'Per Mushaf' },
+      { value: 'Rp\xa070,6jt', label: 'Total Target' },
+    ],
+    programLabel: 'Program Sedekah Al-Qur\u2019an \u2014 Satu Kali',
+    target: 'Rp\xa070.588.235',
+    cta: 'Hadiahkan Al-Qur\u2019an',
+    photo: '/images/drive-new/wisuda/alquran-thumb.webp',
     alt: 'Mushaf Al-Qur\'an',
     slug: 'sedekah-al-quran',
   },
   {
     icon: '\uD83C\uDF93',
     title: 'Bantu Santri Dhuafa Raih Mimpinya',
-    body: 'Banyak santri dari keluarga kurang mampu — SPP, asrama, makan, kitab, kesehatan mereka butuh uluran tangan. Rp 10jt/anak/tahun.',
-    photo: '/images/home/santri-dhuafa.webp',
-    alt: 'Santri dhuafa',
+    subtitle: 'Jadi Orang Tua Asuh untuk 1 Santri Dhuafa',
+    stats: [
+      { value: '237', label: 'Santri Aktif' },
+      { value: 'Rp\xa010jt', label: 'Per Anak/Tahun' },
+      { value: '100%', label: 'Laporan Transparan' },
+    ],
+    programLabel: 'Program Orang Tua Asuh \u2014 Tahunan',
+    target: 'Rp\xa010.000.000',
+    cta: 'Jadi Orang Tua Asuh',
+    photo: '/images/drive-new/wisuda/wisuda-2.webp',
+    alt: 'Santri berprestasi',
     slug: 'orang-tua-asuh',
+  },
+  {
+    icon: '\uD83D\uDCA1',
+    title: 'Terangi Malam Para Penghafal Al-Qur\u2019an',
+    subtitle: 'Terangi 600 Santri & Siswi dalam Belajar',
+    stats: [
+      { value: '600+', label: 'Santri & Siswa' },
+      { value: 'Rp\xa05,9jt', label: 'Target Bulanan' },
+      { value: '24\xa0Jam', label: 'Listrik Nyala' },
+    ],
+    programLabel: 'Program Listrik \u2014 Rutin Bulanan',
+    target: 'Rp\xa05.882.353',
+    cta: 'Cahayakan Malam Mereka',
+    photo: '/images/drive-new/sarpras/5.webp',
+    alt: 'Bangunan pondok pesantren',
+    slug: 'patungan-listrik',
   },
   {
     icon: '\uD83D\uDEB0',
     title: 'Akhiri Antrean 600 Orang untuk 2 Kamar Mandi',
-    body: 'Pembangunan sumur bor dalam dan 8 kamar mandi/WC baru. Saat ini 2 kamar mandi dipakai 600 orang — darurat!',
-    photo: '/images/home/antrean.webp',
+    subtitle: 'Selamatkan 600 Santri dari Krisis Kamar Mandi',
+    stats: [
+      { value: '600', label: 'Santri & Siswa' },
+      { value: '2\u21928', label: 'Kamar Mandi' },
+      { value: 'Rp\xa0176jt', label: 'Total Target' },
+    ],
+    programLabel: 'Program Infrastruktur \u2014 Satu Kali',
+    target: 'Rp\xa0176.470.588',
+    cta: 'Bangun MCK',
+    photo: '/images/drive-new/sarpras/sumur-thumb.webp',
     alt: 'Antrean kamar mandi',
     slug: 'sumur-air-bersih',
   },
   {
     icon: '\uD83C\uDFDA\uFE0F',
     title: 'Selamatkan Kelas dari Atap Bocor & Meja Rusak',
-    body: 'Atap bocor saat hujan, meja-kursi rusak, tembok perlu dicat. Belajar jadi tak nyaman. Perbaiki sarana prasarana 600 siswa.',
-    photo: '/images/home/kelas.webp',
-    alt: 'Kondisi kelas',
+    subtitle: 'Perbaiki Kelas & Asrama untuk 600 Siswa',
+    stats: [
+      { value: '600', label: 'Siswa Terdampak' },
+      { value: 'Rp\xa076,5jt', label: 'Total Target' },
+      { value: '4', label: 'Item Perbaikan' },
+    ],
+    programLabel: 'Program Sarpras \u2014 Satu Kali',
+    target: 'Rp\xa076.470.588',
+    cta: 'Bantu Sarpras',
+    photo: '/images/drive-new/sarpras/4.webp',
+    alt: 'Kondisi kelas dan fasilitas',
     slug: 'sarana-prasarana',
   },
   {
     icon: '\uD83D\uDDD1\uFE0F',
     title: 'Atasi Sampah 600 Santri Setiap Hari',
-    body: 'Volume sampah 600 orang perhari — penumpukan mengancam kesehatan. Pengelolaan sampah dan limbah butuh dukungan dana rutin.',
-    photo: '/images/home/sampah.webp',
+    subtitle: 'Atasi Volume Sampah 600 Orang per Hari',
+    stats: [
+      { value: '600', label: 'Orang per Hari' },
+      { value: 'Rp\xa053jt', label: 'Total Target' },
+      { value: '4', label: 'Item Kebutuhan' },
+    ],
+    programLabel: 'Program Lingkungan \u2014 Satu Kali',
+    target: 'Rp\xa052.941.176',
+    cta: 'Kelola Sampah',
+    photo: '/images/drive-new/sampah-thumb.webp',
     alt: 'Kondisi sampah',
     slug: 'pengelolaan-sampah',
   },
   {
     icon: '\uD83E\uDD1D',
     title: 'Santuni 58 Anak Yatim, Raih Surga Bersama Nabi',
-    body: '58 anak yatim dan yatim piatu di lingkungan pondok. Santunan tunai + sembako setiap bulan. Dekatkan diri bersama Rasulullah.',
-    photo: '/images/home/anak-yatim.webp',
+    subtitle: 'Santunan 58 Anak Yatim \u2014 Tunai + Sembako',
+    stats: [
+      { value: '58', label: 'Anak Yatim & Piatu' },
+      { value: '696', label: 'Bulan Santunan/Tahun' },
+      { value: '17.400', label: 'Paket Sembako/Tahun' },
+    ],
+    programLabel: 'Program Anak Yatim \u2014 Rutin Bulanan',
+    target: 'Rp\xa020.470.588',
+    cta: 'Santuni Yatim',
+    photo: '/images/drive-new/yatim-thumb.webp',
     alt: 'Anak yatim',
     slug: 'sedekah-anak-yatim',
   },
@@ -88,7 +153,7 @@ const kondisi: KondisiItem[] = [
 <section id="kondisi" class="bg-primary-900 text-white py-20">
   <div class="max-w-6xl mx-auto px-4">
     <!-- Section Heading -->
-    <div class="text-center mb-6">
+    <div class="text-center mb-10">
       <h2 class="text-3xl md:text-4xl font-bold font-title mb-4">
         Kondisi Santri Kita
       </h2>
@@ -117,16 +182,44 @@ const kondisi: KondisiItem[] = [
             </div>
 
             <!-- Content -->
-            <div class="p-5">
-              <div class="flex items-start gap-3 mb-2">
+            <div class="p-5 flex flex-col gap-3">
+              <!-- Title -->
+              <div class="flex items-start gap-3">
                 <span class="text-xl shrink-0 mt-0.5">{item.icon}</span>
                 <h3 class="font-bold text-base leading-snug">{item.title}</h3>
               </div>
-              <p class="text-white/60 text-sm leading-relaxed mb-4">{item.body}</p>
-              <span class="inline-flex items-center gap-1 text-coral-400 font-semibold text-sm group-hover:gap-2 transition-all">
-                Donasi Sekarang
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+
+              <!-- Subtitle -->
+              <p class="text-white/50 text-sm -mt-1">{item.subtitle}</p>
+
+              <!-- Stats -->
+              <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                {
+                  item.stats.map((s) => (
+                    <span class="text-white/80">
+                      <strong class="text-coral-400 font-bold">{s.value}</strong>
+                      <span class="text-white/50"> {s.label}</span>
+                    </span>
+                  ))
+                }
+              </div>
+
+              <!-- Program Label -->
+              <span class="text-xs text-white/40 uppercase tracking-wider">
+                {item.programLabel}
+              </span>
+
+              <!-- Target -->
+              <div class="flex items-center justify-between mt-1">
+                <span class="text-sm text-white/60">Target</span>
+                <span class="text-lg font-bold text-coral-400">{item.target}</span>
+              </div>
+
+              <!-- CTA -->
+              <span class="inline-flex items-center justify-center gap-2 bg-coral-500 hover:bg-coral-600 text-white font-semibold text-sm rounded-lg px-4 py-2.5 transition-all group-hover:gap-3 mt-1">
+                {item.cta}
+                <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </span>
             </div>
@@ -136,14 +229,14 @@ const kondisi: KondisiItem[] = [
     </div>
 
     <!-- Bottom CTA -->
-    <div class="text-center mt-12">
+    <div class="text-center mt-10">
       <a
-        href="/program"
-        class="inline-flex items-center gap-2 px-8 py-4 bg-coral-500 hover:bg-coral-600 text-white font-bold rounded-full transition-all text-lg"
+        href="/tentang-kami#kondisi"
+        class="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
       >
         Lihat Semua Program Donasi
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </a>
     </div>

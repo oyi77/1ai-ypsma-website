@@ -269,6 +269,246 @@ companies:
       - kewirausahaan_santri
     total_amount: "Rp 114.000.000"
 
+  # ── NEW: BUMN/BUMD LPDP Awardee Recipients (discovered via research) ──
+
+  - key: adhikarya
+    name: Adhi Karya
+    legal_name: PT Adhi Karya (Persero) Tbk
+    sector: Konstruksi & Infrastruktur
+    csr_name: TJSL Adhi Karya
+    csr_focus:
+      - Pendidikan
+      - Infrastruktur Sosial
+      - Pemberdayaan Masyarakat
+      - Lingkungan
+    email: adhi@adhi.co.id
+    programs:
+      - renovasi_kelas
+      - beasiswa
+    total_amount: "Rp 175.000.000"
+
+  - key: balitv
+    name: Bali TV
+    legal_name: PT Bali TV
+    sector: Media & Penyiaran
+    csr_name: CSR Bali TV
+    csr_focus:
+      - Pendidikan
+      - Literasi Media
+      - Kebudayaan Bali
+    email: pemirsa@balitv.tv
+    programs:
+      - beasiswa
+    total_amount: "Rp 75.000.000"
+
+  - key: bankbjb
+    name: Bank BJB
+    legal_name: PT Bank Pembangunan Daerah Jawa Barat dan Banten Tbk
+    sector: Perbankan BPD
+    csr_name: BJB Peduli
+    csr_focus:
+      - Pendidikan
+      - Beasiswa
+      - UMKM
+      - Sosial Keagamaan
+    email: bjbcare@bankbjb.co.id
+    programs:
+      - beasiswa
+      - renovasi_kelas
+    total_amount: "Rp 175.000.000"
+
+  - key: barata
+    name: Barata Indonesia
+    legal_name: PT Barata Indonesia (Persero)
+    sector: Industri & Manufaktur
+    csr_name: TJSL Barata Indonesia
+    csr_focus:
+      - Pendidikan Vokasi
+      - Pemberdayaan Masyarakat
+      - Lingkungan
+    email: info@barata.com
+    programs:
+      - beasiswa
+    total_amount: "Rp 150.000.000"
+
+  - key: bluebird
+    name: Blue Bird
+    legal_name: PT Blue Bird Tbk
+    sector: Transportasi
+    csr_name: Blue Bird Peduli
+    csr_focus:
+      - Pendidikan
+      - Lingkungan
+      - Pemberdayaan Masyarakat
+    email: customercare@bluebirdgroup.com
+    programs:
+      - beasiswa
+    total_amount: "Rp 100.000.000"
+
+  - key: brantasabipraya
+    name: Brantas Abipraya
+    legal_name: PT Brantas Abipraya (Persero)
+    sector: Konstruksi & Infrastruktur
+    csr_name: TJSL Brantas Abipraya
+    csr_focus:
+      - Pendidikan
+      - Infrastruktur Sosial
+      - Pemberdayaan Masyarakat
+    email: brap@brantas-abipraya.co.id
+    programs:
+      - beasiswa
+      - renovasi_kelas
+    total_amount: "Rp 150.000.000"
+
+  - key: inka
+    name: INKA
+    legal_name: PT INKA (Persero)
+    sector: Industri Perkeretaapian
+    csr_name: TJSL INKA
+    csr_focus:
+      - Pendidikan Vokasi
+      - Pemberdayaan Masyarakat
+      - Lingkungan
+    email: sekretariat@inka.co.id
+    programs:
+      - beasiswa
+      - renovasi_kelas
+    total_amount: "Rp 150.000.000"
+
+  - key: jtv
+    name: JTV Surabaya
+    legal_name: PT Jawa Pos Media Televisi
+    sector: Media & Penyiaran
+    csr_name: CSR JTV
+    csr_focus:
+      - Pendidikan
+      - Literasi Media
+      - Budaya Jawa Timur
+    email: portal@jtv.co.id
+    programs:
+      - beasiswa
+    total_amount: "Rp 75.000.000"
+
+  - key: kimiafarma
+    name: Kimia Farma
+    legal_name: PT Kimia Farma (Persero) Tbk
+    sector: Farmasi & Kesehatan
+    csr_name: Kimia Farma Peduli
+    csr_focus:
+      - Pendidikan Kesehatan
+      - Kesehatan Masyarakat
+      - Lingkungan
+    email: corsec@kimiafarma.co.id
+    programs:
+      - beasiswa
+    total_amount: "Rp 150.000.000"
+
+  - key: lenindustri
+    name: Len Industri
+    legal_name: PT Len Industri (Persero)
+    sector: Elektronik & Telematika
+    csr_name: TJSL Len Industri
+    csr_focus:
+      - Pendidikan Teknologi
+      - Inovasi Digital
+      - Pemberdayaan Masyarakat
+    email: komunikasi.korporasi@len.co.id
+    programs:
+      - beasiswa
+      - laboratorium_sekolah
+    total_amount: "Rp 150.000.000"
+
+  - key: pelindo
+    name: Pelabuhan Indonesia
+    legal_name: PT Pelabuhan Indonesia (Persero)
+    sector: Transportasi & Logistik Maritim
+    csr_name: Pelindo Peduli
+    csr_focus:
+      - Pendidikan
+      - Pemberdayaan Masyarakat Pesisir
+      - Lingkungan
+    email: customer.care@pelindo.co.id
+    programs:
+      - beasiswa
+      - renovasi_kelas
+    total_amount: "Rp 200.000.000"
+
+  - key: peruri
+    name: Perum Peruri
+    legal_name: Perusahaan Umum Percetakan Uang Republik Indonesia
+    sector: Percetakan & Keamanan Dokumen
+    csr_name: TJSL Peruri
+    csr_focus:
+      - Pendidikan
+      - Pemberdayaan Masyarakat
+      - Lingkungan
+    email: info@peruri.co.id
+    programs:
+      - beasiswa
+    total_amount: "Rp 150.000.000"
+
+  - key: pindad
+    name: Pindad
+    legal_name: PT Pindad (Persero)
+    sector: Industri Pertahanan & Manufaktur
+    csr_name: Pindad Peduli
+    csr_focus:
+      - Pendidikan Vokasi
+      - Pemberdayaan Masyarakat
+      - Lingkungan
+    email: info@pindad.com
+    programs:
+      - beasiswa
+      - renovasi_kelas
+    total_amount: "Rp 175.000.000"
+
+  - key: pupukindonesia
+    name: Pupuk Indonesia
+    legal_name: PT Pupuk Indonesia (Persero)
+    sector: Pupuk & Pertanian
+    csr_name: TJSL Pupuk Indonesia
+    csr_focus:
+      - Pendidikan
+      - Pemberdayaan Petani
+      - Lingkungan
+      - Ketahanan Pangan
+    email: info@pupuk-indonesia.com
+    programs:
+      - beasiswa
+    total_amount: "Rp 200.000.000"
+
+  - key: waskita
+    name: Waskita Karya
+    legal_name: PT Waskita Karya (Persero) Tbk
+    sector: Konstruksi & Infrastruktur
+    csr_name: TJSL Waskita Karya
+    csr_focus:
+      - Pendidikan
+      - Infrastruktur Sosial
+      - Pemberdayaan Masyarakat
+      - Lingkungan
+    email: corporate.secretary@waskita.co.id
+    programs:
+      - renovasi_kelas
+      - beasiswa
+    total_amount: "Rp 175.000.000"
+
+  - key: wijayakarya
+    name: Wijaya Karya
+    legal_name: PT Wijaya Karya (Persero) Tbk
+    sector: Konstruksi & Infrastruktur
+    csr_name: TJSL WIKA
+    csr_focus:
+      - Pendidikan
+      - Infrastruktur Sosial
+      - Pemberdayaan Masyarakat
+      - Lingkungan
+    email: CSR@wikamail.id
+    programs:
+      - beasiswa
+      - renovasi_kelas
+    total_amount: "Rp 200.000.000"
+
 # SMTP / Email config
 smtp:
   host: smtp.gmail.com
