@@ -3,6 +3,30 @@ export interface CampaignBudgetItem {
   amount: string;
 }
 
+export interface CampaignTokoh {
+  name: string;
+  age: string;
+  asal: string;
+  role?: string;
+  story: string;
+  quote: string;
+  photo: string;
+}
+
+export interface CampaignTestimoni {
+  name: string;
+  role: string;
+  quote: string;
+  photo?: string;
+}
+
+export interface CampaignUpdate {
+  status: string;
+  progress: number;
+  note: string;
+  date: string;
+}
+
 export interface Campaign {
   slug: string;
   title: string;
@@ -20,8 +44,17 @@ export interface Campaign {
   galleryImages: string[];
   tiers: { amount: number; label: string; impact: string; featured?: boolean }[];
   faqs: { question: string; answer: string }[];
-  accent: string; // Tailwind-style hue name
+  accent: string;
+  /** Documentary storytelling fields */
+  hook?: string;
+  masalah?: { icon: string; title: string; body: string }[];
+  tokoh?: CampaignTokoh;
+  testimoni?: CampaignTestimoni[];
+  campaignUpdate?: CampaignUpdate;
+  videoUrl?: string;
+  videoThumbnail?: string;
 }
+
 
 export const CAMPAIGNS: Campaign[] = [
   // ═══════════════════════════════════════════════════════════
@@ -84,6 +117,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Bisa donasi rutin setiap bulan?', answer: 'Bisa! Anda bisa menjadi donatur tetap dengan nominal berapa pun. Kami kirimkan laporan dampak setiap bulan.' },
       { question: 'Bagaimana cara konfirmasi transfer?', answer: 'Kirim bukti transfer ke WhatsApp 0822-3455-1160. Kami akan konfirmasi dan doakan.' },
     ],
+    hook: 'Tiap Hari 600 Piring — Tapi Bahan Makanan Makin Mahal, Dapur Mulai Terbebani',
+    masalah: [
+      { icon: '🍚', title: 'Dalam Angka 600 Piring', body: 'Setiap hari, yayasan menyediakan 860 piring makanan: sarapan, makan siang dan malam. Sebulan ≈ 25.800 piring. Harga beras naik 15-20% sejak awal 2026. Lauk tambah mahal. Dapur harus pintar-pintar mengatur menu.' },
+      { icon: '🧮', title: 'Biaya Dapur Bulanan', body: 'Kebutuhan dapur bulanan rata-rata Rp 16-18 juta untuk 600 santri dan pengurus. Bukan hanya beras (2,7 ton/bulan), tapi juga lauk, sayur, minyak, gula, teh, gas. Belum lagi jika harga mendadak naik.' },
+      { icon: '🤲', title: 'Amal Jariyah Paling Mudah', body: 'Memberi makan orang yang belajar Al-Qur\'an — pahalanya berlipat. Rasulullah bersabda: sebaik-baik kalian adalah yang belajar Al-Qur\'an dan mengajarkannya. Anda bisa menjadi bagian dari kebaikan ini, mulai dari Rp 50.000 untuk 1 santri/bulan.' },
+    ],
+    tokoh: {
+      name: 'Fatonah',
+      age: '14 tahun',
+      asal: 'Kelas 8 PPTQ',
+      story: 'Fatonah adalah santri yatim piatu yang 2 tahun tinggal di pondok. Ia paling rajin membantu di dapur. "Saya ingin masak untuk adik-adik nanti. Kakek saya dulu koki di pesantren. Saya belajar masak dari beliau." Fatonah hafal 15 juz dan bercita-cita punya restoran sendiri.',
+      quote: 'Saya senang di dapur. Tapi kadang sedih kalau lihat stok beras mau habis. Saya doakan semoga Allah kirim banyak donatur untuk kami.',
+      photo: '/images/drive-new/wisuda/wisuda-1.webp',
+    },
+    testimoni: [
+      { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Jujur, setiap akhir bulan saya deg-degan menghitung sisa anggaran dapur. Tapi Allah selalu kirim rezeki lewat donatur. Program pangan ini sangat membantu.' },
+      { name: 'Mbah Waginah', role: 'Juru Masak', quote: 'Saya masak untuk anak-anak ini sudah 10 tahun. Rasanya seperti masak untuk anak cucu sendiri. Saya rela bangun jam 3 subuh biar nasi hangat siap untuk mereka.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Rutin Bulanan',
+      progress: 55,
+      note: 'Harga beras rata-rata Rp 13.500/kg. Satu karung 50kg bertahan 2 hari untuk 600 orang. Kami butuh dana rutin setiap bulan untuk menjaga stok dapur tetap aman.',
+      date: 'Juli 2026',
+    },
     accent: 'emerald',
   },
 
@@ -144,6 +201,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Apada Al-Qur\'an dikirim ke santri langsung?', answer: 'Ya, setiap mushaf didistribusikan langsung ke santri/siswa YPSMA. Kami juga akan memberi stiker doa dari donatur.' },
       { question: 'Bisa titip nama di mushaf?', answer: 'Bisa! Untuk donasi 1 mushaf atau lebih, kami tempel nama/hafalan doa dari donatur di sampul mushaf.' },
     ],
+    hook: '600 Al-Qur\'an Robek dan Buram — Mereka Tetap Mengaji, Tapi Hati Kami Teriris',
+    masalah: [
+      { icon: '📖', title: 'Mushaf Usang yang Tak Layak', body: 'Bayangkan menghafal dari mushaf yang buram, sobek di pinggirnya, dan halamannya lepas. Itulah kenyataan 600 santri YPSMA. Satu mushaf dipakai bergantian oleh 3-4 santri. Kertasnya tipis, mudah robek.' },
+      { icon: '💰', title: 'Harga Melonjak Akibat Dolar', body: 'Harga pulp dan kertas impor naik 40% imbas kurs Dolar. Harga Al-Qur\'an hafalan naik dari Rp 70.000 menjadi Rp 100.000 per mushaf. Kebutuhan mendesak, tapi ongkos semakin besar.' },
+      { icon: '📿', title: 'Setiap Ayat adalah Pahala', body: 'Sedekah Al-Qur\'an adalah amal jariyah yang tak terputus. Setiap huruf yang dibaca santri dari mushaf hasil donasi Anda, pahalanya mengalir terus — bahkan saat Anda sudah tiada.' },
+    ],
+    tokoh: {
+      name: 'Hafidz',
+      age: '14 tahun',
+      asal: 'Kelas 8 PPTQ',
+      story: 'Hafidz menghafal 5 juz pertama dari mushaf yang hampir robek seluruhnya. Ia harus merekatkan halaman dengan selotip setiap kali sobek. "Saya tahu setiap huruf Al-Qur\'an berpahala, Kak. Saya tidak mau berhenti hanya karena mushaf saya robek." Ia kini hafal 12 juz.',
+      quote: 'Saya hanya ingin satu mushaf baru. Satu saja. Biar tidak ada lagi halaman yang lepas waktu saya hafalkan.',
+      photo: '/images/drive-new/wisuda/wisuda-3.webp',
+    },
+    testimoni: [
+      { name: 'Ustadz Zainal', role: 'Koordinator Tahfidz', quote: 'Kami kadang harus menghentikan setoran karena mushaf santri tidak terbaca. Ini sangat menghambat target hafalan mereka. Al-Qur\'an baru bukan kemewahan, tapi kebutuhan pokok.' },
+      { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Anak-anak tidak pernah mengeluh. Mereka tetap semangat meski mushafnya robek. Sayang sekali kalau semangat mereka tidak kita dukung dengan Al-Qur\'an yang layak.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Distribusi Bertahap',
+      progress: 30,
+      note: 'Dari target 600 mushaf, 180 sudah terbeli dan didistribusikan. Sisa 420 mushaf masih menunggu donasi. Target distribusi semua mushaf: Oktober 2026.',
+      date: 'Juli 2026',
+    },
     accent: 'amber',
   },
 
@@ -210,6 +291,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Bisa pilih santri tertentu?', answer: 'Bisa. Kami akan kirimkan profil beberapa santri yang membutuhkan orang tua asuh. Anda bisa memilih.' },
       { question: 'Komitmen minimal berapa lama?', answer: 'Komitmen ideal 1 tahun ajaran. Namun jika berhalangan, donasi bisa dialihkan ke program lain.' },
     ],
+    hook: 'Rp 833.000/Bulan Bisa Mengubah Hidup Seorang Santri — Mau Jadi Orang Tua Asuh?',
+    masalah: [
+      { icon: '🎓', title: 'Mimpi yang Terancam Putus', body: 'Ratusan santri datang dari keluarga dhuafa — anak buruh tani, pemulung, penjual jamu, pembantu rumah tangga. Beasiswa yang ada tidak cukup. Setiap tahun, beberapa anak harus pulang karena orang tua tidak mampu membayar SPP.' },
+      { icon: '👨👩👧👧', title: 'Mereka Juga Ingin Sekolah', body: 'Di balik sorotan mata mereka yang ceria saat mengaji, tersimpan kekhawatiran: "Apakah bulan depan saya masih bisa sekolah?" Mereka anak-anak yang sama seperti anak kita, hanya kurang beruntung secara ekonomi.' },
+      { icon: '🤝', title: 'Perubahan Sejati', body: 'Menjadi orang tua asuh bukan sekadar donasi. Anda menjadi bagian dari perjalanan hidup mereka. Setiap 3 bulan Anda mendapat laporan rapor, foto, dan surat dari anak asuh. Hubungan yang tidak ternilai.' },
+    ],
+    tokoh: {
+      name: 'Dewi Sartika',
+      age: '12 tahun',
+      asal: 'Kelas 7 PPTQ — Nganjuk',
+      story: 'Dewi adalah anak dari buruh tani yang penghasilannya tidak menentu. Ketika panen raya, mereka bisa makan tiga kali sehari. Tapi di musim paceklik, Dewi sering hanya makan ngetan — nasi saja. Ia hampir putus sekolah saat kelas 6 karena ibunya sakit. Yayasan memberinya beasiswa penuh untuk mondok.',
+      quote: 'Saya ingin hafal Al-Qur\'an 30 juz, Ustadzah. Biar ibu saya bangga. Saya akan doakan kakak-kakak donatur setiap malam.',
+      photo: '/images/drive-new/wisuda/wisuda-2.webp',
+    },
+    testimoni: [
+      { name: 'Bapak H. Ahmad', role: 'Donatur Orang Tua Asuh', quote: 'Saya jadi orang tua asuh untuk 2 santri. Setiap dapat surat dari mereka, hati saya terharu. Ini bukan donasi biasa, ini jadi orang tua buat mereka.' },
+      { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Banyak calon santri harus kami tolak setiap tahun karena keterbatasan dana. Setiap orang tua asuh baru berarti satu anak lagi yang bisa merasakan pendidikan pesantren.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Berkelanjutan',
+      progress: 40,
+      note: '237 santri aktif saat ini. 65 di antaranya adalah anak dhuafa dengan SPP gratis sepenuhnya dari donor. Kami masih memiliki 30 calon santri dhuafa di waiting list yang menunggu orang tua asuh.',
+      date: 'Juli 2026',
+    },
     accent: 'blue',
   },
 
@@ -270,6 +375,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Apakah listrik benar-benar diperlukan 24 jam?', answer: 'Ya. Asrama santri dihuni 24 jam. Kegiatan hafalan dimulai jam 4 pagi (subuh) hingga malam. Kelas reguler siang hari. Pompa air untuk sumur juga butuh listrik.' },
       { question: 'Kenapa tidak pakai panel surya?', answer: 'Investasi awal panel surya untuk kapasitas 600 orang sangat besar (Rp 200jt+). Saat ini kami fokus pada kebutuhan operasional dasar dulu.' },
     ],
+    hook: 'Kegelapan Bukan Penghalang — Tapi Lampu Akan Membuat Mereka Lebih Bersinar',
+    masalah: [
+      { icon: '💡', title: 'Belajar Malam di Bawah Lilin', body: 'Listrik padam di musim hujan sering terjadi. Santri yang harusnya murojaah malam terpaksa berhenti. Ujian kenaikan kelas jadi terhambat. Generator sewa mahal, tidak terjangkau untuk rutin.' },
+      { icon: '📊', title: 'Biaya Bulanan Membengkak', body: 'Dengan 4 kelas, 6 ruang asrama, kantor, dapur, pompa air, dan mushala — pemakaian listrik mencapai Rp 5,9 juta per bulan. Belum lagi kenaikan tarif listrik per April 2026.' },
+      { icon: '🔋', title: 'Bukan Sekadar Lampu', body: 'Listrik bukan hanya untuk penerangan. Pompa air untuk wudhu dan MCK butuh listrik. Dapur masak untuk 600 orang butuh listrik. Komputer administrasi butuh listrik. Semua berhenti tanpa listrik.' },
+    ],
+    tokoh: {
+      name: 'Muhammad Rizky',
+      age: '17 tahun',
+      asal: 'Kelas 12 PPTQ',
+      story: 'Rizky adalah santri senior yang hafal 30 juz tahun ini. Ia sering mengajar adik-adik kelasnya malam hari. "Saat listrik padam, saya ajak mereka ngaji di teras masjid yang ada lampu emergency. Yang penting tidak berhenti belajar." Rizky bercita-cita jadi hafiz internasional.',
+      quote: 'Saya tidak menyerah walau gelap. Tapi kalau listrik nyala 24 jam, saya bisa ngajar lebih banyak adik-adik.',
+      photo: '/images/drive-new/wisuda/wisuda-4.webp',
+    },
+    testimoni: [
+      { name: 'Ustadz Ghufron', role: 'Kepala Sekolah', quote: 'Listrik adalah nadi operasional yayasan. Setiap minggu kami harus memilih: bayar listrik atau bayar honor guru? Ini dilema yang terus berulang.' },
+      { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Saya tidak ingin santri-santri saya belajar dalam gelap. Mereka datang dengan semangat mencari ilmu, kita wajib fasilitasi.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Rutin Bulanan',
+      progress: 45,
+      note: 'Setiap bulan rata-rata tercapai 45% dari target listrik Rp 5,9 juta. Sisanya ditutup dari dana internal yayasan.',
+      date: 'Juli 2026',
+    },
     accent: 'yellow',
   },
 
@@ -334,6 +463,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Berapa lama pembangunan?', answer: 'Estimasi 2-3 minggu untuk pengeboran sumur, 3-4 minggu pembangunan gedung MCK. Total maksimal 2 bulan.' },
       { question: 'Bisa wakaf 1 kamar mandi penuh?', answer: 'Bisa! Biaya 1 pintu kamar mandi lengkap ± Rp 12-15jt. Anda bisa wakaf dan nama Anda diabadikan di gedung MCK.' },
     ],
+    hook: '2 Kamar Mandi untuk 600 Orang — Berapa Lama Lagi Mereka Harus Antre?',
+    masalah: [
+      { icon: '🚰', title: 'Antrean Setiap Pagi dan Malam', body: 'Bayangkan 600 orang berebut 2 kamar mandi. Santri putri harus bangun jam 3 pagi hanya untuk antre mandi sebelum subuh. Sering telat jamaah karena kehabisan waktu.' },
+      { icon: '💧', title: 'Sumur Mulai Mengering', body: 'Sumur lama kedalaman 20 meter mulai tidak mencukupi. Debit air menurun drastis di musim kemarau. Pompa sering rusak karena bekerja ekstra keras.' },
+      { icon: '😷', title: 'Dampak pada Kesehatan dan Ibadah', body: 'Kurangnya air bersih mempengaruhi kebersihan dan kesehatan santri. Beberapa santri terkena gatal-gatal dan infeksi kulit. Wudhu pun harus antre.' },
+    ],
+    tokoh: {
+      name: 'Siti Khodijah',
+      age: '16 tahun',
+      asal: 'Kelas 10 PPTQ',
+      story: 'Siti adalah santri favorit di pondok. Ia hafal 15 juz dalam 2 tahun. Tapi setiap pagi ia harus bangun jam 3 subuh untuk antre kamar mandi. "Saya hafal Al-Qur\'an karena saya antre mandi jam 3 pagi, jadi saya bisa murojaah sambil nunggu," katanya dengan mata berkaca-kaca.',
+      quote: 'Saya tidak masalah antre, kok. Tapi kadang saya sedih kalau lihat adik-adik kelas yang kedinginan nunggu giliran mandi subuh.',
+      photo: '/images/drive-new/wisuda/wisuda-2.webp',
+    },
+    testimoni: [
+      { name: 'Ustadzah Halimah', role: 'Pembina Asrama Putri', quote: 'Setiap pagi saya saksikan perjuangan santri putri untuk mandi. Kadang mereka hanya sempat bersihkan kaki dan wajah saja. Ini bukan kehidupan yang layak untuk anak-anak yang sedang menghafal Al-Qur\'an.' },
+      { name: 'Bapak Kepala Desa', role: 'Kepala Desa Gondek', quote: 'Yayasan ini sudah memberikan kontribusi besar bagi desa kami. Wajar jika desa mendukung penuh pembangunan MCK ini.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Penggalangan Dana',
+      progress: 22,
+      note: 'Tim teknis sudah survey titik pengeboran. Kontraktor siap eksekusi begitu dana terkumpul 50%. Estimasi pembangunan 2 bulan.',
+      date: 'Juli 2026',
+    },
     accent: 'cyan',
   },
 
@@ -402,6 +555,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Prioritas perbaikan apa yang paling mendesak?', answer: 'Prioritas 1: atap bocor 2 ruang kelas (darurat). Prioritas 2: 40 set meja-kursi. Prioritas 3: pengecatan dinding lembab.' },
       { question: 'Bisa bantu dalam bentuk barang?', answer: 'Sangat bisa! Kami terima donasi kasur, meja-kursi bekas layak pakai, atau cat tembok. Hubungi kami untuk koordinasi.' },
     ],
+    hook: 'Atap Bocor, Meja Patah, Kasur Kempis — Mampukah Mereka Hafal dalam Kondisi Seperti Ini?',
+    masalah: [
+      { icon: '🏚️', title: 'Belajar di Bawah Atap Bocor', body: 'Musim hujan membuat 2 ruang kelas tidak bisa dipakai. Air merembes dari atap, plafon gypsum jebol, lantai becek. Siswa terpaksa belajar di teras masjid atau di asrama yang sempit.' },
+      { icon: '🪑', title: 'Meja-Kursi Rongsokan', body: 'Puluhan meja-kursi sudah patah, goyang, dan membahayakan. Santri menulis dengan membungkukkan badan di lantai. Belum lagi lemari asrama yang pintunya rusak semua.' },
+      { icon: '🛏️', title: 'Tidur di Lantai Beralas Kardus', body: 'Banyak santri baru tidak mendapat kasur karena terbatas. Mereka tidur beralas kardus di lantai semen. Istirahat yang tidak nyaman membuat mereka sulit fokus saat menghafal subuh.' },
+    ],
+    tokoh: {
+      name: 'Ahmad',
+      age: '13 tahun',
+      asal: 'Kelas 7 PPTQ',
+      story: 'Ahmad adalah santri baru yang datang dari keluarga sangat sederhana. Ayahnya buruh serabutan. Selama 2 bulan pertama, Ahmad tidur di lantai tanpa kasur. Ia tidak pernah mengeluh, tapi guru-gurunya melihat semangatnya mulai menurun karena sering sakit pinggang.',
+      quote: 'Saya tidak apa-apa tidur di lantai, Ustadz. Yang penting saya bisa hafal Al-Qur\'an.',
+      photo: '/images/drive-new/sarpras/1.webp',
+    },
+    testimoni: [
+      { name: 'Ustadz Faisal', role: 'Wali Kelas 8', quote: 'Kondisi ini sudah berlangsung lama. Kami para guru sudah berusaha semaksimal mungkin dengan dana yang ada. Bantuan Anda sangat berarti.' },
+      { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Kasur kempis saya biarkan masih bisa dipakai, tapi meja-kursi patah dan atap bocor harus segera diperbaiki. Demi kenyamanan anak-anak dalam belajar.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Penggalangan Dana',
+      progress: 15,
+      note: 'Perbaikan darurat atap kelas 1 sudah dilakukan dengan dana swadaya guru. Masih tersisa atap kelas 2, 40 meja-kursi baru, dan 25 kasur.',
+      date: 'Juli 2026',
+    },
     accent: 'slate',
   },
 
@@ -461,6 +638,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Sampahnya akan dibawa ke mana?', answer: 'Motor roda 3 akan mengangkut sampah ke TPS Desa yang sudah bekerjasama dengan yayasan. Tidak ada pembakaran sampah lagi.' },
       { question: 'Ada program daur ulang?', answer: 'Rencana ke depan: sampah organik diolah jadi kompos untuk kebun yayasan. Sampah plastik dipilah untuk didaur ulang. Tahap awal fokus pada pengangkutan dan TPS dulu.' },
     ],
+    hook: 'Dari Tumpukan Sampah ke Lingkungan Sehat — 600 Santri Butuh Solusi Sekarang',
+    masalah: [
+      { icon: '🗑️', title: 'Puluhan Kilogram Sampah Setiap Hari', body: 'Dengan 600 orang di lingkungan yayasan, volume sampah mencapai 30-40 kg per hari. Tidak ada armada pengangkut. Selama ini sampah dibakar atau dibuang di belakang asrama, menimbulkan polusi udara dan bau tidak sedap.' },
+      { icon: '🦟', title: 'Ancaman Kesehatan Santri', body: 'Tumpukan sampah menjadi sarang nyamuk, lalat, dan tikus. Kasus diare dan demam berdarah pernah terjadi. Belajar dan menghafal Al-Qur\'an sulit maksimal di lingkungan yang tidak sehat.' },
+      { icon: '🌱', title: 'Solusi Berkelanjutan', body: 'Kami punya rencana: motor roda 3 untuk angkut sampah, TPS beton yang higienis, dan nantinya pengolahan sampah organik jadi kompos. Tapi semua butuh biaya yang tidak sedikit.' },
+    ],
+    tokoh: {
+      name: 'Fatimah',
+      age: '15 tahun',
+      asal: 'Kelas 9 PPTQ',
+      story: 'Fatimah adalah ketua regu kebersihan asrama putri. Setiap pagi ia memimpin 10 santri membersihkan lingkungan. Ia sering mengeluh karena sampah menumpuk dan tidak ada tempat pembuangan yang layak. "Saya malu kalau ada tamu datang melihat lingkungan kami," katanya.',
+      quote: 'Kami ingin belajar di lingkungan yang bersih dan sehat. Tolong bantu kami, Kak.',
+      photo: '/images/drive-new/wisuda/wisuda-3.webp',
+    },
+    testimoni: [
+      { name: 'Ustadz Mahmud', role: 'Kepala Asrama Putra', quote: 'Sebagai pengasuh yang setiap hari melihat kondisi ini, saya sangat berharap program ini segera terwujud. Kesehatan santri adalah prioritas kami.' },
+      { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Kebersihan sebagian dari iman. Kami sudah lama ingin memperbaiki sistem pengelolaan sampah, semoga Allah kirimkan donatur yang peduli.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Penggalangan Dana',
+      progress: 12,
+      note: 'Survey lokasi TPS sudah dilakukan. Harga motor roda 3 naik 15% karena kenaikan suku cadang impor.',
+      date: 'Juli 2026',
+    },
     accent: 'lime',
   },
 
@@ -520,6 +721,30 @@ export const CAMPAIGNS: Campaign[] = [
       { question: 'Apakah santunan rutin setiap bulan?', answer: 'Ya, idealnya rutin setiap bulan. Jika donasi lebih, kami salurkan 2 minggu sekali dengan nominal lebih besar per anak.' },
       { question: 'Bisa jadi donatur tetap anak yatim?', answer: 'Bisa! Anda bisa berkomitmen menyantuni 1 anak yatim secara rutin Rp 300.000/bulan. Kami kirimkan foto dan kabar perkembangan mereka.' },
     ],
+    hook: '58 Anak Menanti Uluran Tanganmu — Sebulan Tanpa Santunan Berarti Setahun Tanpa Senyuman',
+    masalah: [
+      { icon: '😢', title: 'Hilangnya Cahaya di Wajah Mereka', body: 'Sejak orang tua mereka tiada, 58 anak ini kehilangan sumber kasih sayang dan nafkah. Ada yang tinggal dengan nenek yang sudah renta, ada pula yang diurus paman yang juga hidup pas-pasan. Sebulan tanpa santunan berarti mereka harus memilih — membeli buku atau makan hari ini.' },
+      { icon: '📈', title: 'Harga Kebutuhan Pokok Melambung', body: 'Harga beras, minyak goreng, susu, dan gula terus naik. Keluarga yang mengasuh anak yatim ini semakin kewalahan. Beberapa anak bahkan terpaksa putus sekolah.' },
+      { icon: '🤲', title: 'Keutamaan yang Tidak Pernah Putus', body: 'Rasulullah ﷺ bersabda: "Aku dan orang yang menanggung anak yatim di surga seperti ini" — beliau merapatkan jari telunjuk dan jari tengah. Setiap rupiah yang Anda berikan, pahalanya mengalir terus.' },
+    ],
+    tokoh: {
+      name: 'Aisyah',
+      age: '9 tahun',
+      asal: 'Desa Mojowarno',
+      story: 'Ayah Aisyah meninggal setahun lalu karena sakit. Ibunya bekerja serabutan sebagai buruh cuci. Aisyah, duduk di kelas 3 SD, hampir putus sekolah karena tidak punya seragam dan buku. Santunan yayasan menjadi satu-satunya harapan ia tetap bisa sekolah.',
+      quote: 'Kakak, terima kasih sudah peduli sama aku. Aku mau sekolah biar bisa bantu ibu.',
+      photo: '/images/drive-new/wisuda/wisuda-1.webp',
+    },
+    testimoni: [
+      { name: 'Ustadzah Farida', role: 'Pembina Anak Yatim YPSMA', quote: 'Anak-anak yatim di sini sangat bersyukur setiap kali menerima santunan. Bukan soal uangnya, tapi karena mereka tahu masih ada yang peduli.' },
+      { name: 'Bapak Sutikno', role: 'Kakek dari 2 anak yatim asuh', quote: 'Saya sudah tua, tidak bisa bekerja keras. Santunan ini sangat berarti untuk cucu-cucu saya. Semoga donatur dibalas berlipat ganda oleh Allah.' },
+    ],
+    campaignUpdate: {
+      status: 'Aktif — Rutin Bulanan',
+      progress: 35,
+      note: 'Bulan lalu 58 anak menerima santunan Rp 300.000 masing-masing (tunai + sembako). Bulan ini baru terkumpul 35% dari target.',
+      date: 'Juli 2026',
+    },
     accent: 'rose',
   },
 ];
