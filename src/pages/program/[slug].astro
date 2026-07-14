@@ -1,5 +1,7 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import Footer from '../../components/sections/Footer.astro';
 import { CAMPAIGNS } from '../../data/campaigns';
 import CampaignDonateButton from '../../components/islands/CampaignDonateButton';
 import PhotoSlideshow from '../../components/islands/PhotoSlideshow';
@@ -17,6 +19,8 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
 ---
 
 <MainLayout title={ogTitle} description={ogDescription} canonical={`https://ypsma.org/program/${campaign.slug}/`}>
+  <Navbar />
+
 
   <!-- ════════════════════════════════════════ -->
   <!-- SECTION 1: HERO — HOOK + VIDEO GAMBAR   -->
@@ -377,6 +381,10 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
       { "@type": "ListItem", "position": 3, "name": title, "item": `https://ypsma.org/program/${campaign.slug}/` }
     ]
   })} />
+
+  <Footer />
+</MainLayout>
+DEL 382
 
   <StickyDonateButton client:load />
 </MainLayout>
