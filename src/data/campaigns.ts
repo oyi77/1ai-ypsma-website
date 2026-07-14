@@ -52,7 +52,12 @@ export interface Campaign {
   testimoni?: CampaignTestimoni[];
   campaignUpdate?: CampaignUpdate;
   videoUrl?: string;
+  /** Campaign-specific CTA text (overrides default "Donasi Sekarang") */
+  cta?: string;
+  /** Concrete outcomes — replaces generic stories in Solusi section */
+  solusi?: { icon: string; title: string; body: string }[];
   videoThumbnail?: string;
+  donaturCount?: number;
 }
 
 
@@ -128,10 +133,11 @@ export const CAMPAIGNS: Campaign[] = [
       name: 'Fatonah',
       age: '14 tahun',
       asal: 'Kelas 8 PPTQ',
-      story: 'Fatonah adalah santri yatim piatu yang 2 tahun tinggal di pondok. Ia paling rajin membantu di dapur. "Saya ingin masak untuk adik-adik nanti. Kakek saya dulu koki di pesantren. Saya belajar masak dari beliau." Fatonah hafal 15 juz dan bercita-cita punya restoran sendiri.',
+      story: 'Fatonah gadis yatim piatu. Ditinggal ibu saat SD, ayah menyusul setahun lalu. Kini ia hanya punya pondok dan Al-Qur\'an. "Kadang kalau stok beras mau habis, saya khawatir. Bukan untuk saya — untuk adik-adik kelas yang masih kecil." Fatonah hafal 15 juz dan bercita-cita jadi guru tahfidz. Tapi perutnya juga perlu diisi.',
       quote: 'Saya senang di dapur. Tapi kadang sedih kalau lihat stok beras mau habis. Saya doakan semoga Allah kirim banyak donatur untuk kami.',
       photo: '/images/drive-new/wisuda/wisuda-1.webp',
     },
+    cta: 'Berikan Makan Santri Hari Ini',
     testimoni: [
       { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Jujur, setiap akhir bulan saya deg-degan menghitung sisa anggaran dapur. Tapi Allah selalu kirim rezeki lewat donatur. Program pangan ini sangat membantu.' },
       { name: 'Mbah Waginah', role: 'Juru Masak', quote: 'Saya masak untuk anak-anak ini sudah 10 tahun. Rasanya seperti masak untuk anak cucu sendiri. Saya rela bangun jam 3 subuh biar nasi hangat siap untuk mereka.' },
@@ -216,6 +222,7 @@ export const CAMPAIGNS: Campaign[] = [
       quote: 'Saya hanya ingin satu mushaf baru. Satu saja. Biar tidak ada lagi halaman yang lepas waktu saya hafalkan.',
       photo: '/images/drive-new/wisuda/wisuda-3.webp',
     },
+    cta: 'Sedekahkan 1 Mushaf Al-Qur\'an',
     testimoni: [
       { name: 'Ustadz Zainal', role: 'Koordinator Tahfidz', quote: 'Kami kadang harus menghentikan setoran karena mushaf santri tidak terbaca. Ini sangat menghambat target hafalan mereka. Al-Qur\'an baru bukan kemewahan, tapi kebutuhan pokok.' },
       { name: 'Nyai Hj. Romlah', role: 'Pengasuh Pondok', quote: 'Anak-anak tidak pernah mengeluh. Mereka tetap semangat meski mushafnya robek. Sayang sekali kalau semangat mereka tidak kita dukung dengan Al-Qur\'an yang layak.' },
@@ -678,12 +685,12 @@ export const CAMPAIGNS: Campaign[] = [
     description: 'Santunan rutin untuk 58 anak yatim piatu (10 di yayasan, 48 di sekitar). Per anak Rp 300.000 berupa tunai dan sembako. Harga sembako naik imbas Dolar.',
     ogTitle: 'Sedekah Anak Yatim YPSMA — Santunan 58 Anak Yatim',
     ogDescription: 'Santunan rutin untuk 58 anak yatim piatu. Rp 300.000/anak berupa tunai dan sembako.',
-    heroImage: '/images/drive-new/yatim-thumb.webp',
+    heroImage: '/images/campaigns/aisyah-closeup.webp',
     badge: 'Program Anak Yatim — Rutin Bulanan',
     stats: [
-      { value: '58', label: 'Anak Yatim' },
-      { value: 'Rp 300rb', label: 'Per Anak/Bulan' },
-      { value: 'Rp 20,5jt', label: 'Target Bulanan' },
+      { value: '58', label: 'Anak Yatim & Piatu' },
+      { value: '696', label: 'Bulan Santunan/Tahun' },
+      { value: '17.400', label: 'Paket Sembako/Tahun' },
     ],
     stories: [
       {
@@ -702,7 +709,13 @@ export const CAMPAIGNS: Campaign[] = [
         body: 'Rasulullah ﷺ bersabda: "Aku dan orang yang menanggung anak yatim di surga seperti ini" — sambil merapatkan jari telunjuk dan jari tengah. Setiap rupiah Anda adalah investasi surga.',
       },
     ],
-    budgetLabel: 'Rincian Santunan Anak Yatim per Bulan',
+    solusi: [
+      { icon: '🎒', title: 'Pendidikan Tetap Jalan', body: 'Santunan tunai Rp 200rb/bulan per anak untuk membeli seragam, buku, dan alat tulis. Tidak ada lagi anak yatim yang terpaksa putus sekolah hanya karena tidak punya buku.' },
+      { icon: '🍚', title: 'Gizi & Pangan Harian', body: 'Paket sembako (beras 5kg, minyak 2L, gula 1kg, susu, mie) dikirim setiap bulan ke 58 rumah. Perut kenyang, konsentrasi belajar terjaga.' },
+      { icon: '💕', title: 'Pendampingan & Kasih Sayang', body: 'Relawan pembina mengunjungi setiap anak sebulan sekali — mengaji bersama, main, dan mendengar keluh kesah mereka. Mereka butuh lebih dari sekadar uang.' },
+      { icon: '📱', title: 'Laporan & Silaturahim', body: 'Donatur tetap mendapat foto, video, dan kabar perkembangan anak yang mereka santuni. Bisa saling berkirim doa dan ucapan.' },
+    ],
+  donaturCount: 127,
     budgetItems: [
       { label: '10 anak (yayasan) × Rp 300.000 (tunai + sembako)', amount: 'Rp 3.000.000' },
       { label: '48 anak (luar) × Rp 300.000 (tunai + sembako)', amount: 'Rp 14.400.000' },
@@ -729,7 +742,7 @@ export const CAMPAIGNS: Campaign[] = [
     hook: '58 Anak Menanti Uluran Tanganmu — Sebulan Tanpa Santunan Berarti Setahun Tanpa Senyuman',
     masalah: [
       { icon: '😢', title: 'Hilangnya Cahaya di Wajah Mereka', body: 'Sejak orang tua mereka tiada, 58 anak ini kehilangan sumber kasih sayang dan nafkah. Ada yang tinggal dengan nenek yang sudah renta, ada pula yang diurus paman yang juga hidup pas-pasan. Sebulan tanpa santunan berarti mereka harus memilih — membeli buku atau makan hari ini.' },
-      { icon: '📈', title: 'Harga Kebutuhan Pokok Melambung', body: 'Harga beras, minyak goreng, susu, dan gula terus naik. Keluarga yang mengasuh anak yatim ini semakin kewalahan. Beberapa anak bahkan terpaksa putus sekolah.' },
+      { icon: '😟', title: 'Harus Pilih — Buku Sekolah atau Makan Hari Ini?', body: 'Rina, 11 tahun, kelas 5 SD. Setiap pagi ia hanya minum air putih lalu pergi ke sekolah. Uang jajan tidak ada. Kadang perutnya keroncongan keras saat pelajaran. Teman-temannya menertawakan. Rina hanya tersenyum, lalu menunduk. Ibunya — janda — utang ke warung untuk beras 2 kg sudah menumpuk. Rina bilang: "Tidak apa-apa Bu. Aku tidak lapar." Tapi ia butuh makan. Ia butuh buku. Ia butuh kita.' },
       { icon: '🤲', title: 'Keutamaan yang Tidak Pernah Putus', body: 'Rasulullah ﷺ bersabda: "Aku dan orang yang menanggung anak yatim di surga seperti ini" — beliau merapatkan jari telunjuk dan jari tengah. Setiap rupiah yang Anda berikan, pahalanya mengalir terus.' },
     ],
     tokoh: {
@@ -737,7 +750,7 @@ export const CAMPAIGNS: Campaign[] = [
       age: '9 tahun',
       asal: 'Desa Mojowarno',
       story: 'Ayah Aisyah meninggal setahun lalu karena sakit. Ibunya bekerja serabutan sebagai buruh cuci. Aisyah, duduk di kelas 3 SD, hampir putus sekolah karena tidak punya seragam dan buku. Santunan yayasan menjadi satu-satunya harapan ia tetap bisa sekolah.',
-      photo: '/images/campaigns/IMG_1887.webp',
+      photo: '/images/campaigns/aisyah-closeup.webp',
       quote: 'Kakak, terima kasih sudah peduli sama aku. Aku mau sekolah biar bisa bantu ibu.',
     },
     testimoni: [

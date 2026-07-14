@@ -1,0 +1,330 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import Footer from '../../components/sections/Footer.astro';
+import { ORG_NAME, ORG_LEGALITY, CONTACT_INFO } from '../../lib/constants';
+---
+
+<MainLayout
+  title="Tentang YPSM Jombang — Sejarah & Profil Yayasan"
+  description="Profil Yayasan Pendidikan dan Sosial Ma'arif (YPSM) Jombang — sejarah sejak 1966, lembaga di bawah naungan, dan alamat lengkap pondok pesantren."
+>
+  <Navbar />
+
+  <!-- Hero -->
+  <section class="py-16 md:py-20 bg-gradient-to-b from-primary-900 to-primary-800 text-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center gap-8 max-w-5xl mx-auto">
+        <div class="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shrink-0 border-4 border-accent-300/30">
+          <img
+            src="/images/drive-new/pengasuh/ibu-nyai-umi-zubaidah.webp"
+            alt="Ibu Nyai Umi Zubaidah — Pengasuh Pondok Pesantren Tahfidzhul Qur'an Darussalam"
+            class="w-full h-full object-cover"
+            loading="eager"
+          />
+        </div>
+        <div class="text-center md:text-left">
+          <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">Tentang {ORG_NAME}</h1>
+          <p class="text-lg text-white/80 max-w-2xl">
+            Yayasan Pendidikan dan Sosial Ma'arif (YPSM) Jombang — mengelola RA, MI, SMP, dan Pondok Pesantren
+            Tahfidzhul Qur'an Darussalam. Berdiri sejak 1966, mencetak generasi berakhlak mulia, berilmu, dan mandiri.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sejarah -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <h2 class="text-3xl font-heading font-bold text-primary-900 mb-8 text-center">Sejarah Yayasan</h2>
+
+      <div class="space-y-6 text-neutral-700 leading-relaxed text-lg">
+        <div class="relative pl-8 border-l-4 border-primary-500">
+          <div class="absolute -left-3 top-1 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs font-bold">1966</div>
+          <p class="ml-4">
+            Yayasan ini dirintis oleh <strong>KH. Muhammad Hatta Qodir</strong>, berawal dari kepedulian beliau terhadap kondisi
+            pendidikan Islam di Desa Gondek yang saat itu belum memiliki madrasah. <strong>Madrasah Ibtidaiyah (MI)</strong> didirikan
+            sebagai madrasah pertama di Desa Gondek — cikal bakal berkembangnya lembaga pendidikan Islam di wilayah tersebut.
+          </p>
+        </div>
+
+        <div class="relative pl-8 border-l-4 border-accent-500">
+          <div class="absolute -left-3 top-1 w-6 h-6 bg-accent-500 rounded-full flex items-center justify-center text-white text-xs font-bold">1980</div>
+          <p class="ml-4">
+            <strong>Raudhatul Athfal (RA) Fajrul Islam</strong> didirikan untuk memenuhi kebutuhan pendidikan anak usia dini,
+            berfokus pada pembinaan karakter, akhlak, dan nilai-nilai keislaman sejak usia dini.
+          </p>
+        </div>
+
+        <div class="relative pl-8 border-l-4 border-primary-500">
+          <div class="absolute -left-3 top-1 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs font-bold">1988</div>
+          <p class="ml-4">
+            <strong>Sekolah Menengah Pertama (SMP) YPM Mojowarno</strong> didirikan sebagai wadah pendidikan lanjutan
+            bagi lulusan MI dan lembaga pendidikan lain di sekitarnya.
+          </p>
+        </div>
+
+        <div class="relative pl-8 border-l-4 border-primary-700">
+          <div class="absolute -left-3 top-1 w-6 h-6 bg-primary-700 rounded-full flex items-center justify-center text-white text-xs font-bold">1999</div>
+          <p class="ml-4">
+            Seluruh lembaga yang telah dirintis sejak 1966 secara resmi didaftarkan sebagai <strong>badan hukum yayasan</strong>,
+            memberikan kepastian hukum dan pengelolaan yang lebih profesional.
+          </p>
+        </div>
+
+        <div class="relative pl-8 border-l-4 border-accent-600">
+          <div class="absolute -left-3 top-1 w-6 h-6 bg-accent-600 rounded-full flex items-center justify-center text-white text-xs font-bold">2015</div>
+          <p class="ml-4">
+            <strong>Pondok Pesantren Tahfidzhul Qur'an Darussalam</strong> didirikan, secara khusus menyelenggarakan
+            pendidikan Tahfidz Al-Qur'an, pembinaan akhlakul karimah, serta penanaman nilai kemandirian santri.
+            Pondok ini menjadi pusat kegiatan sosial dan donasi YPSM saat ini.
+          </p>
+        </div>
+
+        <div class="relative pl-8 border-l-4 border-primary-800">
+          <div class="absolute -left-3 top-1 w-6 h-6 bg-primary-800 rounded-full flex items-center justify-center text-white text-xs font-bold">2020</div>
+          <p class="ml-4">
+            Terjadi pergantian kepemimpinan yayasan. Pada 30 Desember 2020, jabatan Ketua Yayasan secara resmi diserahkan
+            kepada <strong>Drs. H. Syamsun Huda Amir</strong>, yang melanjutkan kepemimpinan yayasan hingga saat ini.
+            Bersamaan dengan itu, <strong>Ibu Nyai Umi Zubaidah</strong> menjadi pengasuh Pondok Pesantren Tahfidzhul Qur'an Darussalam,
+            meneruskan perjuangan para pendiri dalam mendidik generasi penghafal Al-Qur'an.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Identitas Yayasan -->
+  <section class="py-16 bg-neutral-50">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <h2 class="text-3xl font-heading font-bold text-primary-900 mb-8 text-center">Identitas Yayasan</h2>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+          <h3 class="font-bold text-primary-900 mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Alamat Lengkap
+          </h3>
+          <p class="text-neutral-600">{CONTACT_INFO.address}</p>
+          <a
+            href={CONTACT_INFO.maps}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block mt-2 text-sm text-accent-600 hover:text-accent-700 underline"
+          >
+            Buka di Google Maps &rarr;
+          </a>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+          <h3 class="font-bold text-primary-900 mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+            </svg>
+            Legalitas
+          </h3>
+          <ul class="text-neutral-600 space-y-1 text-sm">
+            <li><strong>SK Kemenkumham:</strong> {ORG_LEGALITY.sk_kemenkumham}</li>
+            <li><strong>Notaris:</strong> {ORG_LEGALITY.notaris}</li>
+            <li><strong>NPWP:</strong> {ORG_LEGALITY.npwp}</li>
+            <li><strong>NPSN:</strong> {ORG_LEGALITY.npsn}</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+          <h3 class="font-bold text-primary-900 mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Pengurus
+          </h3>
+          <ul class="text-neutral-600 space-y-1 text-sm">
+            <li><strong>Pendiri:</strong> KH. Muhammad Hatta Qodir</li>
+            <li><strong>Ketua Yayasan:</strong> Drs. H. Syamsun Huda Amir</li>
+            <li><strong>Pengasuh Pondok:</strong> Ibu Nyai Umi Zubaidah</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+          <h3 class="font-bold text-primary-900 mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            Bidang
+          </h3>
+          <p class="text-neutral-600 text-sm">Pendidikan, Sosial, dan Keagamaan</p>
+          <p class="text-neutral-600 text-sm mt-2">
+            <strong>Berdiri:</strong> 1966 &middot; <strong>Badan Hukum:</strong> 1999<br/>
+            <strong>Telp:</strong> {CONTACT_INFO.phone}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lembaga di Bawah Naungan -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <h2 class="text-3xl font-heading font-bold text-primary-900 mb-8 text-center">Lembaga di Bawah Naungan</h2>
+
+      <div class="space-y-6">
+        <!-- MI -->
+        <div class="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center shrink-0">
+              <span class="text-primary-700 font-bold text-lg">MI</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-primary-900">MI Sulamuddiniyah</h3>
+              <p class="text-sm text-primary-600">Berdiri 1966 &middot; Jenjang Pendidikan Dasar</p>
+              <p class="text-neutral-600 mt-1">Integrasi pendidikan umum dan keislaman &middot; 18 Guru &middot; 178 Siswa</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RA -->
+        <div class="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center shrink-0">
+              <span class="text-accent-700 font-bold text-lg">RA</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-primary-900">RA Fajrul Islam</h3>
+              <p class="text-sm text-accent-600">Berdiri 1980 &middot; Pendidikan Anak Usia Dini</p>
+              <p class="text-neutral-600 mt-1">Pembentukan karakter dasar, akhlak, dan kesiapan belajar &middot; 5 Guru &middot; 50 Siswa</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SMP -->
+        <div class="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center shrink-0">
+              <span class="text-primary-700 font-bold text-lg">SMP</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-primary-900">SMP YPM Mojowarno</h3>
+              <p class="text-sm text-primary-600">Berdiri 1988 &middot; Pendidikan Menengah Pertama</p>
+              <p class="text-neutral-600 mt-1">Penguatan akademik, karakter, dan keterampilan &middot; 13 Guru &middot; 113 Siswa</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PPTQ -->
+        <div class="bg-neutral-50 rounded-xl p-6 border-l-4 border-accent-500">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center shrink-0">
+              <span class="text-accent-700 font-bold text-sm">PPTQ</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-primary-900">Pondok Pesantren Tahfidzhul Qur'an Darussalam</h3>
+              <p class="text-sm text-accent-600">Berdiri 2015 &middot; Pendidikan Kepesantrenan</p>
+              <p class="text-neutral-600 mt-1">
+                Tahfidz Al-Qur'an, pendalaman ilmu agama, pembinaan akhlak, dan kemandirian santri.
+              </p>
+              <p class="text-neutral-600 text-sm mt-1">
+                Pengasuh: <strong>Ibu Nyai Umi Zubaidah</strong> &middot; 250 Santri Hafidz
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galeri Pondok -->
+  <section class="py-16 bg-neutral-50">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <h2 class="text-3xl font-heading font-bold text-primary-900 mb-2 text-center">Galeri Pondok</h2>
+      <p class="text-neutral-600 text-center mb-10 max-w-2xl mx-auto">
+        Kegiatan sehari-hari santri di Pondok Pesantren Tahfidzhul Qur'an Darussalam — dari mengaji, wisuda tahfidz, hingga berbagi.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="rounded-xl overflow-hidden aspect-[4/3]">
+          <img
+            src="/images/drive-new/wisuda/wisuda-1.webp"
+            alt="Wisuda Tahfidz Al-Qur'an — santri berprestasi"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/3]">
+          <img
+            src="/images/drive-new/wisuda/wisuda-2.webp"
+            alt="Santri bersalaman dengan pengasuh saat wisuda"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/3]">
+          <img
+            src="/images/drive-new/wisuda/wisuda-3.webp"
+            alt="Momen wisuda santri penghafal Al-Qur'an"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/3]">
+          <img
+            src="/images/drive-new/wisuda/wisuda-4.webp"
+            alt="Rasa haru wisuda santri hafidz"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/3]">
+          <img
+            src="/images/drive-new/sarpras/1.webp"
+            alt="Suasana belajar di pondok"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/3]">
+          <img
+            src="/images/drive-new/makan/bagi-makan-1.webp"
+            alt="Kegiatan makan bersama santri"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visi CTA -->
+  <section class="py-16 bg-gradient-to-b from-primary-900 to-primary-800 text-white">
+    <div class="container mx-auto px-4 text-center max-w-3xl">
+      <h2 class="text-3xl font-heading font-bold mb-4">Dukung Perjuangan Kami</h2>
+      <p class="text-white/80 mb-8 text-lg">
+        Setiap donasi Anda membantu 250 santri hafidz untuk terus belajar, makan, dan tinggal di pondok.
+        Bersama kita wujudkan generasi Qur'ani yang mandiri dan berakhlak mulia.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/program/"
+          class="inline-flex items-center justify-center px-8 py-3 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-xl transition-colors text-lg"
+        >
+          Lihat Program Donasi
+        </a>
+        <a
+          href="/kontak/"
+          class="inline-flex items-center justify-center px-8 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors border border-white/20"
+        >
+          Hubungi Kami
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</MainLayout>
