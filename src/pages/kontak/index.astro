@@ -1,0 +1,183 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { ORG_NAME, ORG_SHORT, ORG_LEGALITY, CONTACT_INFO } from '../../lib/constants';
+---
+
+<MainLayout
+  title="Kontak YPSMA Jombang"
+  description="Hubungi Yayasan Pendidikan dan Sosial Ma'arif (YPSMA) Jombang — alamat, telepon, email, dan media sosial."
+>
+  <!-- Hero -->
+  <section class="py-16 md:py-20 bg-gradient-to-b from-primary-900 to-primary-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">Kontak Kami</h1>
+      <p class="text-lg text-white/80 max-w-2xl mx-auto">
+        Silakan hubungi kami untuk informasi donasi, program, atau kunjungan ke yayasan.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact Grid -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Left: Info -->
+        <div class="space-y-8">
+          <!-- Alamat -->
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6 text-primary-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-primary-900 mb-1">Alamat</h3>
+              <p class="text-neutral-600">{CONTACT_INFO.address}</p>
+              <a
+                href={CONTACT_INFO.maps}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-secondary-600 hover:text-secondary-700 text-sm font-semibold mt-1 inline-block"
+              >
+                Buka Google Maps &rarr;
+              </a>
+            </div>
+          </div>
+
+          <!-- Telepon -->
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6 text-primary-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-primary-900 mb-1">Telepon</h3>
+              <a href={`tel:${CONTACT_INFO.phone}`} class="text-neutral-600 hover:text-secondary-600 transition-colors block">
+                {CONTACT_INFO.phone}
+              </a>
+              <p class="text-xs text-neutral-400 mt-0.5">(Ketua Yayasan Abdillah Basya)</p>
+            </div>
+          </div>
+
+          <!-- WA -->
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 1.554 2.476 3.76 3.397.525.227.935.362 1.254.464.528.172.997.148 1.352.088.43-.073 1.324-.541 1.511-1.064.187-.523.187-.972.13-1.066-.056-.094-.206-.152-.503-.301z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-primary-900 mb-1">WhatsApp</h3>
+              <a href={`https://wa.me/${CONTACT_INFO.wa}`} target="_blank" rel="noopener noreferrer" class="text-neutral-600 hover:text-secondary-600 transition-colors block">
+                +{CONTACT_INFO.wa.slice(0,3)} {CONTACT_INFO.wa.slice(3,6)}-{CONTACT_INFO.wa.slice(6,10)}-{CONTACT_INFO.wa.slice(10)}
+              </a>
+              <p class="text-xs text-neutral-400 mt-0.5">Konfirmasi donasi & informasi program</p>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6 text-primary-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-primary-900 mb-1">Email</h3>
+              <a href={`mailto:${CONTACT_INFO.email}`} class="text-neutral-600 hover:text-secondary-600 transition-colors">
+                {CONTACT_INFO.email}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Donasi & Legal -->
+        <div class="space-y-8">
+          <!-- Donasi -->
+          <div class="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
+            <h3 class="font-bold text-lg text-primary-900 mb-4">Donasi</h3>
+            <div class="space-y-4">
+              <div>
+                <p class="text-sm font-semibold text-neutral-500 mb-1">Transfer Bank</p>
+                <p class="text-lg font-bold text-primary-900 font-mono">058501000742563</p>
+                <p class="text-sm text-neutral-600">BRI a.n. BRI Yayasan Pendidikan Dan Sosial Maarif</p>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-neutral-500 mb-1">Konfirmasi</p>
+                <a
+                  href={`https://wa.me/${CONTACT_INFO.wa}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                >
+                  Konfirmasi via WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legalitas -->
+          <div class="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
+            <h3 class="font-bold text-lg text-primary-900 mb-4">Legalitas Yayasan</h3>
+            <div class="space-y-3 text-sm">
+              <div>
+                <span class="text-neutral-500">Nama Yayasan</span>
+                <p class="font-semibold text-primary-900">{ORG_NAME}</p>
+              </div>
+              <div>
+                <span class="text-neutral-500">Akta Notaris</span>
+                <p class="font-semibold text-primary-900">{ORG_LEGALITY.notaris}</p>
+              </div>
+              <div>
+                <span class="text-neutral-500">SK Kemenkumham</span>
+                <p class="font-semibold text-primary-900">{ORG_LEGALITY.sk_kemenkumham}</p>
+              </div>
+              <div>
+                <span class="text-neutral-500">NPWP</span>
+                <p class="font-semibold text-primary-900">{ORG_LEGALITY.npwp}</p>
+              </div>
+              <div>
+                <span class="text-neutral-500">NPSN</span>
+                <p class="font-semibold text-primary-900">{ORG_LEGALITY.npsn}</p>
+              </div>
+              <div>
+                <span class="text-neutral-500">Domisili</span>
+                <p class="font-semibold text-primary-900">{ORG_LEGALITY.domisili}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sosmed -->
+          <div class="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
+            <h3 class="font-bold text-lg text-primary-900 mb-4">Media Sosial</h3>
+            <div class="space-y-3">
+              {Object.entries(CONTACT_INFO.social).map(([platform, url]) => (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 text-neutral-600 hover:text-secondary-600 transition-colors"
+                >
+                  <span class="w-8 h-8 bg-neutral-200 rounded-full flex items-center justify-center text-sm font-bold uppercase shrink-0">
+                    {platform[0]}
+                  </span>
+                  <span class="capitalize">{platform}</span>
+                  <svg class="w-4 h-4 ml-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</MainLayout>

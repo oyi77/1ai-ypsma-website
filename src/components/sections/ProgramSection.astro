@@ -1,45 +1,111 @@
 ---
 import { CAMPAIGNS } from '../../data/campaigns';
+
+// Emotional headline override per campaign slug
+const HEADLINES: Record<string, { title: string; cta: string }> = {
+  'sedekah-pangan-santri': {
+    title: '🍚 Jangan Biarkan Santri Menghafal Dalam Keadaan Lapar',
+    cta: 'Beri Makan Santri',
+  },
+  'sedekah-al-quran': {
+    title: '📖 Sebarkan Al-Qur\'an, Raih Pahala Jariyah',
+    cta: 'Hadiahkan Al-Qur\'an',
+  },
+  'orang-tua-asuh': {
+    title: '🎓 Bantu Santri Dhuafa Raih Mimpinya',
+    cta: 'Jadi Orang Tua Asuh',
+  },
+  'patungan-listrik': {
+    title: '💡 Terangi Malam Para Penghafal Al-Qur\'an',
+    cta: 'Cahayakan Malam Mereka',
+  },
+  'sumur-air-bersih': {
+    title: '🚰 Akhiri Antrean 600 Orang untuk 2 Kamar Mandi',
+    cta: 'Bangun MCK',
+  },
+  'sarana-prasarana': {
+    title: '🏚️ Selamatkan Kelas dari Atap Bocor & Meja Rusak',
+    cta: 'Bantu Sarpras',
+  },
+  'pengelolaan-sampah': {
+    title: '🗑️ Atasi Sampah 600 Santri Setiap Hari',
+    cta: 'Kelola Sampah',
+  },
+  'sedekah-anak-yatim': {
+    title: '🤲 Santuni 58 Anak Yatim, Raih Surga Bersama Nabi',
+    cta: 'Santuni Yatim',
+  },
+};
 ---
 
 <section id="program" class="bg-primary-900 text-white py-20">
   <div class="max-w-6xl mx-auto px-4">
     <!-- Section Heading -->
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold text-white" data-i18n="programs.title">
+    <div class="text-center mb-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-white">
         Program Donasi
       </h2>
-      <p class="text-white/70 mt-4 max-w-2xl mx-auto" data-i18n="programs.subtitle">
-        Pilih program donasi yang paling sesuai dengan hatimu
+      <p class="text-white/70 mt-3 max-w-2xl mx-auto">
+        Pilih program yang paling menyentuh hati Anda
       </p>
+    </div>
+
+    <!-- Urgency intro -->
+    <div class="max-w-3xl mx-auto mb-10 text-center">
+      <div class="bg-coral-500/10 border border-coral-500/20 rounded-lg p-4">
+        <p class="text-coral-300 text-sm">
+          ⚠️ Saat ini YPSMA membutuhkan dana untuk 8 program prioritas. Dari pangan santri hingga bangun MCK — setiap donasi Anda berarti.
+        </p>
+      </div>
     </div>
 
     <!-- Campaign Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {
-        CAMPAIGNS.map((campaign) => (
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-secondary-500/50 transition-all duration-300">
-            <div class="flex items-start justify-between mb-4">
-              <h3 class="text-xl font-bold text-white">{campaign.title}</h3>
-              <span class="text-xs bg-coral-500/20 text-coral-300 px-2 py-1 rounded-full whitespace-nowrap">{campaign.badge}</span>
-            </div>
-            <p class="text-white/70 text-sm mb-4">{campaign.subtitle}</p>
-            <div class="flex flex-wrap gap-4 mb-4">
-              {campaign.stats.slice(0,3).map(s => (
-                <div>
-                  <span class="text-secondary-400 font-bold">{s.value}</span>
-                  <span class="text-white/50 text-sm ml-1">{s.label}</span>
+        CAMPAIGNS.map((campaign) => {
+          const h = HEADLINES[campaign.slug];
+          const displayTitle = h?.title ?? campaign.title;
+          const displayCta = h?.cta ?? 'Donasi';
+          return (
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-secondary-500/50 transition-all duration-300 flex flex-col">
+              <!-- Emotional Headline -->
+              <h3 class="text-lg font-bold text-white mb-2 leading-snug min-h-[3rem]">{displayTitle}</h3>
+
+              <!-- Subtitle / impact -->
+              <p class="text-white/70 text-sm mb-4 flex-1">{campaign.subtitle}</p>
+
+              <!-- Stats -->
+              <div class="flex flex-wrap gap-4 mb-4">
+                {campaign.stats.slice(0,3).map(s => (
+                  <div>
+                    <span class="text-secondary-400 font-bold">{s.value}</span>
+                    <span class="text-white/50 text-sm ml-1">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Progress bar placeholder -->
+              <div class="mb-4">
+                <div class="flex justify-between text-xs text-white/50 mb-1">
+                  <span>{campaign.badge}</span>
+                  <span>Target: {campaign.budgetTotal}</span>
                 </div>
-              ))}
-            </div>
-            <div class="border-t border-white/10 pt-3 flex items-center justify-between">
-              <span class="text-white/50 text-sm">Budget: {campaign.budgetTotal}/bulan</span>
-              <a href={"/lp-" + campaign.slug + ".html"} class="inline-block bg-coral-500 hover:bg-coral-600 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200" data-campaign-label={campaign.title}>
-                Donasi
+                <div class="w-full bg-white/10 rounded-full h-2">
+                  <div class="bg-secondary-500 h-2 rounded-full" style="width: 65%"></div>
+                </div>
+              </div>
+
+              <!-- CTA -->
+              <a
+                href={"/program/" + campaign.slug + "/"}
+                class="inline-block bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-center"
+                data-campaign-label={campaign.title}
+              >
+                {displayCta}
               </a>
             </div>
-          </div>
-        ))
+          )
+        })
       }
     </div>
   </div>

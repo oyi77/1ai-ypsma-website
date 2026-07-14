@@ -1,0 +1,122 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { CAMPAIGNS } from '../../data/campaigns';
+import { ORG_NAME, CONTACT_INFO } from '../../lib/constants';
+---
+
+<MainLayout
+  title="Transparansi Donasi YPSMA"
+  description="Laporan keuangan transparan YPSMA — setiap rupiah donasi tercatat dan bisa Anda akses kapan saja."
+>
+  <!-- Hero -->
+  <section class="py-16 md:py-20 bg-gradient-to-b from-primary-900 to-primary-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">Transparansi Donasi</h1>
+      <p class="text-lg text-white/80 max-w-3xl mx-auto">
+        Setiap rupiah yang Anda donasikan tercatat dan tersalurkan. Kami percaya kepercayaan
+        adalah fondasi utama hubungan donatur dan yayasan.
+      </p>
+    </div>
+  </section>
+
+  <!-- Prinsip Transparansi -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <div class="grid md:grid-cols-3 gap-8 text-center">
+        <div class="p-6">
+          <div class="text-4xl mb-3">📋</div>
+          <h3 class="font-bold text-lg text-primary-900 mb-2">Tercatat</h3>
+          <p class="text-neutral-600 text-sm">
+            Setiap donasi masuk tercatat otomatis dengan detail nominal, tanggal, dan program tujuan.
+          </p>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl mb-3">📊</div>
+          <h3 class="font-bold text-lg text-primary-900 mb-2">Tersalurkan</h3>
+          <p class="text-neutral-600 text-sm">
+            Penggunaan dana dilaporkan per program dengan rincian biaya yang jelas dan bisa diverifikasi.
+          </p>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl mb-3">📱</div>
+          <h3 class="font-bold text-lg text-primary-900 mb-2">Terakses</h3>
+          <p class="text-neutral-600 text-sm">
+            Anda bisa menanyakan laporan penggunaan donasi kapan saja melalui WhatsApp atau email.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rincian Biaya per Program -->
+  <section class="py-16 bg-neutral-50">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <h2 class="text-3xl font-heading font-bold text-primary-900 text-center mb-12">
+        Rincian Biaya per Program
+      </h2>
+
+      <div class="space-y-10">
+        {CAMPAIGNS.map((c, i) => (
+          <div class="bg-white rounded-xl shadow-soft overflow-hidden border border-neutral-100">
+            <div class="p-6 md:p-8">
+              <div class="flex items-start justify-between mb-6">
+                <div>
+                  <h3 class="text-xl font-heading font-bold text-primary-900">{c.title}</h3>
+                  <p class="text-neutral-500 text-sm mt-1">{c.subtitle}</p>
+                </div>
+                <span class="text-2xl font-bold text-secondary-600 shrink-0 ml-4">{c.budgetTotal}</span>
+              </div>
+
+              <div class="space-y-3">
+                {c.budgetItems.map(item => (
+                  <div class="flex items-center justify-between py-2 border-b border-neutral-100 last:border-0">
+                    <span class="text-neutral-700">{item.label}</span>
+                    <span class="font-semibold text-primary-900">{item.amount}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div class="mt-4 pt-4 border-t border-neutral-200 flex justify-between items-center">
+                <span class="text-sm text-neutral-500">
+                  {i === 0 ? 'Biaya per bulan' : i === 2 ? 'Target 6 bulan' : 'Total target'}
+                </span>
+                <a
+                  href={`/program/${c.slug}/`}
+                  class="text-secondary-600 hover:text-secondary-700 font-semibold text-sm"
+                >
+                  Detail Program &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cara Konfirmasi -->
+  <section class="py-16 bg-primary-900 text-white">
+    <div class="container mx-auto px-4 text-center max-w-3xl">
+      <h2 class="text-3xl font-heading font-bold mb-4">Butuh Informasi Lebih Detail?</h2>
+      <p class="text-white/70 mb-8">
+        Kami siap menjawab pertanyaan Anda seputar penggunaan donasi. Hubungi kami melalui WhatsApp atau email.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href={`https://wa.me/${CONTACT_INFO.wa}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-secondary-500 hover:bg-secondary-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+        >
+          Tanya via WhatsApp
+        </a>
+        <a
+          href={`mailto:${CONTACT_INFO.email}`}
+          class="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold transition-colors"
+        >
+          Email {CONTACT_INFO.email}
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>

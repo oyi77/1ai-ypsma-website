@@ -1,0 +1,65 @@
+---
+// FAQ Section — menjawab keraguan calon donatur
+interface FAQItem {
+  q: string;
+  a: string;
+}
+
+const faqs: FAQItem[] = [
+  {
+    q: 'Apakah donasi saya sampai ke santri?',
+    a: '100% donasi disalurkan langsung ke program. Kami memiliki laporan keuangan bulanan yang dirinci per item — dari beras hingga bumbu dapur — dan bisa Anda akses kapan saja. Transparansi adalah prioritas kami.',
+  },
+  {
+    q: 'Berapa minimum donasi?',
+    a: 'Rp 50.000 sudah cukup untuk 2 santri makan sehari penuh. Tidak ada nominal minimum untuk donasi rutin bulanan — berapapun yang Anda berikan, setiap rupiah berarti bagi mereka.',
+  },
+  {
+    q: 'Apakah donasi bisa dilakukan rutin setiap bulan?',
+    a: 'Bisa. Anda bisa menjadi donatur tetap dengan nominal Rp 50.000/bulan atau lebih. Donasi rutin sangat membantu kami merencanakan kebutuhan operasional pondok jangka panjang.',
+  },
+  {
+    q: 'Bagaimana cara saya melihat laporan penggunaan dana?',
+    a: 'Laporan dana dikirim via WhatsApp setiap awal bulan kepada seluruh donatur. Anda juga bisa menghubungi kami kapan saja untuk meminta update terbaru.',
+  },
+  {
+    q: 'Apakah donasi bisa atas nama orang lain?',
+    a: 'Tentu. Anda bisa berdonasi atas nama keluarga, almarhum, atau siapapun yang Anda inginkan. Pahala akan mengalir untuk mereka.',
+  },
+  {
+    q: 'Program apa yang paling mendesak saat ini?',
+    a: 'Kebutuhan pangan dan listrik adalah yang paling kritis setiap bulannya. Namun semua program kami membutuhkan dukungan berkelanjutan — Anda bisa melihat update terkini di setiap halaman program.',
+  },
+];
+---
+{
+  /* Accordion FAQ — style minimal, interaktif tanpa JS berat */
+}
+<section id="faq" class="bg-white py-20">
+  <div class="max-w-3xl mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-primary-900 text-center mb-4">
+      Pertanyaan Umum
+    </h2>
+    <p class="text-neutral-500 text-center mb-12 max-w-lg mx-auto">
+      Masih ragu? Semoga jawaban di bawah membantu Anda memutuskan untuk berbagi.
+    </p>
+
+    <div class="space-y-3">
+      {
+        faqs.map((item, i) => (
+          <details class="group bg-neutral-50 rounded-lg border border-neutral-100 overflow-hidden transition-all duration-200 open:border-secondary-500/30">
+            <summary class="flex items-center justify-between px-6 py-4 cursor-pointer font-medium text-primary-900 hover:text-secondary-600 transition-colors list-none">
+              <span>{item.q}</span>
+              <svg class="w-5 h-5 text-primary-400 group-open:rotate-180 transition-transform shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="px-6 pb-4 text-neutral-600 leading-relaxed border-t border-neutral-100 pt-3">
+              {item.a}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,50 +1,61 @@
 ---
-// Mitra & Relawan CTA section - YPSM Jombang
 ---
 
-<section class="bg-neutral-50 py-20">
-  <div class="max-w-4xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-900 mb-4 font-heading">
-      Jadi Mitra Kami
+<section class="bg-primary-900 text-white py-20">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <!-- Heading -->
+    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+      Setiap Detik Berlalu, Mereka Menunggu
     </h2>
-    <p class="text-lg text-neutral-600 text-center mb-12 max-w-2xl mx-auto">
-      Ajak perusahaan, masjid, atau komunitas Anda bergandeng tangan untuk pendidikan santri
+    <p class="text-white/70 text-lg max-w-2xl mx-auto mb-4 leading-relaxed">
+      250 santri bangun setiap pagi dengan semangat menghafal Al-Qur'an. Tapi tanpa dukungan Anda,
+      perjuangan mereka melawan keterbatasan akan semakin berat.
+    </p>
+    <p class="text-secondary-400 font-semibold mb-10">
+      Anda bisa menjadi alasan mereka tersenyum hari ini.
     </p>
 
     <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-      <!-- Card 1: Donatur Rutin -->
-      <div class="bg-white shadow-lg rounded-xl p-8 text-center">
-        <div class="text-5xl mb-4">&#x1F91D;</div>
-        <h3 class="text-xl font-bold text-primary-900 mb-3 font-heading">
-          Donatur Rutin
+      <!-- Card 1: Donasi Sekali -->
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center border border-white/10">
+        <div class="text-5xl mb-4">&#x2764;&#xFE0F;</div>
+        <h3 class="text-xl font-bold text-white mb-3">
+          Donasi Sekarang
         </h3>
-        <p class="text-neutral-600 mb-8">
-          Donasi bulanan mulai Rp 50.000 untuk santri
+        <p class="text-white/60 mb-8">
+          Rp 50.000 saja cukup untuk 2 santri makan sehari. Pilih program yang paling menyentuh hati Anda.
         </p>
         <button
-          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'general',campaignLabel:'Donasi Rutin'}}))"
-          class="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'general',campaignLabel:'Donasi Sekarang'}}))"
+          class="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all w-full"
         >
-          Donasi Rutin
+          Saya Donasi Sekarang
         </button>
       </div>
 
-      <!-- Card 2: Mitra & Relawan -->
-      <div class="bg-white shadow-lg rounded-xl p-8 text-center">
-        <div class="text-5xl mb-4">&#x1F49A;</div>
-        <h3 class="text-xl font-bold text-primary-900 mb-3 font-heading">
-          Mitra &amp; Relawan
+      <!-- Card 2: Donatur Rutin -->
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center border border-secondary-500/30">
+        <div class="text-5xl mb-4">&#x1F4CB;</div>
+        <h3 class="text-xl font-bold text-white mb-3">
+          Jadi Donatur Tetap
         </h3>
-        <p class="text-neutral-600 mb-8">
-          Bergabung sebagai relawan atau mitra program
+        <p class="text-white/60 mb-8">
+          Rp 50.000/bulan — kurang dari Rp 1.700/hari. Jadilah pahlawan bagi santri setiap bulannya.
         </p>
-        <a
-          href="/kontak/"
-          class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+        <button
+          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'general',campaignLabel:'Donasi Rutin'}}))"
+          class="bg-secondary-500 hover:bg-secondary-600 text-primary-900 px-6 py-3 rounded-lg font-semibold transition-all w-full"
         >
-          Hubungi Kami
-        </a>
+          Saya Donasi Rutin
+        </button>
       </div>
+    </div>
+
+    <!-- Garis bawah + kontak -->
+    <div class="mt-12 border-t border-white/10 pt-8">
+      <p class="text-white/50 text-sm">
+        Ada pertanyaan? Hubungi kami via <a href="https://wa.me/6281312312312" class="text-secondary-400 underline">WhatsApp</a> atau lihat <a href="#faq" class="text-secondary-400 underline">FAQ</a>
+      </p>
     </div>
   </div>
 </section>

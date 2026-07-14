@@ -24,20 +24,20 @@ export const ORG_LEGALITY = {
 export const NAV_ITEMS = [
   { label: 'Beranda', href: '/' },
   { label: 'Program', href: '/program/', children: [
-    { label: 'RA Perwanida', href: '/program/ra-perwanida/' },
-    { label: 'MI Miftahul Ulum', href: '/program/mi-miftahul-ulum/' },
-    { label: 'SMP Plus Ma\'arif', href: '/program/smp-plus/' },
-    { label: 'PPTQ', href: '/program/pptq/' },
-    { label: 'Sedekah Pangan', href: '/program/sedekah-pangan/' },
-    { label: 'Beasiswa Santri', href: '/program/beasiswa-santri/' },
+    { label: 'Pangan Santri', href: '/program/sedekah-pangan-santri/' },
+    { label: 'Al-Qur\'an', href: '/program/sedekah-al-quran/' },
+    { label: 'Orang Tua Asuh', href: '/program/orang-tua-asuh/' },
     { label: 'Patungan Listrik', href: '/program/patungan-listrik/' },
-    { label: 'Bangun Masjid', href: '/program/bangun-masjid/' },
+    { label: 'Sumur & MCK', href: '/program/sumur-air-bersih/' },
+    { label: 'Sarana Prasarana', href: '/program/sarana-prasarana/' },
+    { label: 'Kelola Sampah', href: '/program/pengelolaan-sampah/' },
+    { label: 'Anak Yatim', href: '/program/sedekah-anak-yatim/' },
   ]},
   { label: 'Transparansi', href: '/transparansi/' },
   { label: 'Cerita Dampak', href: '/cerita-dampak/' },
   { label: 'Tentang Kami', href: '/tentang-kami/' },
   { label: 'Kontak', href: '/kontak/' },
-] as const;
+];
 
 export const CONTACT_INFO = {
   address: 'Jl. Diponegoro Dsn. Ngelo No.34, Gondek, Mojowarno, Jombang, Jawa Timur 61475',
