@@ -1,9 +1,12 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import Footer from '../../components/sections/Footer.astro';
 import { CAMPAIGNS } from '../../data/campaigns';
 ---
 
 <MainLayout title="Program Donasi" description="Program donasi YPSMA — bantu pendidikan dan sosial">
+  <Navbar />
   <section class="py-16 md:py-20 bg-gradient-to-b from-primary-900 to-primary-800 text-white">
     <div class="container mx-auto px-4 text-center">
       <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">Program Donasi</h1>
@@ -37,4 +40,5 @@ import { CAMPAIGNS } from '../../data/campaigns';
       </div>
     </div>
   </section>
+  <Footer />
 </MainLayout>

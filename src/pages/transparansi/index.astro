@@ -1,5 +1,7 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import Navbar from '../../components/sections/Navbar.astro';
+import Footer from '../../components/sections/Footer.astro';
 import { CAMPAIGNS } from '../../data/campaigns';
 import { ORG_NAME, CONTACT_INFO } from '../../lib/constants';
 ---
@@ -8,6 +10,7 @@ import { ORG_NAME, CONTACT_INFO } from '../../lib/constants';
   title="Transparansi Donasi YPSMA"
   description="Laporan keuangan transparan YPSMA — setiap rupiah donasi tercatat dan bisa Anda akses kapan saja."
 >
+<Navbar />
   <!-- Hero -->
   <section class="py-16 md:py-20 bg-gradient-to-b from-primary-900 to-primary-800 text-white">
     <div class="container mx-auto px-4 text-center">
@@ -119,4 +122,5 @@ import { ORG_NAME, CONTACT_INFO } from '../../lib/constants';
       </div>
     </div>
   </section>
+<Footer />
 </MainLayout>
