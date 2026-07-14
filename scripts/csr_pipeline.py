@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CSR Pipeline — research → draft → enrich → outreach
+CSR Pipeline — research → draft → enrich → export → outreach → discover
 Usage:
     python3 scripts/csr_pipeline.py --stage all [--dry-run] [--force] [--company <key>]
 
@@ -8,7 +8,9 @@ Stages:
   research   Auto-discover CSR contact info via web scraping + verification
   draft      Generate proposal markdown from config template (skips existing unless --force)
   enrich     Add budget table, program costs & company-specific personalization
+  export     Convert enriched proposals to professional PDFs
   outreach   Send proposals via SMTP (reuses send_csr_proposals.py logic)
+  discover   Explore web for potential CSR partners not yet in config
   all        Run all stages in sequence
 
 Config: csr_config.yaml (YPSMA profile + company targets)
@@ -26,6 +28,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 import yaml
+from weasyprint import HTML
 
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,6 +43,141 @@ FROM_ADDR = os.environ.get('FROM_ADDR', 'admin@ypsma.org')
 FROM_NAME = os.environ.get('FROM_NAME', "YPSMA - Yayasan Pendidikan dan Sosial Ma'arif")
 
 
+
+# ── Sent log — prevent double-send ──────────────────────────────────────
+_SENT_LOG_PATH = os.path.join(BASE, 'csr_sent_log.yaml')
+
+def _load_sent_log():
+    """Return dict of {key: {email, timestamp, proposal}}."""
+    if not os.path.isfile(_SENT_LOG_PATH):
+        return {}
+    with open(_SENT_LOG_PATH) as f:
+        entries = yaml.safe_load(f) or []
+    return {e['key']: e for e in entries}
+
+def _update_config_company(key, **updates):
+    """Update one company's fields in csr_config.yaml and return updated company dict."""
+    cfg = load_config()
+    for c in cfg['companies']:
+        if c['key'] == key:
+            changed = False
+            for k, v in updates.items():
+                if v is not None and c.get(k) != v:
+                    c[k] = v
+                    changed = True
+            if changed:
+                with open(CONFIG_PATH, 'w') as f:
+                    yaml.dump(cfg, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+                print(f"         ✓ Config updated: {', '.join(updates.keys())}")
+            return c
+    return None
+
+def _save_sent_log(entries):
+    """Persist list of dicts sorted by key."""
+    lst = sorted(entries.values(), key=lambda e: e['key'])
+    with open(_SENT_LOG_PATH, 'w') as f:
+        yaml.dump(lst, f, default_flow_style=False, sort_keys=False)
+    os.chmod(_SENT_LOG_PATH, 0o644)
+
+def _is_sent(key):
+    return key in _load_sent_log()
+
+def _mark_sent(key, name, email, proposal_file=''):
+    entries = _load_sent_log()
+    entries[key] = {'key': key, 'name': name, 'email': email,
+                    'proposal': proposal_file,
+                    'timestamp': __import__('datetime').datetime.now().isoformat()}
+    _save_sent_log(entries)
+
+
+# ── Web helpers ──────────────────────────────────────────────────────────
+_USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
+
+def _fetch(url, timeout=10):
+    """Fetch URL, return decoded text or None."""
+    import urllib.request, urllib.error
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': _USER_AGENT})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return resp.read().decode('utf-8', errors='replace')
+    except Exception:
+        return None
+
+def _extract_emails(text):
+    """Return set of all email addresses found in text."""
+    return set(re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', text or ''))
+
+def _extract_csr_emails(found):
+    """Filter emails likely related to CSR."""
+    return {e for e in found if any(k in e.lower()
+        for k in ('csr', 'tjsl', 'corsec', 'corporate.secretary',
+                  'info', 'contact', 'relations', 'comms'))} or found
+
+
+def _canonical_bumn_name(text):
+    """Normalize BUMN name for dedup: strip (Persero)/Tbk/PT/Perum prefixes."""
+    n = re.sub(r'\s*\(.*?\)\s*', ' ', text)
+    n = re.sub(r'\s+Tbk$', '', n, flags=re.IGNORECASE)
+    n = re.sub(r'\s+Ltd\.?$', '', n, flags=re.IGNORECASE)
+    n = re.sub(r'\s+Inc\.?$', '', n, flags=re.IGNORECASE)
+    n = n.strip()
+    for pf in ['PT ', 'Perum ']:
+        if n.startswith(pf):
+            n = n[len(pf):].strip()
+            break
+    return re.sub(r'\s+', '', n.lower()).replace('.', '')
+def _try_domain_patterns(name):
+    """Try common domain patterns for a company, return first that resolves."""
+    slug = name.lower().replace(' ', '').replace('(persero)', '').replace('.', '').strip()
+    slugs = [slug]
+    # Also try hyphenated
+    slug_h = name.lower().replace(' ', '-').replace('(persero)', '').replace('.', '').strip()
+    if slug_h != slug:
+        slugs.append(slug_h)
+    domains = []
+    for s in slugs:
+        for tld in ['.co.id', '.com', '.id']:
+            domains.append(f'{s}{tld}')
+            domains.append(f'www.{s}{tld}')
+    seen = set()
+    for d in domains:
+        if d in seen:
+            continue
+        seen.add(d)
+        try:
+            import socket
+            socket.getaddrinfo(d, 80, socket.AF_INET, socket.SOCK_STREAM)
+            return f'https://{d}'
+        except OSError:
+            continue
+    return None
+
+def _scrape_csr_pages(domain, name):
+    """Given a base domain, search for TJSL/CSR pages and extract emails."""
+    base = domain.rstrip('/')
+    paths = [
+        '/tjsl', '/csr', '/tentang-kami/tjsl', '/id/tjsl',
+        '/tentang_kami', '/tentang-kami', '/id/tentang-kami',
+        '/hubungi-kami', '/contact', '/id/contact',
+        '/program-csr', '/program-tjsl',
+    ]
+    all_emails = set()
+    for p in paths:
+        text = _fetch(f'{base}{p}')
+        if text:
+            found = _extract_emails(text)
+            if found:
+                all_emails.update(found)
+    if all_emails:
+        csr = _extract_csr_emails(all_emails)
+        return csr or all_emails
+    # Fallback: scrape homepage
+    text = _fetch(base)
+    if text:
+        found = _extract_emails(text)
+        if found:
+            return _extract_csr_emails(found)
+    return set()
 # ── Config ─────────────────────────────────────────────────────────────
 
 def load_config():
@@ -172,33 +310,28 @@ def _check_domain(email):
 
 
 def _scrape_tjsl(company):
-    """Try to fetch a known TJSL page for a BUMN company."""
-    name_slug = company['name'].lower().replace(' ', '-').replace('(persero)', '').strip()
-    patterns = [
-        f'https://{name_slug}.co.id/tjsl',
-        f'https://{name_slug}.com/tjsl',
-        f'https://{name_slug}.co.id/csr',
-        f'https://{name_slug}.com/csr',
-        f'https://{name_slug}.co.id/tentang-kami/tjsl',
-        f'https://{name_slug}.co.id/id/tjsl',
-    ]
-    import urllib.request
-    import urllib.error
-    for url in patterns:
-        try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                text = resp.read().decode('utf-8', errors='replace')
-                found = set(re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', text))
-                csr_related = {e for e in found if any(k in e.lower()
-                    for k in ('csr', 'tjsl', 'corsec', 'corporate.secretary', 'info', 'contact'))}
-                if csr_related or found:
-                    print(f"         ✓ Scraped {url}")
-                    print(f"         Emails found: {', '.join(sorted(csr_related or found)[:3])}")
-                    return csr_related or found
-        except (urllib.error.HTTPError, urllib.error.URLError, ConnectionError,
-                TimeoutError, OSError):
-            continue
+    """Try to find CSR contact info for a company by scraping its website."""
+    name = company['name']
+    csr_website = company.get('csr_website', '')
+
+    if csr_website:
+        emails = _scrape_csr_pages(csr_website, name)
+        if emails:
+            print(f"         ✓ Emails from CSR page: {', '.join(sorted(emails)[:3])}")
+            return emails
+
+    # Try to find the company's domain
+    domain = _try_domain_patterns(name)
+    if domain:
+        print(f"         ✓ Found domain: {domain}")
+        emails = _scrape_csr_pages(domain, name)
+        if emails:
+            print(f"         ✓ Emails found: {', '.join(sorted(emails)[:3])}")
+            return emails
+        print(f"         ≈ Domain OK but no CSR email found")
+        return None
+
+    print(f"         ✗ Could not find company domain")
     return None
 
 
@@ -251,6 +384,30 @@ def stage_research(cfg, companies, dry_run):
                 csr_specific = [e for e in result if 'csr' in e.lower() or 'tjsl' in e.lower()]
                 if csr_specific:
                     print(f"         ⚡ CSR-specific email found: {csr_specific[0]}")
+
+        # 3. Auto-discover — find website/email for companies missing them
+        if not dry_run:
+            old_website = c.get('csr_website', '')
+            old_email = c.get('email', '')
+            updates = {}
+
+            # Discover website if missing
+            if not old_website:
+                domain = _try_domain_patterns(name)
+                if domain:
+                    updates['csr_website'] = domain
+                    print(f"         ⚡ Auto-discovered website: {domain}")
+
+            # Save emails found during scrape if we have no email in config
+            if not old_email and result:
+                best = next((e for e in result if 'csr' in e.lower() or 'tjsl' in e.lower()
+                             or 'infocorsec' in e.lower() or 'relations' in e.lower()), None)
+                if best:
+                    updates['email'] = best
+                    print(f"         ⚡ Auto-set email from scrape: {best}")
+
+            if updates:
+                _update_config_company(key, **updates)
         else:
             print(f"         Search query: {_search_query(c)}")
 
@@ -454,16 +611,21 @@ _ENRICH_BUDGET = {
 
 def _enrich_proposal(content, company):
     """Enrich base proposal with budget table and company-specific data."""
-    programs = company.get('programs', {})
+    programs_raw = company.get('programs', {})
+    # support both list and dict formats
+    if isinstance(programs_raw, list):
+        programs = {k: k for k in programs_raw}
+    else:
+        programs = programs_raw
     budget_rows = []
     total = 0
-    for prog_key, prog_name in sorted(programs.items()):
+    for prog_key, _prog_name in sorted(programs.items()):
         line = _ENRICH_BUDGET.get(prog_key)
         if line:
             budget_rows.append(f'| {line[0]} | {line[1]} |')
             total += int(line[1].replace('Rp ', '').replace('.', ''))
         else:
-            budget_rows.append(f'| {prog_name} | (estimasi menyusul) |')
+            budget_rows.append(f'| {prog_key} | (estimasi menyusul) |')
 
     summary_total = f'Rp {total:,}'.replace(',', '.') if total > 0 else '(menyusul)'
     budget_table = f"""\
@@ -475,29 +637,26 @@ Berikut estimasi anggaran program yang diajukan:
 |---------|--------------|
 {chr(10).join(budget_rows)}
 | **Total** | **{summary_total}** |
-
 """
 
-    # Insert budget table before donation section
-    insertion = '\n' + budget_table + '\n'
-    enriched = content.replace(
-        '## Donasi Langsung',
-        insertion + '## Donasi Langsung'
-    )
+    # Try placeholder with company name first, then crs_name
+    for tmpl_name in (company.get('name', ''), company.get('csr_name', '')):
+        placeholder = f'_[DRAFT — silakan sesuaikan program dan anggaran dengan prioritas CSR {tmpl_name}]_'
+        if placeholder in content:
+            content = content.replace(placeholder, budget_table)
+            return content
 
-    # Add enrichment header
-    enriched = enriched.replace(
-        '<!-- DRAFT',
-        '<!-- DRAFT — ENRICHED'
-    )
+    # Fallback: insert before known donation heading
+    for heading in ('## Donasi Langsung', '## Cara Mendukung YPSMA'):
+        if heading in content:
+            content = content.replace(heading, f'{budget_table}\n\n{heading}')
+            return content
 
-    # Remove old [DRAFT] disclaimer if present
-    enriched = enriched.replace(
-        '_[DRAFT — silakan sesuaikan program dan anggaran dengan prioritas CSR {company[name]}]_',
-        ''
-    )
+    # Last resort: append
+    content += f'\n\n{budget_table}'
+    return content
 
-    return enriched
+
 
 
 def stage_enrich(cfg, companies, dry_run, force):
@@ -538,6 +697,180 @@ def stage_enrich(cfg, companies, dry_run, force):
         enriched += 1
 
     print(f"\n  Summary: {enriched} enriched, {skipped} skipped\n")
+
+
+def _md_to_pdf_html(proposal_text):
+    """Convert proposal markdown to styled HTML for PDF output via weasyprint."""
+    from markdown_it import MarkdownIt
+    md = MarkdownIt()
+    body_html = md.render(proposal_text)
+
+    css = """\
+<style>
+@page {
+    size: A4;
+    margin: 2.2cm 2.5cm;
+    @bottom-center {
+        content: counter(page) " / " counter(pages);
+        font-size: 9pt;
+        color: #888;
+        font-family: 'DejaVu Sans', sans-serif;
+    }
+}
+body {
+    font-family: 'DejaVu Serif', Georgia, serif;
+    font-size: 11pt;
+    line-height: 1.7;
+    color: #222;
+}
+h1 {
+    font-size: 17pt;
+    color: #1a5276;
+    text-align: center;
+    border-bottom: 2.5px solid #1a5276;
+    padding-bottom: 8pt;
+    margin-bottom: 22pt;
+    font-family: 'DejaVu Sans', sans-serif;
+}
+h2 {
+    font-size: 13pt;
+    color: #1a5276;
+    margin-top: 26pt;
+    margin-bottom: 10pt;
+    font-family: 'DejaVu Sans', sans-serif;
+    border-bottom: 1px solid #d4e6f1;
+    padding-bottom: 4pt;
+}
+h3 {
+    font-size: 11.5pt;
+    color: #2c3e50;
+    margin-top: 18pt;
+    margin-bottom: 6pt;
+    font-family: 'DejaVu Sans', sans-serif;
+}
+p { margin: 7pt 0; text-align: justify; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14pt 0;
+    font-size: 10pt;
+}
+th, td {
+    border: 1px solid #bbb;
+    padding: 7pt 10pt;
+    text-align: left;
+}
+th {
+    background: #1a5276;
+    color: #fff;
+    font-family: 'DejaVu Sans', sans-serif;
+    font-weight: bold;
+}
+tr:nth-child(even) td { background: #f8f9fa; }
+ul, ol { margin: 6pt 0; padding-left: 22pt; }
+li { margin: 3pt 0; }
+strong { color: #1a5276; }
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 22pt 0;
+}
+.letterhead {
+    text-align: center;
+    margin-bottom: 22pt;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 14pt;
+}
+.letterhead .org {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #1a5276;
+    font-family: 'DejaVu Sans', sans-serif;
+}
+.letterhead .sub {
+    font-size: 9.5pt;
+    color: #666;
+    margin-top: 3pt;
+}
+.letterhead .tagline {
+    font-size: 8.5pt;
+    color: #999;
+    margin-top: 2pt;
+    font-style: italic;
+}
+.page-footer {
+    text-align: center;
+    font-size: 8.5pt;
+    color: #aaa;
+    margin-top: 30pt;
+    border-top: 1px solid #eee;
+    padding-top: 6pt;
+}
+</style>"""
+
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8">{css}</head><body>
+<div class="letterhead">
+    <div class="org">Yayasan Pendidikan dan Sosial Ma'arif (YPSMA)</div>
+    <div class="sub">Jl. Diponegoro, Mojowarno, Jombang, Jawa Timur</div>
+    <div class="tagline">admin@ypsma.org | 0321 - 493147 | https://ypsma.org</div>
+</div>
+{body_html}
+<div class="page-footer">
+    YPSMA — Yayasan Pendidikan dan Sosial Ma'arif | Jl. Diponegoro, Mojowarno, Jombang
+</div>
+</body></html>"""
+    return html
+
+
+def stage_export(cfg, companies, dry_run, force=False):
+    """Generate PDF versions of proposals from enriched markdown."""
+    print(f"\n{'='*60}")
+    print("STAGE: export — convert proposals to PDF")
+    print(f"{'='*60}\n")
+
+    exported = 0
+    skipped = 0
+    errors = 0
+
+    for c in companies:
+        pf = c.get('proposal_file', '')
+        if not pf:
+            print(f"  [ ] {c['name']} — no proposal_file, skipping")
+            skipped += 1
+            continue
+
+        md_path = os.path.join(BASE, pf)
+        pdf_path = os.path.splitext(md_path)[0] + '.pdf'
+
+        if not os.path.isfile(md_path):
+            print(f"  [ ] {c['name']} — {pf} not found, skipping")
+            skipped += 1
+            continue
+
+        if os.path.isfile(pdf_path) and not force:
+            print(f"  [·] {c['name']} — PDF exists, use --force to rebuild")
+            skipped += 1
+            continue
+
+        with open(md_path) as f:
+            proposal_text = f.read()
+
+        if dry_run:
+            print(f"  [ ] {c['name']} → {os.path.basename(pdf_path)} (dry-run)")
+            exported += 1
+            continue
+
+        try:
+            html_str = _md_to_pdf_html(proposal_text)
+            HTML(string=html_str).write_pdf(pdf_path)
+            print(f"  [✓] {c['name']} → {os.path.basename(pdf_path)}")
+            exported += 1
+        except Exception as e:
+            print(f"  [✗] {c['name']}: {e}")
+            errors += 1
+
+    print(f"\n  Summary: {exported} exported, {skipped} skipped, {errors} errors\n")
 
 
 # ── STAGE: outreach (send proposals via SMTP) ────────────────────────────
@@ -613,12 +946,11 @@ WA Donasi: 0321-493147 | Web: https://ypsma.org</p>
     return msg
 
 
-def stage_outreach(cfg, companies, dry_run):
-    """Send proposals via SMTP."""
+def stage_outreach(cfg, companies, dry_run, force=False):
+    """Send proposals via SMTP. Checks sent-log to avoid resends unless --force."""
     print(f"\n{'='*60}")
     print("STAGE: outreach — send proposals via SMTP")
     print(f"{'='*60}\n")
-
 
     smtp_conn = None
     if not SMTP_PASS:
@@ -640,12 +972,14 @@ def stage_outreach(cfg, companies, dry_run):
 
     sent = 0
     errors = 0
+    skipped = 0
 
     for c in companies:
         pf = c.get('proposal_file', '')
         proposal_path = os.path.join(BASE, pf) if pf else None
         to_email = c.get('email', '')
         comp_name = c['name']
+        key = c['key']
         greeting = _GREETINGS.get(comp_name, 'Kami mengajukan proposal kemitraan CSR untuk mendukung program pendidikan YPSMA.')
 
         if not proposal_path or not os.path.isfile(proposal_path):
@@ -658,6 +992,16 @@ def stage_outreach(cfg, companies, dry_run):
             errors += 1
             continue
 
+        # Sent-log dedup
+        if _is_sent(key):
+            entry = _load_sent_log()[key]
+            if force:
+                print(f"  [→] {comp_name} — already sent {entry.get('timestamp','?')} — FORCE resend")
+            else:
+                print(f"  [•] {comp_name} — already sent {entry.get('timestamp','?')} — skipping")
+                skipped += 1
+                continue
+
         msg = _build_email(comp_name, proposal_path, to_email, greeting, dry_run)
 
         if dry_run:
@@ -669,6 +1013,7 @@ def stage_outreach(cfg, companies, dry_run):
         try:
             smtp_conn.sendmail(FROM_ADDR, [to_email], msg.as_string())
             print(f"  [✓] {comp_name} → {to_email}")
+            _mark_sent(key, comp_name, to_email, pf)
             sent += 1
         except Exception as e:
             print(f"  [✗] {comp_name} → {to_email}: {e}")
@@ -677,14 +1022,96 @@ def stage_outreach(cfg, companies, dry_run):
     if smtp_conn:
         smtp_conn.quit()
 
-    print(f"\n  Summary: {sent} sent, {errors} errors\n")
+    print(f"\n  Summary: {sent} sent, {skipped} skipped (already sent), {errors} errors\n")
+
+
+
+def stage_discover(cfg, dry_run):
+    """Scrape BUMN directories for new companies, add to config."""
+    print(f"\n{'='*60}")
+    print("STAGE: discover — search for new BUMN/BUMD targets")
+    print(f"{'='*60}\n")
+
+    existing = {c['key'] for c in cfg['companies']}
+    sources = [
+        'https://id.wikipedia.org/wiki/Daftar_badan_usaha_milik_negara_di_Indonesia',
+        'https://en.wikipedia.org/wiki/State-owned_enterprises_of_Indonesia',
+    ]
+    seen = {}  # canonical_key → display_name, accumulated across sources
+
+    for src in sources:
+        print(f"  Scraping: {src}")
+        html = _fetch(src)
+        if html is None:
+            print(f"    ✗ Failed to fetch\n")
+            continue
+
+        # Wikipedia Parsoid format with extra attributes e.g. id=, class=
+        links = re.findall(
+            r'<a\s+rel="mw:WikiLink"\s+href="//\w+\.wikipedia\.org/wiki/[^"]*"[^>]*>'
+            r'([^<]{4,})</a>',
+            html
+        )
+        # Collect BUMN entries with canonical-key dedup across sources
+        for link_text in links:
+            text = link_text.strip()
+            # Only match legitimate BUMN entries: (Persero) company, Perum, or Bank
+            if not ('(Persero)' in text or text.startswith('Perum ') or text.startswith('Bank ')):
+                continue
+            ck = _canonical_bumn_name(text)
+            if not ck or len(ck) < 4:
+                continue
+            if ck not in seen:
+                seen[ck] = text
+
+    total_found = len(seen)
+    print(f"\n  Found {total_found} BUMN names in directories\n")
+
+    new_companies = []
+    for ck, name in sorted(seen.items(), key=lambda x: x[1]):
+        if ck in existing:
+            continue
+        is_dup = False
+        for ek in existing:
+            if (ck in ek or ek in ck) and len(ck) > 3 and len(ek) > 3:
+                is_dup = True
+                print(f"  ℹ Skipping match '{ek}': {name}")
+                break
+        if is_dup:
+            continue
+
+        new_companies.append(name)
+        if dry_run:
+            print(f"  [new] {name} → would add to config")
+        else:
+            print(f"  [+] {name}")
+
+    if not dry_run and new_companies:
+        for name in new_companies:
+            key = _canonical_bumn_name(name)[:20]
+            for prefix in ['pt', 'persero']:
+                if key.startswith(prefix):
+                    key = key[len(prefix):]
+                    break
+            cfg['companies'].append({
+                'key': key,
+                'name': name,
+                'csr_website': '',
+                'email': '',
+                'proposal_file': 'csr_' + key + '.md',
+            })
+        with open(CONFIG_PATH, 'w') as f:
+            yaml.dump(cfg, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+        print(f"\n  ✓ Added {len(new_companies)} new companies to config\n")
+    elif not new_companies:
+        print("  No new companies found.\n")
 
 
 # ── CLI ────────────────────────────────────────────────────────────────
 
 def main():
     parser = argparse.ArgumentParser(
-        description='CSR Pipeline — research → draft → enrich → outreach',
+        description='CSR Pipeline — research → draft → enrich → export → outreach → discover',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent("""\
             Examples:
@@ -693,28 +1120,45 @@ def main():
               python3 scripts/csr_pipeline.py --stage enrich --company bca --force
         """),
     )
-    parser.add_argument('--stage', choices=['research', 'draft', 'enrich', 'outreach', 'all'],
+    parser.add_argument('--stage', choices=['research', 'draft', 'enrich', 'export', 'outreach', 'discover', 'all'],
                         default='all', help='Pipeline stage to run (default: all)')
     parser.add_argument('--company', default='all',
                         help='Company key from config, or "all" (default: all)')
     parser.add_argument('--dry-run', action='store_true',
                         help='Preview without side effects')
     parser.add_argument('--force', action='store_true',
-                        help='Overwrite existing proposal files on draft/enrich')
+                        help='Overwrite existing proposal files on draft/enrich; resend already-sent companies')
     parser.add_argument('--verbose', action='store_true',
                         help='Detailed output')
+    parser.add_argument('--sent-log', nargs='?', const='view', choices=['view', 'clear'],
+                        help='View or clear the sent log')
 
     args = parser.parse_args()
 
     # Load config
     cfg = load_config()
+
+    # Handle --sent-log
+    if args.sent_log:
+        if args.sent_log == 'clear':
+            _save_sent_log({})
+            print("Sent log cleared.\n")
+        else:
+            log = _load_sent_log()
+            if not log:
+                print("Sent log is empty.\n")
+            else:
+                print(f"Sent log — {len(log)} entries:\n")
+                for k, v in sorted(log.items()):
+                    print(f"  {k}: {v.get('name','?')} → {v.get('email','?')} at {v.get('timestamp','?')}")
+                print()
+        return
     companies = get_companies(cfg, args.company)
 
     print(f"CSR Pipeline — {args.stage} stage")
     if args.dry_run:
         print("  [dry-run mode — no changes made]\n")
-
-    stages = ['research', 'draft', 'enrich', 'outreach'] if args.stage == 'all' else [args.stage]
+    stages = ['research', 'draft', 'enrich', 'export', 'outreach', 'discover'] if args.stage == 'all' else [args.stage]
 
     for stage in stages:
         if stage == 'research':
@@ -723,8 +1167,12 @@ def main():
             stage_draft(cfg, companies, args.dry_run, args.force)
         elif stage == 'enrich':
             stage_enrich(cfg, companies, args.dry_run, args.force)
+        elif stage == 'export':
+            stage_export(cfg, companies, args.dry_run, args.force)
         elif stage == 'outreach':
-            stage_outreach(cfg, companies, args.dry_run)
+            stage_outreach(cfg, companies, args.dry_run, args.force)
+        elif stage == 'discover':
+            stage_discover(cfg, args.dry_run)
 
     print("Pipeline complete.\n")
 
