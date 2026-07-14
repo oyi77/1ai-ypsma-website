@@ -15,9 +15,10 @@ export const ORG_AGE = 58;
 
 export const ORG_LEGALITY = {
   notaris: 'Notaris H. Abdul Aziz, S.H., No. 23 Tahun 1968',
-  sk_kemenkumham: 'AHU-0012345.AH.01.04 Tahun 2020',
+  sk_kemenkumham: 'AHU-0012345.AH.01.04 Tahun 2020 — SK Kemenkumham RI',
   npwp: '01.234.567.8-999.000',
-  domisili: 'Jl. KH. Wahid Hasyim No. 42, Jombang, Jawa Timur 61419',
+  domisili: 'Jl. Diponegoro No.34, RT/RW 001/006, Gondek, Mojowarno, Jombang, Jawa Timur 61475',
+  npsn: '20503515',
 };
 
 export const NAV_ITEMS = [
@@ -39,11 +40,11 @@ export const NAV_ITEMS = [
 ] as const;
 
 export const CONTACT_INFO = {
-  address: 'Jl. KH. Wahid Hasyim No. 42, Jombang, Jawa Timur 61419',
-  phone: '+62 321 8888 123',
-  wa: '6281234567890',
+  address: 'Jl. Diponegoro Dsn. Ngelo No.34, Gondek, Mojowarno, Jombang, Jawa Timur 61475',
+  phone: '+62 822-3455-1160',
+  wa: '6282234551160',
   email: 'info@ypsma.org',
-  maps: 'https://maps.google.com/?q=-7.5450,112.2331',
+  maps: 'https://maps.app.goo.gl/m9XtLR6eY2Ss71gV9',
   social: {
     facebook: 'https://facebook.com/ypsmjombang',
     instagram: 'https://instagram.com/ypsmjombang',

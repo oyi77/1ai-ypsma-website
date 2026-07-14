@@ -1,56 +1,53 @@
 ---
-import { impactStats } from '../../data/stats';
 ---
 
-<section class="bg-primary-900 text-white py-16">
+<section class="bg-neutral-50 py-20">
   <div class="max-w-6xl mx-auto px-4">
     <!-- Section heading -->
     <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold font-heading mb-3" data-i18n="stats.title">Statistik &amp; Dampak</h2>
-      <p class="text-white/60 max-w-2xl mx-auto" data-i18n="stats.subtitle">
-        Transparansi adalah komitmen kami. Berikut capaian dan dampak nyata dari program-program YPSM.
+      <h2 class="text-3xl md:text-4xl font-bold font-heading mb-3">Dampak Donasi Anda</h2>
+      <p class="text-neutral-500 max-w-2xl mx-auto">
+        Setiap rupiah yang Anda donasikan langsung berdampak pada santri
       </p>
     </div>
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-      {
-        impactStats.map((stat) => (
-          <div class="group bg-white/5 backdrop-blur-sm rounded-xl p-6 text-center transition-all duration-300 hover:scale-105 hover:bg-white/10 border border-white/10">
-            <!-- Icon placeholder -->
-            <div class="w-14 h-14 mx-auto mb-4 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-secondary-500/20 transition-colors duration-300">
-              <span class="text-xl text-secondary-400">
-                {
-                  stat.icon === 'chart' ? '📊' :
-                  stat.icon === 'scholarship' ? '🎓' :
-                  stat.icon === 'teachers' ? '👨‍🏫' :
-                  stat.icon === 'shield' ? '🛡️' : '📌'
-                }
-              </span>
-            </div>
-            <p class="text-4xl font-bold text-white font-heading mb-1">{stat.value}</p>
-            <p class="text-white/60 text-sm" data-i18n={stat.key}>{stat.label}</p>
-          </div>
-        ))
-      }
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white shadow rounded-xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-4 bg-secondary-500/10 rounded-full flex items-center justify-center">
+          <!-- Users icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="text-4xl text-secondary-500" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <p class="text-3xl font-bold text-primary-800 mb-1">250</p>
+        <p class="text-sm text-neutral-500">Santri Dapat Makan</p>
+      </div>
 
-    <!-- Progress Bar -->
-    <div class="mt-12 bg-white/10 rounded-xl p-6 md:p-8">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-white/80 font-medium text-sm" data-i18n="stats.fundDistributed">Dana Tersalurkan ke Program</span>
-        <span class="text-secondary-400 font-bold">85%</span>
+      <div class="bg-white shadow rounded-xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-4 bg-secondary-500/10 rounded-full flex items-center justify-center">
+          <!-- Heart icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="text-4xl text-secondary-500" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <p class="text-3xl font-bold text-primary-800 mb-1">Rp 85 Jt</p>
+        <p class="text-sm text-neutral-500">Biaya Pangan/Bulan</p>
       </div>
-      <div class="w-full bg-white/10 rounded-full h-4 overflow-hidden">
-        <div
-          class="h-full rounded-full bg-gradient-to-r from-secondary-500 to-secondary-400 transition-all duration-1000"
-          style="width: 85%"
-        ></div>
+
+      <div class="bg-white shadow rounded-xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-4 bg-secondary-500/10 rounded-full flex items-center justify-center">
+          <!-- Target icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="text-4xl text-secondary-500" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <p class="text-3xl font-bold text-primary-800 mb-1">Rp 150 Jt</p>
+        <p class="text-sm text-neutral-500">Target Bulanan</p>
       </div>
-      <p class="text-white/50 text-xs mt-3" data-i18n="stats.fundDetail">
-        Dari total donasi yang terkumpul, 85% disalurkan langsung ke program pendidikan dan sosial.
-        10% untuk operasional, dan 5% sebagai cadangan.
-      </p>
+
+      <div class="bg-white shadow rounded-xl p-6 text-center">
+        <div class="w-14 h-14 mx-auto mb-4 bg-secondary-500/10 rounded-full flex items-center justify-center">
+          <!-- Smile icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="text-4xl text-secondary-500" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <p class="text-3xl font-bold text-primary-800 mb-1">1.000+</p>
+        <p class="text-sm text-neutral-500">Donatur Aktif</p>
+      </div>
     </div>
   </div>
 </section>

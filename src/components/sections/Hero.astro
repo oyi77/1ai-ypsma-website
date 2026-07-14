@@ -15,13 +15,6 @@ import { ORG_SHORT } from '../../lib/constants';
   <!-- Dark overlay -->
   <div class="absolute inset-0 bg-gradient-to-r from-primary-900/85 via-primary-900/70 to-primary-900/60"></div>
 
-  <!-- Decorative Arabic Quote -->
-  <span
-    class="absolute top-8 right-4 md:top-12 md:right-12 text-6xl md:text-8xl text-white/10 font-arabic leading-none select-none pointer-events-none"
-    aria-hidden="true"
-  >
-    قُلْ إِنَّ صَلَاتِي وَنُسُكِي
-  </span>
 
   <!-- Content -->
   <div class="relative z-10 max-w-4xl mx-auto px-4 py-20 text-center">
@@ -30,48 +23,29 @@ import { ORG_SHORT } from '../../lib/constants';
 
     <!-- Heading -->
     <h1 class="text-3xl md:text-5xl font-bold text-white font-heading leading-tight mb-6" data-i18n="hero.title">
-      Mencetak Generasi Beriman, Berilmu, dan Berakhlak Mulia
+      Bersama Wujudkan Santri Berprestasi &amp; Berakhlak Mulia
     </h1>
 
     <!-- Subtitle -->
     <p class="text-lg md:text-xl text-white/80 max-w-3xl mx-auto mb-10 leading-relaxed" data-i18n="hero.subtitle">
-      Yayasan Pendidikan &amp; Sosial Ma'arif — mengelola RA Perwanida, MI Miftahul Ulum,
-      SMP Plus Ma'arif, dan PPTQ sejak 1968
+      Yayasan Pendidikan &amp; Sosial Ma'arif — Setiap Rp 50.000 Anda adalah 2 santri makan sehari
     </p>
 
-    <!-- Stat Pills -->
-    <div class="flex flex-wrap justify-center gap-3 mb-12">
-      {
-        [
-          { value: '58 Tahun', label: 'Berdiri sejak 1968' },
-          { value: '640+', label: 'Santri Aktif' },
-          { value: '3000+', label: 'Alumni' },
-        ].map((stat) => (
-          <div
-            class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 border border-white/20 text-white"
-            title={stat.label}
-          >
-            <span class="font-bold text-secondary-300">{stat.value}</span>
-          </div>
-        ))
-      }
-    </div>
 
     <!-- CTAs -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
       <button
         data-i18n="hero.cta"
-        data-campaign-label="Donasi Sekarang"
         onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'general',campaignLabel:'Donasi Sekarang'}}))"
         class="bg-coral-500 hover:bg-coral-600 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all duration-200 shadow-soft hover:shadow-medium"
       >
         Donasi Sekarang
       </button>
       <a
-        href="/program/"
-        class="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold transition-all duration-200" data-i18n="hero.learn"
+        href="/tentang-kami/"
+        class="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold transition-all duration-200"
       >
-        Jelajahi Program
+        Jadi Mitra Donatur
       </a>
     </div>
   </div>

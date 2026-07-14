@@ -1,72 +1,50 @@
 ---
-// Closing CTA section - YPSM Jombang
+// Mitra & Relawan CTA section - YPSM Jombang
 ---
 
-<section class="bg-gradient-warm text-white py-20 text-center">
+<section class="bg-neutral-50 py-20">
   <div class="max-w-4xl mx-auto px-4">
-    <!-- Arabic decorative quote -->
-    <p class="font-arabic text-2xl text-white/15 mb-8 leading-loose" aria-hidden="true">
-      &#x645;&#x646; &#x630;&#x622; &#x627;&#x644;&#x630;&#x64A; &#x64A;&#x642;&#x631;&#x636; &#x627;&#x644;&#x644;&#x647; &#x642;&#x631;&#x636;&#x64B;&#x627; &#x62D;&#x633;&#x646;&#x64B;&#x627; &#x641;&#x64A;&#x636;&#x627;&#x639;&#x641;&#x647; &#x644;&#x647; &#x623;&#x636;&#x639;&#x627;&#x641;&#x64B;&#x627; &#x643;&#x62B;&#x64A;&#x631;&#x629;
-    </p>
-
-    <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading" data-i18n="cta.title">
-      Mulai Donasi &amp; Jadi Bagian dari Perubahan
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-900 mb-4 font-heading">
+      Jadi Mitra Kami
     </h2>
-
-    <p class="text-lg text-white/75 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">
-      Setiap rupiah yang Anda donasikan akan menjadi cahaya bagi masa depan mereka
+    <p class="text-lg text-neutral-600 text-center mb-12 max-w-2xl mx-auto">
+      Ajak perusahaan, masjid, atau komunitas Anda bergandeng tangan untuk pendidikan santri
     </p>
 
-    <!-- CTA Buttons -->
-    <div class="flex flex-wrap justify-center gap-4 mb-14">
-      <button
-        onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'santunan-ikhlas',campaignLabel:'Santunan'}}))"
-        data-i18n="cta.santunan.cta"
-        class="border-2 border-secondary-500 text-secondary-300 hover:bg-secondary-500/20 px-8 py-3 rounded-lg font-semibold transition-all"
-      >
-        Santunan
-      </button>
-      <button
-        onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'orang-tua-asuh',campaignLabel:'Orang Tua Asuh'}}))"
-        data-i18n="cta.ota.cta"
-        class="bg-coral-500 hover:bg-coral-600 px-8 py-3 rounded-lg font-bold transition-all"
-      >
-        Orang Tua Asuh
-      </button>
-      <button
-        onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'wakaf',campaignLabel:'Wakaf'}}))"
-        data-i18n="cta.wakaf.cta"
-        class="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold transition-all"
-      >
-        Wakaf
-      </button>
-    </div>
-
-    <!-- Newsletter signup -->
-    <div class="max-w-lg mx-auto">
-      <form class="flex flex-col md:flex-row gap-3 mb-4" onsubmit="event.preventDefault();">
-        <input
-          type="email"
-          placeholder="Email Anda"
-          required
-          class="flex-1 px-4 py-3 rounded-lg text-primary-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-secondary-500"
-        />
+    <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+      <!-- Card 1: Donatur Rutin -->
+      <div class="bg-white shadow-lg rounded-xl p-8 text-center">
+        <div class="text-5xl mb-4">&#x1F91D;</div>
+        <h3 class="text-xl font-bold text-primary-900 mb-3 font-heading">
+          Donatur Rutin
+        </h3>
+        <p class="text-neutral-600 mb-8">
+          Donasi bulanan mulai Rp 50.000 untuk santri
+        </p>
         <button
-          type="submit"
-          class="bg-secondary-500 text-primary-900 font-semibold px-6 py-3 rounded-lg hover:bg-secondary-400 transition-all whitespace-nowrap"
+          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'general',campaignLabel:'Donasi Rutin'}}))"
+          class="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all"
         >
-          Dapatkan Update
+          Donasi Rutin
         </button>
-      </form>
+      </div>
 
-      <label class="flex items-center justify-center gap-2 text-sm text-white/60 cursor-pointer">
-        <input type="checkbox" class="rounded border-white/30 bg-transparent" />
-        <span>Saya setuju dihubungi via WA</span>
-      </label>
+      <!-- Card 2: Mitra & Relawan -->
+      <div class="bg-white shadow-lg rounded-xl p-8 text-center">
+        <div class="text-5xl mb-4">&#x1F49A;</div>
+        <h3 class="text-xl font-bold text-primary-900 mb-3 font-heading">
+          Mitra &amp; Relawan
+        </h3>
+        <p class="text-neutral-600 mb-8">
+          Bergabung sebagai relawan atau mitra program
+        </p>
+        <a
+          href="/kontak/"
+          class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+        >
+          Hubungi Kami
+        </a>
+      </div>
     </div>
-
-    <p class="mt-10 text-white/50 text-sm">
-      Bergabung dengan 200+ donatur tetap
-    </p>
   </div>
 </section>
