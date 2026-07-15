@@ -42,6 +42,7 @@ const AYO_BANTU_CAMPAIGNS = [
             href={campaign.url}
             target="_blank"
             rel="noopener noreferrer"
+            onclick={"if(window.fbq)fbq('track','ViewContent',{content_name:'" + campaign.url.split('/').pop() + "',content_category:'ayobantu'});"}
             class="block bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-secondary-500/50 transition-all duration-300 group"
           >
             <div class="text-4xl mb-4">{campaign.icon}</div>
@@ -65,6 +66,7 @@ const AYO_BANTU_CAMPAIGNS = [
         href="https://www.ayobantu.com/campaign?campaigner=YAYASAN%20PENDIDIKAN%20DAN%20SOSIAL%20MAARIF"
         target="_blank"
         rel="noopener noreferrer"
+        onclick="if(window.fbq)fbq('track','ViewContent',{content_name:'ayobantu-view-all',content_category:'ayobantu'});"
         class="inline-flex items-center gap-2 text-white/60 hover:text-secondary-400 transition-colors text-sm"
       >
         Lihat semua campaign di AyoBantu

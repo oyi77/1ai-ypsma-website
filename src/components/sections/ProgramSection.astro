@@ -36,6 +36,9 @@ const HEADLINES: Record<string, { title: string; cta: string }> = {
     cta: 'Santuni Yatim',
   },
 };
+const trackView = (slug: string, cat: string) =>
+  "if(window.fbq)fbq('track','ViewContent',{content_name:'" + slug + "',content_category:'" + cat + "'});";
+
 ---
 
 <section id="program" class="bg-primary-900 text-white py-20">
@@ -118,6 +121,7 @@ const HEADLINES: Record<string, { title: string; cta: string }> = {
               <a
                 href={"/program/" + campaign.slug + "/"}
                 class="inline-block bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-center"
+                onclick={trackView(campaign.slug, 'program-section')}
                 data-campaign-label={campaign.title}
               >
                 {displayCta}

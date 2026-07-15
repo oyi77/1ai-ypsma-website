@@ -215,6 +215,7 @@ const trustStats = [
                 </div>
                 <a
                   href={`/program/${c.slug}/`}
+                  data-campaign-slug={c.slug}
                   class="inline-block bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-center"
                 >
                   {cta}
@@ -249,6 +250,7 @@ const trustStats = [
           return (
             <a
               href={`/program/${c.slug}/`}
+              data-campaign-slug={c.slug}
               class="group block bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-strong transition-all duration-200 hover:-translate-y-1 border border-neutral-100"
             >
               <div class="aspect-[16/9] overflow-hidden relative">
@@ -330,6 +332,7 @@ const trustStats = [
           </p>
           <a
             href="/program/sedekah-pangan-santri/"
+            data-fbq-donate="true"
             class="inline-block bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all w-full"
           >
             Beri Makan Santri Hari Ini
@@ -343,6 +346,7 @@ const trustStats = [
           </p>
           <a
             href="/program/sedekah-anak-yatim/"
+            data-fbq-donate="true"
             class="inline-block bg-secondary-500 hover:bg-secondary-600 text-primary-900 px-6 py-3 rounded-lg font-semibold transition-all w-full"
           >
             Santuni Anak Yatim Tiap Bulan
@@ -359,6 +363,21 @@ const trustStats = [
       </div>
     </div>
   </section>
+  <script is:inline>
+    document.addEventListener('click', function(e) {
+      var target = e.target.closest('[data-campaign-slug]');
+      if (target && window.fbq) {
+        fbq('track', 'ViewContent', {
+          content_name: target.getAttribute('data-campaign-slug'),
+          content_category: 'program-page'
+        });
+      }
+      var donate = e.target.closest('[data-fbq-donate]');
+      if (donate && window.fbq) {
+        fbq('track', 'Donate');
+      }
+    });
+  </script>
 
   <Footer />
 </MainLayout>

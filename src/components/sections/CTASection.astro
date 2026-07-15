@@ -27,7 +27,7 @@
           memastikan mereka fokus ngaji dengan perut kenyang.
         </p>
         <button
-          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'sedekah-pangan-santri',campaignLabel:'Beri Makan Santri'}}))"
+          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'sedekah-pangan-santri',campaignLabel:'Beri Makan Santri'}}));if(window.fbq)fbq('track','Donate',{content_name:'Beri Makan Santri',content_category:'CTA'});"
           class="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all w-full"
         >
           Beri Makan Santri Hari Ini
@@ -44,7 +44,7 @@
           Rp 50.000/bulan — kurang dari Rp 1.700/hari. Jadilah orang tua asuh bagi santri yatim setiap bulannya.
         </p>
         <button
-          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'sedekah-anak-yatim',campaignLabel:'Santuni Anak Yatim'}}))"
+          onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'sedekah-anak-yatim',campaignLabel:'Santuni Anak Yatim'}}));if(window.fbq)fbq('track','Donate',{content_name:'Santuni Anak Yatim',content_category:'CTA'});"
           class="bg-secondary-500 hover:bg-secondary-600 text-primary-900 px-6 py-3 rounded-lg font-semibold transition-all w-full"
         >
           Santuni Anak Yatim Tiap Bulan
@@ -55,7 +55,7 @@
     <!-- Garis bawah + kontak -->
     <div class="mt-12 border-t border-white/10 pt-8">
       <p class="text-white/50 text-sm">
-        Ada pertanyaan? Hubungi kami via <a href="https://wa.me/6281312312312" class="text-secondary-400 underline">WhatsApp</a> atau lihat <a href="#faq" class="text-secondary-400 underline">FAQ</a>
+        Ada pertanyaan? Hubungi kami via <a href="https://wa.me/6281312312312" onclick="if(window.fbq)fbq('track','Contact',{content_name:'CTASection WA',content_category:'CTA'});" class="text-secondary-400 underline">WhatsApp</a> atau lihat <a href="#faq" class="text-secondary-400 underline">FAQ</a>
       </p>
     </div>
   </div>

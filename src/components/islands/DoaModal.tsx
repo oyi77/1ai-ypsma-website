@@ -120,16 +120,17 @@ export default function DoaModal() {
 
   const handleCta = useCallback((action: string) => {
     if (action === 'aamiin') {
+      if (window.fbq) window.fbq('track', 'CompleteRegistration', { content_name: 'Doa Aamiin', content_category: 'doa-modal' });
       setCount((c) => c + 1);
       setSlide(1);
     } else if (action === 'whatsapp') {
+      if (window.fbq) window.fbq('track', 'Contact', { content_name: 'Doa WA Chat', content_category: 'doa-modal' });
       window.open(WA_URL, '_blank', 'noopener');
       setSlide(2);
     } else if (action === 'save') {
-      // Copy phone number to clipboard
+      if (window.fbq) window.fbq('track', 'Contact', { content_name: 'Doa Simpan Nomor', content_category: 'doa-modal' });
       navigator.clipboard.writeText('+62 822-3455-1160').catch(() => {});
       window.open(WA_URL, '_blank', 'noopener');
-      // Schedule close after action
       setTimeout(() => setVisible(false), 800);
     }
   }, []);

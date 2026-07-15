@@ -44,7 +44,7 @@
     <!-- CTAs -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
       <button
-        onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'general',campaignLabel:'Bantu Santri Hafidz'}}))"
+        onclick="event.preventDefault();window.dispatchEvent(new CustomEvent('campaign:donate',{detail:{campaign:'general',campaignLabel:'Bantu Santri Hafidz'}}));if(window.fbq)fbq('track','Donate',{content_name:'Bantu Santri Hafidz',content_category:'Hero'});"
         class="bg-coral-500 hover:bg-coral-600 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-soft hover:shadow-medium"
       >
         ❤️ Bantu Ahmad & 249 Santri Hafidz
