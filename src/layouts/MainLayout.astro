@@ -1,4 +1,5 @@
 ---
+import DoaModal from '../components/islands/DoaModal';
 interface Props {
   title?: string;
   description?: string;
@@ -133,6 +134,7 @@ window.__TRANSLATIONS = {"id": {"nav.home": "Beranda", "nav.beranda": "Beranda",
   </head>
   <body class="font-body antialiased">
     <slot />
+    <DoaModal client:load />
     <!-- Donate link interceptor -->
     <script is:inline>
       document.addEventListener('click', function(e) {
