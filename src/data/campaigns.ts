@@ -72,7 +72,7 @@ export const CAMPAIGNS: Campaign[] = [
     description: 'Bantu penuhi kebutuhan makan 3x sehari untuk 250 santri penghafal Al-Qur\'an di PPTQ Darussalam Jombang. Rp 58,8 juta/target bulanan untuk gizi santri dhuafa.',
     ogTitle: 'Sedekah Pangan Santri — Penuhi Gizi 250 Santri Penghafal Al-Qur\'an',
     ogDescription: 'Bantu penuhi kebutuhan makan 3x sehari untuk 250 santri penghafal Al-Qur\'an di PPTQ Darussalam Jombang.',
-    heroImage: '/images/drive-new/pangan-santri.webp',
+    heroImage: '/images/drive-new/santri-makan.webp',
     badge: 'Program Pangan Santri — Rutin Bulanan',
     stats: [
       { value: '250', label: 'Santri Mukim' },
@@ -508,7 +508,7 @@ export const CAMPAIGNS: Campaign[] = [
     description: 'Perbaikan atap bocor, meja-kursi rusak, pengecatan, dan kasur asrama. Seluruhnya terdampak kenaikan harga material bangunan.',
     ogTitle: 'Sarana Prasarana YPSMA — Perbaiki Fasilitas 600 Siswa',
     ogDescription: 'Perbaikan atap bocor, meja-kursi, pengecatan, dan kasur asrama yang terdampak kenaikan harga material.',
-    heroImage: '/images/drive-new/sarpras/sarpras-thumb.webp',
+    heroImage: '/images/drive-new/sarpras-thumb.webp',
     badge: 'Program Sarpras — Satu Kali',
     stats: [
       { value: '600', label: 'Siswa Terdampak' },
@@ -685,7 +685,7 @@ export const CAMPAIGNS: Campaign[] = [
     description: 'Santunan rutin untuk 58 anak yatim piatu (10 di yayasan, 48 di sekitar). Per anak Rp 300.000 berupa tunai dan sembako. Harga sembako naik imbas Dolar.',
     ogTitle: 'Sedekah Anak Yatim YPSMA — Santunan 58 Anak Yatim',
     ogDescription: 'Santunan rutin untuk 58 anak yatim piatu. Rp 300.000/anak berupa tunai dan sembako.',
-    heroImage: '/images/campaigns/aisyah-closeup.webp',
+    heroImage: '/images/drive-new/yatim-thumb.webp',
     badge: 'Program Anak Yatim — Rutin Bulanan',
     stats: [
       { value: '58', label: 'Anak Yatim & Piatu' },
