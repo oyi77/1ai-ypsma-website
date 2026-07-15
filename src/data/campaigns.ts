@@ -72,7 +72,7 @@ export const CAMPAIGNS: Campaign[] = [
     description: 'Bantu penuhi kebutuhan makan 3x sehari untuk 250 santri penghafal Al-Qur\'an di PPTQ Darussalam Jombang. Rp 58,8 juta/target bulanan untuk gizi santri dhuafa.',
     ogTitle: 'Sedekah Pangan Santri — Penuhi Gizi 250 Santri Penghafal Al-Qur\'an',
     ogDescription: 'Bantu penuhi kebutuhan makan 3x sehari untuk 250 santri penghafal Al-Qur\'an di PPTQ Darussalam Jombang.',
-    heroImage: '/images/drive-new/makan/bagi-makan-1.webp',
+    heroImage: '/images/drive-new/pangan-santri.webp',
     badge: 'Program Pangan Santri — Rutin Bulanan',
     stats: [
       { value: '250', label: 'Santri Mukim' },
