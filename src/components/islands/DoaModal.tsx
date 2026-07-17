@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-
-const WA_NUMBER = '6285655713100';
-const WA_MESSAGE = encodeURIComponent(
-  'Assalamu\'alaikum, saya ingin tahu lebih lanjut tentang program donasi YPSM Jombang.'
-);
-const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
+import { getWaUrl, trackWaClick } from '../../lib/tracking';
 
 const STORAGE_KEY = 'ypsma-doa-modal-seen';
 
@@ -81,6 +76,7 @@ export default function DoaModal() {
   const [count, setCount] = useState(128);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const closeAttemptRef = useRef(0);
+  const triggeredRef = useRef(false);
 
   // Check sessionStorage on mount
   useEffect(() => {
@@ -90,21 +86,36 @@ export default function DoaModal() {
       }
     } catch { /* storage unavailable — show anyway */ }
 
-    // IntersectionObserver on sentinel at 50% page height
-    const el = sentinelRef.current;
-    if (!el) return;
+    // ── Trigger 1: Exit intent (mouse leaves viewport from top) ──
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (triggeredRef.current) return;
+      // Only trigger when leaving from the top (towards browser chrome / close)
+      if (e.clientY <= 0) {
+        triggeredRef.current = true;
+        setVisible(true);
+      }
+    };
+    document.addEventListener('mouseleave', handleMouseLeave);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    // ── Trigger 2: Near bottom of page ──
+    const handleScroll = () => {
+      if (triggeredRef.current) return;
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      const progress = scrollTop / docHeight;
+      // Show when user has scrolled 85%+ of the page
+      if (progress >= 0.85) {
+        triggeredRef.current = true;
+        setVisible(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Mark seen when modal shown
@@ -120,17 +131,20 @@ export default function DoaModal() {
 
   const handleCta = useCallback((action: string) => {
     if (action === 'aamiin') {
-      if (window.fbq) window.fbq('track', 'CompleteRegistration', { content_name: 'Doa Aamiin', content_category: 'doa-modal' });
+      const w = window as Window & { fbq?: Function };
+      if (typeof w.fbq === 'function') w.fbq('track', 'CompleteRegistration', { content_name: 'Doa Aamiin', content_category: 'doa-modal' });
       setCount((c) => c + 1);
       setSlide(1);
     } else if (action === 'whatsapp') {
-      if (window.fbq) window.fbq('track', 'Contact', { content_name: 'Doa WA Chat', content_category: 'doa-modal' });
-      window.open(WA_URL, '_blank', 'noopener');
+      trackWaClick('umum', 'doa-modal');
+      const { url } = getWaUrl('umum');
+      window.open(url, '_blank', 'noopener');
       setSlide(2);
     } else if (action === 'save') {
-      if (window.fbq) window.fbq('track', 'Contact', { content_name: 'Doa Simpan Nomor', content_category: 'doa-modal' });
+      trackWaClick('umum', 'doa-modal-save');
       navigator.clipboard.writeText('+62 856-5571-3100').catch(() => {});
-      window.open(WA_URL, '_blank', 'noopener');
+      const { url } = getWaUrl('umum');
+      window.open(url, '_blank', 'noopener');
       setTimeout(() => setVisible(false), 800);
     }
   }, []);
@@ -138,21 +152,15 @@ export default function DoaModal() {
   const handleOverlayClick = useCallback(() => {
     closeAttemptRef.current += 1;
     if (closeAttemptRef.current >= 2) {
-      // Second tap on overlay = dismiss
       handleClose();
-    } else {
-      // First tap = show reminder (don't close)
-      if (slide === 0) {
-        // subtle hint — stay on slide, no change
-      }
     }
-  }, [slide, handleClose]);
+  }, [handleClose]);
 
   if (!visible) {
     return (
       <>
-        {/* Sentinel — invisible, triggers modal at 50% scroll */}
-        <div ref={sentinelRef} className="absolute left-0 w-px h-px opacity-0 pointer-events-none" style={{ top: '50vh' }} />
+        {/* Sentinel — still kept for reference but no longer triggers */}
+        <div ref={sentinelRef} className="hidden" />
       </>
     );
   }

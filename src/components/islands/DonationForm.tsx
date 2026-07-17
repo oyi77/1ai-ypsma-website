@@ -1,19 +1,7 @@
 import React from 'react';
 import { useState, useCallback, useEffect } from 'react';
 import { DONATION_TYPES, PAYMENT_METHODS } from '../../lib/constants';
-// Midtrans Snap type declarations
-interface SnapPayOptions {
-  onSuccess?: (result: unknown) => void;
-  onPending?: (result: unknown) => void;
-  onError?: (result: unknown) => void;
-  onClose?: () => void;
-}
-interface SnapWindow {
-  snap: { pay: (token: string, options: SnapPayOptions) => void };
-}
-declare global {
-  interface Window extends SnapWindow {}
-}
+import { trackBoth } from '../../lib/tracking';
 
 const PRESET_AMOUNTS = [25000, 50000, 100000, 300000, 500000, 1000000];
 
@@ -38,12 +26,6 @@ interface DonationFormProps {
 }
 
 export default function DonationForm({ isOpen, onClose, defaultCampaign, defaultCampaignLabel }: DonationFormProps) {
-  useEffect(() => {
-    if (defaultCampaign) {
-      setDonationType(defaultCampaign);
-      setStep(2);
-    }
-  }, [defaultCampaign]);
   const [step, setStep] = useState(1);
   const [donationType, setDonationType] = useState('');
   const [nominal, setNominal] = useState<number | null>(null);
@@ -59,6 +41,36 @@ export default function DonationForm({ isOpen, onClose, defaultCampaign, default
 
   const numericCustom = customNominal ? parseInt(customNominal.replace(/\D/g, '')) || 0 : 0;
   const selectedAmount = nominal || numericCustom;
+
+  useEffect(() => {
+    if (defaultCampaign) {
+      setDonationType(defaultCampaign);
+      setStep(2);
+    }
+  }, [defaultCampaign]);
+
+  // Track: InitiateCheckout — fires when modal opens with campaign context
+  useEffect(() => {
+    if (!isOpen) return;
+    trackBoth('InitiateCheckout', {
+      content_name: defaultCampaign || donationType,
+      content_category: 'donation-form',
+      currency: 'IDR',
+      value: selectedAmount || 0,
+    }, { campaign_slug: defaultCampaign || donationType, donation_type: donationType });
+  }, [isOpen]);
+
+  // Track: AddPaymentInfo — fires when user selects a payment method
+  useEffect(() => {
+    if (!paymentMethod) return;
+    trackBoth('AddPaymentInfo', {
+      content_name: defaultCampaign || donationType,
+      content_category: 'donation-form',
+      currency: 'IDR',
+      value: selectedAmount || 0,
+    }, { campaign_slug: defaultCampaign || donationType, donation_type: donationType });
+  }, [paymentMethod]);
+
 
   const resetFormState = useCallback(() => {
     setStep(1);
@@ -128,6 +140,7 @@ export default function DonationForm({ isOpen, onClose, defaultCampaign, default
             email: email.trim() || undefined,
             phone: phone.trim(),
             wa_number: phone.trim(),
+            payment_method: paymentMethod,
           }),
         });
 
@@ -138,39 +151,11 @@ export default function DonationForm({ isOpen, onClose, defaultCampaign, default
 
         const data = await res.json();
 
-        // Load Midtrans Snap JS if not already loaded
-        if (!document.querySelector('script[data-client-key]')) {
-          await new Promise<void>((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = data.snap_base + '/snap/snap.js';
-            script.setAttribute('data-client-key', data.client_key);
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error('Gagal memuat pembayaran'));
-            document.head.appendChild(script);
-          });
+        // Redirect to payment URL (Midtrans Snap page)
+        if (!data.payment_url) {
+          throw new Error('Tautan pembayaran tidak ditemukan');
         }
-
-        window.snap.pay(data.token, {
-          onSuccess: () => {
-            if (window.fbq) window.fbq('track', 'Purchase', { value: selectedAmount, currency: 'IDR' });
-            const label = defaultCampaignLabel || DONATION_TYPES.find(t => t.id === donationType)?.label || 'Donasi';
-            const msg = `Halo kak, saya ${name} sudah melakukan donasi untuk ${label} sebesar Rp${selectedAmount.toLocaleString('id-ID')}. Mohon konfirmasinya ya, terima kasih.`;
-            window.location.href = `https://wa.me/6285655713100?text=${encodeURIComponent(msg)}`;
-          },
-          onPending: () => {
-            if (window.fbq) window.fbq('track', 'Purchase', { value: selectedAmount, currency: 'IDR' });
-            const label = defaultCampaignLabel || DONATION_TYPES.find(t => t.id === donationType)?.label || 'Donasi';
-            const msg = `Halo kak, saya ${name} sudah melakukan donasi untuk ${label} sebesar Rp${selectedAmount.toLocaleString('id-ID')}. Mohon konfirmasinya ya, terima kasih.`;
-            window.location.href = `https://wa.me/6285655713100?text=${encodeURIComponent(msg)}`;
-          },
-          onError: () => {
-            setErrors({ submit: 'Pembayaran gagal, coba lagi' });
-            setSubmitting(false);
-          },
-          onClose: () => {
-            setSubmitting(false);
-          },
-        });
+        window.location.href = data.payment_url;
       } catch (err) {
         setErrors({ submit: err instanceof Error ? err.message : 'Terjadi kesalahan' });
         setSubmitting(false);

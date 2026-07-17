@@ -4,9 +4,21 @@ pages_build_output_dir = "./dist"
 
 [vars]
 MIDTRANS_ENV = "production"
+META_PIXEL_ID = "771021905629860"
 
-# Secrets set via Cloudflare API (2026-07-12):
-#   MIDTRANS_SERVER_KEY = secret_text
-#   MIDTRANS_CLIENT_KEY = secret_text
-# Set via `curl -X PATCH .../pages/projects/1ai-ypmsa-website`
 # Build image v1 required (v2/v3 broken on this account)
+#
+# Dev secrets (set via Cloudflare API - write-only!)
+#   MIDTRANS_SERVER_KEY = Mid-server-xxx
+#   MIDTRANS_CLIENT_KEY = Mid-client-xxx
+#   META_ACCESS_TOKEN   = ...
+#
+# ⚠️ 2026-07-17: Keys overwritten during debugging; need re-set.
+#    Run: curl -X PATCH .../pages/projects/1ai-ypmsa-website \
+#      -d '{"deployment_configs":{"production":{"env_vars":{
+#        "MIDTRANS_SERVER_KEY":{"type":"secret_text","value":"..."},
+#        "MIDTRANS_CLIENT_KEY":{"type":"secret_text","value":"..."},
+#        "META_ACCESS_TOKEN":{"type":"secret_text","value":"..."}
+#      }}}}'
+#
+# Deploy via: ./deploy.sh  (uses --branch=main)

@@ -4,8 +4,10 @@ import Navbar from '../../components/sections/Navbar.astro';
 import Footer from '../../components/sections/Footer.astro';
 import { CAMPAIGNS } from '../../data/campaigns';
 import CampaignDonateButton from '../../components/islands/CampaignDonateButton';
+import { getWaUrl } from '../../lib/tracking';
 import PhotoSlideshow from '../../components/islands/PhotoSlideshow';
 import StickyDonateButton from '../../components/islands/StickyDonateButton';
+import WhatsappDonasi from '../../components/islands/WhatsappDonasi';
 
 export async function getStaticPaths() {
   return CAMPAIGNS.map((c) => ({
@@ -16,6 +18,7 @@ export async function getStaticPaths() {
 
 const { campaign } = Astro.props;
 const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, stats, stories, budgetLabel, budgetItems, budgetTotal, galleryImages, tiers, faqs, hook, masalah, solusi, tokoh, testimoni, campaignUpdate, videoUrl, videoThumbnail, donaturCount } = campaign;
+const waUrl = getWaUrl(campaign.slug).url;
 ---
 
 <MainLayout title={ogTitle} description={ogDescription} canonical={`https://ypsma.org/program/${campaign.slug}/`}>
@@ -68,28 +71,12 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
       <div class="flex flex-wrap gap-4">
         <CampaignDonateButton campaign={campaign.slug} campaignLabel={title} variant="primary" size="lg" client:load />
       </div>
-    </div>
-  </section>
 
-  <!-- ════════════════════════════════════════ -->
-  <!-- SECTION 2: MASALAH — Emotional Problem  -->
-  <!-- ════════════════════════════════════════ -->
-  <section class="py-20 md:py-28 bg-white">
-    <div class="container mx-auto px-4 max-w-5xl">
-      <div class="text-center mb-14">
-        <span class="inline-block px-4 py-1.5 bg-red-50 text-red-600 rounded-full text-sm font-semibold mb-4">KENYATAAN DI LAPANGAN</span>
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-primary-900 mb-4">Apa yang Terjadi?</h2>
-      </div>
-      <div class="grid md:grid-cols-1 gap-8 max-w-4xl mx-auto">
-        {(masalah || stories).map(s => (
-          <div class="flex gap-5 items-start bg-neutral-50 rounded-2xl p-6 md:p-8 hover:shadow-soft transition-shadow">
-            <div class="text-3xl md:text-4xl shrink-0 mt-1">{s.icon}</div>
-            <div>
-              <h3 class="text-xl font-heading font-bold text-primary-900 mb-2">{s.title}</h3>
-              <p class="text-neutral-600 leading-relaxed">{s.body}</p>
-            </div>
-          </div>
-        ))}
+      <!-- TRUST BADGES -->
+      <div class="flex flex-wrap items-center gap-6 mt-6 text-sm text-white/75">
+        <span class="inline-flex items-center gap-1.5">✅ <span>100% Tersalurkan ke Santri</span></span>
+        <span class="inline-flex items-center gap-1.5">📋 <span>Laporan Bulanan</span></span>
+        <span class="inline-flex items-center gap-1.5">🔒 <span>Pembayaran Aman</span></span>
       </div>
     </div>
   </section>
@@ -98,7 +85,7 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   <!-- SECTION 3: SATU TOKOH — Kisah Nyata    -->
   <!-- ════════════════════════════════════════ -->
   {tokoh && (
-    <section class="py-20 md:py-28 bg-neutral-50">
+    <section class="py-20 md:py-28 bg-neutral-50" data-track-section="kisah-tokoh">
       <div class="container mx-auto px-4 max-w-5xl">
         <div class="text-center mb-14">
           <span class="inline-block px-4 py-1.5 bg-secondary-100 text-secondary-700 rounded-full text-sm font-semibold mb-4">SATU KISAH NYATA</span>
@@ -126,15 +113,36 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   )}
 
   <!-- ════════════════════════════════════════ -->
+  <!-- SECTION 3: MASALAH — Emotional Problem  -->
+  <!-- ════════════════════════════════════════ -->
+  <section class="py-20 md:py-28 bg-white" data-track-section="masalah">
+      <div class="text-center mb-14">
+        <span class="inline-block px-4 py-1.5 bg-red-50 text-red-600 rounded-full text-sm font-semibold mb-4">KENYATAAN DI LAPANGAN</span>
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-primary-900 mb-4">Apa yang Terjadi?</h2>
+      </div>
+      <div class="grid md:grid-cols-1 gap-8 max-w-4xl mx-auto">
+        {(masalah || stories).map(s => (
+          <div class="flex gap-5 items-start bg-neutral-50 rounded-2xl p-6 md:p-8 hover:shadow-soft transition-shadow">
+            <div class="text-3xl md:text-4xl shrink-0 mt-1">{s.icon}</div>
+            <div>
+              <h3 class="text-xl font-heading font-bold text-primary-900 mb-2">{s.title}</h3>
+              <p class="text-neutral-600 leading-relaxed">{s.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ -->
   <!-- SECTION 4: DATA DAMPAK — Fakta & Emosi  -->
   <!-- ════════════════════════════════════════ -->
-  <section class="py-20 md:py-28 bg-white">
-    <div class="container mx-auto px-4 max-w-5xl">
+  <section class="py-20 md:py-28 bg-white" data-track-section="data-dampak">
       <div class="text-center mb-14">
         <span class="inline-block px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold mb-4">DATA & DAMPAK</span>
         <h2 class="text-3xl md:text-4xl font-heading font-bold text-primary-900 mb-4">Mengapa Ini Mendesak?</h2>
       </div>
-      <div class="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto">
         {stats.map(s => (
           <div class="text-center bg-primary-50 rounded-2xl p-8 hover:shadow-soft transition-shadow">
             <div class="text-3xl md:text-4xl font-heading font-bold text-secondary-600 mb-2">{s.value}</div>
@@ -151,8 +159,7 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   <!-- ════════════════════════════════════════ -->
   <!-- SECTION 5: SOLUSI — Apa yang Kami Lakukan-->
   <!-- ════════════════════════════════════════ -->
-  <section class="py-20 md:py-28 bg-primary-900 text-white">
-    <div class="container mx-auto px-4 max-w-5xl">
+  <section class="py-20 md:py-28 bg-primary-900 text-white" data-track-section="solusi">
       <div class="text-center mb-14">
         <span class="inline-block px-4 py-1.5 bg-white/15 rounded-full text-sm font-semibold mb-4">SOLUSI KAMI</span>
         <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Apa yang Bisa Kami Lakukan Bersama?</h2>
@@ -221,7 +228,7 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   <!-- SECTION 8: UPDATE — Perkembangan       -->
   <!-- ════════════════════════════════════════ -->
   {campaignUpdate && (
-    <section class="py-20 md:py-28 bg-primary-50">
+    <section class="py-20 md:py-28 bg-primary-50" data-track-section="update">
       <div class="container mx-auto px-4 max-w-4xl">
         <div class="text-center mb-10">
           <span class="inline-block px-4 py-1.5 bg-secondary-100 text-secondary-700 rounded-full text-sm font-semibold mb-4">PERKEMBANGAN TERKINI</span>
@@ -241,6 +248,11 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
             {campaignUpdate.progress > 0 && (
               <span class="text-sm font-semibold text-primary-900">{campaignUpdate.progress}% terkumpul</span>
             )}
+            {campaignUpdate.urgent && (
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold">
+                ⚠️ Mendesak — Stok Terbatas
+              </span>
+            )}
           </div>
           {campaignUpdate.progress > 0 && (
             <div class="w-full bg-neutral-200 rounded-full h-3 mb-6">
@@ -257,8 +269,7 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   <!-- SECTION 9: TESTIMONI — Suara Mereka    -->
   <!-- ════════════════════════════════════════ -->
   {testimoni && testimoni.length > 0 && (
-    <section class="py-20 md:py-28 bg-white">
-      <div class="container mx-auto px-4 max-w-4xl">
+    <section class="py-20 md:py-28 bg-white" data-track-section="testimoni">
         <div class="text-center mb-14">
           <span class="inline-block px-4 py-1.5 bg-secondary-100 text-secondary-700 rounded-full text-sm font-semibold mb-4">SUARA HATI</span>
           <h2 class="text-3xl md:text-4xl font-heading font-bold text-primary-900 mb-4">Apa Kata Mereka?</h2>
@@ -315,8 +326,7 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   <!-- ════════════════════════════════════════ -->
   <!-- SECTION 10: PILIH NOMINAL — Donasi     -->
   <!-- ════════════════════════════════════════ -->
-  <section class="py-20 md:py-28 bg-neutral-50" id="donasi">
-    <div class="container mx-auto px-4 max-w-4xl">
+  <section class="py-20 md:py-28 bg-neutral-50" id="donasi" data-track-section="pilih-nominal">
       <div class="text-center mb-14">
         <span class="inline-block px-4 py-1.5 bg-secondary-100 text-secondary-700 rounded-full text-sm font-semibold mb-4">PILIH NOMINAL</span>
         <h2 class="text-3xl md:text-4xl font-heading font-bold text-primary-900 mb-4">Mulai Donasi</h2>
@@ -324,19 +334,18 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
         {tiers.map(t => (
-          <div class={`rounded-2xl p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-strong ${t.featured ? 'bg-secondary-500 text-white shadow-strong ring-2 ring-secondary-300' : 'bg-white hover:shadow-soft border border-neutral-200'}`}>
+          <div class={`rounded-2xl p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-strong ${t.featured ? 'bg-secondary-500 text-white shadow-strong ring-2 ring-secondary-300' : 'bg-white hover:shadow-soft border border-neutral-200'}`} data-track="tier" data-amount={t.amount}>
             <div class={`text-2xl font-heading font-bold mb-1 ${t.featured ? 'text-white' : 'text-primary-900'}`}>{t.label}</div>
             <div class={`text-sm ${t.featured ? 'text-white/80' : 'text-neutral-500'}`}>{t.impact}</div>
             {t.featured && <div class="mt-2 text-xs bg-white/20 inline-block px-3 py-1 rounded-full">⭐ Paling Populer</div>}
           </div>
         ))}
-      </div>
-      <div class="text-center">
-        <CampaignDonateButton campaign={campaign.slug} campaignLabel={title} variant="primary" size="lg" client:load />
-        <p class="text-sm text-neutral-500 mt-4">Atau transfer langsung ke BRI 058501000742563 a.n. Yayasan Pendidikan Dan Sosial Maarif</p>
-      </div>
-    </div>
   </section>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- WhatsApp Pengurus — Konsultasi          -->
+  <!-- ════════════════════════════════════════ -->
+  <WhatsappDonasi campaign={campaign.slug} variant="card" client:load />
 
   <!-- ════════════════════════════════════════ -->
   <!-- SECTION 11: FAQ — Tanya Jawab          -->
@@ -368,20 +377,18 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   <!-- ════════════════════════════════════════ -->
   <!-- SECTION 12: CTA FINAL — Aksi            -->
   <!-- ════════════════════════════════════════ -->
-  <section class="py-20 md:py-28 bg-primary-900 text-white relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
+  <section class="py-20 md:py-28 bg-primary-900 text-white relative overflow-hidden" data-track-section="cta-final">
       <div class="absolute top-0 left-1/4 w-96 h-96 bg-secondary-500 rounded-full blur-3xl" />
       <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary-500 rounded-full blur-3xl" />
     </div>
     <div class="relative z-10 container mx-auto px-4 text-center">
-      <h2 class="text-3xl md:text-5xl font-heading font-bold mb-6 max-w-2xl mx-auto">Jangan Biarkan Mereka Berjuang Sendiri</h2>
-      <p class="text-lg md:text-xl text-white/80 max-w-xl mx-auto mb-10 leading-relaxed">Setiap detik yang berlalu adalah kesempatan yang hilang. Mulai sekarang — menjadi alasan senyuman mereka.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <CampaignDonateButton campaign={campaign.slug} campaignLabel={title} variant="primary" size="lg" client:load />
-        <a href="https://wa.me/6285655713100" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-8 py-3 bg-white/15 hover:bg-white/25 backdrop-blur rounded-full text-white font-medium transition-colors">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Tanya via WhatsApp
-        </a>
+      <h2 class="text-3xl md:text-5xl font-heading font-bold mb-6 max-w-4xl mx-auto">{campaign.cta || 'Ayo Berdonasi Sekarang'}</h2>
+      <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">Setiap Rp 50.000 bisa memberi makan seorang santri selama 3 hari. Bayangkan — kebaikan kecil Anda, bagi mereka sangat berarti.</p>
+      <CampaignDonateButton campaign={campaign.slug} campaignLabel={title} variant="primary" size="lg" client:load />
+      <a href={waUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-8 py-3 bg-white/15 hover:bg-white/25 backdrop-blur rounded-full text-white font-medium transition-colors">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-5.031c-.312-1.393-.527-2.801-.501-4.204.026-1.423.296-2.824.881-4.124.949-2.106 2.564-3.868 4.453-5.084 1.858-1.195 4.061-1.87 6.29-1.828 2.426.043 4.683.78 6.511 2.27 1.048.854 1.91 1.914 2.472 3.161.566 1.254.83 2.574.83 3.891 0 1.317-.264 2.637-.83 3.891-.562 1.247-1.424 2.307-2.472 3.161-1.828 1.49-4.085 2.227-6.511 2.27A9.837 9.837 0 0112 17.796c-.713 0-1.424-.064-2.121-.194l-.124-.024a.518.518 0 00-.059-.004 9.815 9.815 0 00-1.434-.239 10.008 10.008 0 00-1.466.142z"/></svg>
+        Donasi via WhatsApp
+      </a>
       </div>
     </div>
   </section>
@@ -414,4 +421,73 @@ const { title, subtitle, description, ogTitle, ogDescription, heroImage, badge, 
   <Footer />
 
   <StickyDonateButton client:load />
+  <WhatsappDonasi campaign={campaign.slug} variant="floating" client:load />
 </MainLayout>
+
+<script set:html={`
+;(function(){
+  var _cs = '${campaign.slug}';
+  var _cn = '${title.replace(/'/g, "\\'")}';
+  var _eSeq = 0;
+  function _eid(ev) {
+    return 'ypsma_' + ev + '_' + Date.now() + '_' + (++_eSeq);
+  }
+
+  if (window.fbq) {
+    var _vcId = _eid('ViewContent');
+    var _vcParams = {
+      content_name: _cn, content_category: _cs,
+      content_ids: [_cs], content_type: 'product',
+      campaign_slug: _cs, campaign_name: _cn,
+    };
+    fbq('track', 'ViewContent', _vcParams, {eventID: _vcId});
+
+    fetch('/api/meta-capi', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        event_name: 'ViewContent',
+        event_id: _vcId,
+        event_source_url: location.href,
+        user_data: {},
+        custom_data: _vcParams,
+      }),
+    }).catch(function(){});
+  }
+
+  document.addEventListener('click', function(e) {
+    var tier = e.target.closest('[data-track="tier"]');
+    if (tier && window.fbq) {
+      fbq('track', 'AddToWishlist', {
+        content_name: _cn, content_category: _cs,
+        value: parseFloat(tier.getAttribute('data-amount')||'0'),
+        currency: 'IDR', campaign_slug: _cs,
+      });
+    }
+  });
+
+  if ('IntersectionObserver' in window) {
+    var _observed = new WeakSet();
+    var _obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        if (_observed.has(el)) return;
+        _observed.add(el);
+        var sec = el.getAttribute('data-track-section');
+        if (sec && window.fbq) {
+          fbq('track', 'ViewContent', {
+            content_name: _cn + ' \\u2014 ' + sec,
+            content_category: _cs, campaign_slug: _cs,
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+    requestAnimationFrame(function() {
+      document.querySelectorAll('[data-track-section]').forEach(function(el) { _obs.observe(el); });
+    });
+  }
+})();
+`} />
+
+

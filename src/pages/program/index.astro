@@ -7,6 +7,7 @@ import FAQSection from '../../components/sections/FAQSection.astro';
 import { CAMPAIGNS, type Campaign } from '../../data/campaigns';
 import { CONTACT_INFO } from '../../lib/constants';
 import { ORG_ESTABLISHED } from '../../lib/constants';
+import WhatsappDonasi from '../../components/islands/WhatsappDonasi';
 
 // ── Priority ordering ──────────────────────────────────────────────
 const PRIORITY_SLUGS = [
@@ -379,5 +380,6 @@ const trustStats = [
     });
   </script>
 
+  <WhatsappDonasi variant="floating" client:load />
   <Footer />
 </MainLayout>

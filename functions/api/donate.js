@@ -1,150 +1,160 @@
 /**
  * CF Pages Function — POST /api/donate
- * Generates Midtrans Snap token, returns { token, redirect_url }
- * Secrets required (CF Dashboard → Pages → Settings → Environment variables):
- *   MIDTRANS_SERVER_KEY  = Mid-server-...
- *   MIDTRANS_CLIENT_KEY  = Mid-client-...
- *   MIDTRANS_ENV         = production | sandbox
+ * Creates a payment via 1ai-payment service and returns payment_url for redirect.
+ *
+ * Env vars required (CF Dashboard → Pages → Settings → Environment variables):
+ *   PAYMENT_API_KEY      = API key for pay.berkahkarya.org (defaults to dev key)
+ *   PAYMENT_SERVICE_URL  = 1ai-payment base URL (defaults to https://pay.berkahkarya.org)
  */
 
-const SNAP_URL = {
-  production: 'https://app.midtrans.com/snap/v1/transactions',
-  sandbox: 'https://app.sandbox.midtrans.com/snap/v1/transactions',
-};
+const CORS_ORIGINS = [
+  'https://ypsma.org',
+  'https://www.ypsma.org',
+  'http://localhost:8788',
+  'http://localhost:3000',
+];
 
-export async function onRequestPost(ctx) {
-  const { request, env } = ctx;
-
-  // CORS headers — allow ypsma.org and localhost dev
-  const origin = request.headers.get('Origin') || '';
-  const allowed = ['https://ypsma.org', 'https://www.ypsma.org', 'http://localhost:8788', 'http://localhost:3000'];
-  const corsOrigin = allowed.includes(origin) ? origin : 'https://ypsma.org';
+function corsHeaders(origin) {
+  const allowed = CORS_ORIGINS.includes(origin) ? origin : 'https://ypsma.org';
   const cors = {
-    'Access-Control-Allow-Origin': corsOrigin,
+    'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
+  return cors;
+}
 
-  // Preflight
-  if (request.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: cors });
-  }
+export async function onRequestPost(ctx) {
+  const { request, env } = ctx;
+  const origin = request.headers.get('Origin') || '';
+  const cors = corsHeaders(origin);
 
   try {
     const body = await request.json();
-    const { amount, campaign, name, email, phone, wa_number } = body;
+    const { amount, campaign, name, email, phone, wa_number, payment_method } = body;
 
     // Validate
     if (!amount || !campaign) {
-      return Response.json({ error: 'amount dan campaign wajib diisi' }, { status: 400, headers: cors });
+      return Response.json(
+        { error: 'amount dan campaign wajib diisi' },
+        { status: 400, headers: cors }
+      );
     }
     const amountInt = parseInt(amount, 10);
     if (isNaN(amountInt) || amountInt < 1000) {
-      return Response.json({ error: 'Minimal donasi Rp 1.000' }, { status: 400, headers: cors });
+      return Response.json(
+        { error: 'Minimal donasi Rp 1.000' },
+        { status: 400, headers: cors }
+      );
     }
 
-    const serverKey = env.MIDTRANS_SERVER_KEY;
-    const midtransEnv = env.MIDTRANS_ENV || 'production';
-    if (!serverKey) {
-      console.error('MIDTRANS_SERVER_KEY not set');
-      return Response.json({ error: 'Konfigurasi payment belum siap' }, { status: 500, headers: cors });
-    }
-
-    // Unique order ID: campaign + timestamp + random
+    // Unique order ID
     const ts = Date.now();
     const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
     const orderId = `YPSMA-${campaign.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10)}-${ts}-${rand}`;
 
-    // WA redirect URL setelah bayar
-    const waNum = wa_number || '6282234551160';
+    // WhatsApp confirmation URL after payment
+    const waNum = wa_number || '6285655713100';
     const waText = encodeURIComponent(
-      `Assalamualaikum, saya baru selesai donasi ${campaign} sebesar Rp ${amountInt.toLocaleString('id-ID')} via Midtrans. Order ID: ${orderId}. Mohon konfirmasi penerimaan donasi. Jazakallahu khairan 🤲`
+      `Assalamualaikum, saya baru selesai donasi ${campaign} sebesar Rp ${amountInt.toLocaleString('id-ID')}. Order ID: ${orderId}. Mohon konfirmasi penerimaan donasi. Jazakallahu khairan 🤲`
     );
     const waUrl = `https://wa.me/${waNum}?text=${waText}`;
 
-    const finishUrl = `https://ypsma.org/donate-success?order=${encodeURIComponent(orderId)}&campaign=${encodeURIComponent(campaign)}&amount=${amountInt}&wa=${encodeURIComponent(waUrl)}`;
+    // Finish URL — user lands here after payment
+    const finishUrl =
+      `https://ypsma.org/donate-success` +
+      `?order=${encodeURIComponent(orderId)}` +
+      `&campaign=${encodeURIComponent(campaign)}` +
+      `&amount=${amountInt}`;
 
-    // Build Snap payload
-    const snapPayload = {
-      transaction_details: {
-        order_id: orderId,
-        gross_amount: amountInt,
-      },
-      customer_details: {
-        first_name: name || 'Donatur',
-        email: email || undefined,
-        phone: phone || undefined,
-      },
-      item_details: [
-        {
-          id: campaign.replace(/[^a-zA-Z0-9]/g, '-').slice(0, 50),
-          price: amountInt,
-          quantity: 1,
-          name: `Donasi ${campaign} YPSMA`.slice(0, 50),
-        },
-      ],
-      callbacks: {
-        finish: finishUrl,
-        error: finishUrl + '&status=error',
-        pending: finishUrl + '&status=pending',
-      },
-      expiry: {
-        unit: 'hours',
-        duration: 24,
-      },
+    // Call 1ai-payment
+    const apiKey = env.PAYMENT_API_KEY || 'berkahkarya-ecosystem-2026-secure-key';
+    const paymentServiceUrl = env.PAYMENT_SERVICE_URL || 'https://pay.berkahkarya.org';
+
+    // Map the user's selected method to a Snap-compatible payment method.
+    // The Snap page shows ALL payment methods regardless — this just guides
+    // 1ai-payment's gateway selection (Snap API = we get a redirect URL).
+    const pmMap = {
+      qris: 'qris',
+      transfer: 'gopay',
+      va: 'gopay',
+      ewallet: 'gopay',
     };
+    const gatewayPaymentMethod = pmMap[payment_method] || 'gopay';
 
-    // Remove undefined fields from customer_details
-    Object.keys(snapPayload.customer_details).forEach(k => {
-      if (snapPayload.customer_details[k] === undefined) delete snapPayload.customer_details[k];
-    });
-
-    const auth = btoa(`${serverKey}:`);
-    const snapEndpoint = SNAP_URL[midtransEnv] || SNAP_URL.production;
-
-    const snapRes = await fetch(snapEndpoint, {
+    const payRes = await fetch(`${paymentServiceUrl}/api/payments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Basic ${auth}`,
+        'X-API-Key': apiKey,
       },
-      body: JSON.stringify(snapPayload),
+      body: JSON.stringify({
+        gateway: 'midtrans',
+        amount: amountInt,
+        currency: 'IDR',
+        payment_method: gatewayPaymentMethod,
+        customer: {
+          name: name || 'Donatur',
+          email: email || undefined,
+          phone: phone || undefined,
+        },
+        callback_url: finishUrl,
+        metadata: {
+          campaign,
+          source: 'ypsma-website',
+          order_id: orderId,
+        },
+      }),
     });
 
-    const snapData = await snapRes.json();
-
-    if (!snapRes.ok || !snapData.token) {
-      console.error('Midtrans error:', JSON.stringify(snapData));
+    if (!payRes.ok) {
+      const errBody = await payRes.text().catch(() => '');
+      console.error('1ai-payment error:', payRes.status, errBody);
       return Response.json(
         { error: 'Gagal membuat sesi pembayaran. Coba lagi atau hubungi admin.' },
         { status: 502, headers: cors }
       );
     }
+
+    const payData = await payRes.json();
+
+    if (!payData.success || !payData.data?.payment_url) {
+      console.error('1ai-payment unexpected response:', JSON.stringify(payData));
+      return Response.json(
+        { error: 'Gagal membuat sesi pembayaran. Coba lagi atau hubungi admin.' },
+        { status: 502, headers: cors }
+      );
+    }
+
+    // Append finish_redirect_url to the Midtrans Snap redirect URL so
+    // the user's browser comes back to YPSMA after payment.
+    const rawPaymentUrl = payData.data.payment_url;
+    const finishRedirect = encodeURIComponent(finishUrl);
+    const paymentUrl = `${rawPaymentUrl}?finish_redirect_url=${finishRedirect}`;
+
     return Response.json(
       {
-        token: snapData.token,
-        redirect_url: snapData.redirect_url,
+        payment_url: paymentUrl,
         order_id: orderId,
         finish_url: finishUrl,
-        client_key: env.MIDTRANS_CLIENT_KEY || 'Mid-client-xxx',
-        snap_base: snapEndpoint.replace(/\/snap\/v1\/transactions$/, ''),
+        wa_url: waUrl,
       },
       { status: 200, headers: cors }
     );
   } catch (err) {
-    console.error('donate handler error:', err);
-    return Response.json({ error: 'Internal error' }, { status: 500, headers: cors });
+    console.error('donate error:', err);
+    return Response.json(
+      { error: 'Terjadi kesalahan internal' },
+      { status: 500, headers: cors }
+    );
   }
 }
 
-// Handle OPTIONS preflight
 export async function onRequestOptions() {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
+  const cors = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+  return new Response(null, { status: 204, headers: cors });
 }
