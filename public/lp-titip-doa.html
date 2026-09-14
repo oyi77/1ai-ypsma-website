@@ -933,6 +933,7 @@ document.getElementById('yr') && (document.getElementById('yr').textContent = ne
     }
     if (typeof fbq !== 'undefined') {
       fbq('track', 'InitiateCheckout', { content_name: window.location.pathname });
+      fbq('track', 'AddPaymentInfo', { content_name: window.location.pathname, currency: 'IDR' });
     }
   });
 })();

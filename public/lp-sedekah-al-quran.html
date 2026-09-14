@@ -924,6 +924,12 @@ window.addEventListener('scroll', function() {
     var waNum     = btn.getAttribute('data-wa');
     if (!amountInt || amountInt < 1000) { alert('Nominal tidak valid'); return; }
 
+    // Track: InitiateCheckout + AddPaymentInfo
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'InitiateCheckout', { content_name: campaign, content_category: 'lp-sedekah-al-quran' });
+      fbq('track', 'AddPaymentInfo', { content_name: campaign, content_category: 'lp-sedekah-al-quran', value: amountInt, currency: 'IDR' });
+    }
+
     btn.disabled = true;
     var origHtml = btn.innerHTML;
     btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Memuat…</span>';
